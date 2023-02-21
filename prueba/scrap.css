@@ -1,0 +1,232 @@
+/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+  }
+  
+  /* Provide sufficient contrast against white background */
+  a {
+    color: #0366d6;
+  }
+  
+  .btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+  }
+  
+  .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+  }
+  
+  /* Sticky footer styles
+  -------------------------------------------------- */
+  html {
+    font-size: 14px;
+  }
+  @media (min-width: 768px) {
+    html {
+      font-size: 16px;
+    }
+  }
+  
+  .border-top {
+    border-top: 1px solid #e5e5e5;
+  }
+  .border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+  }
+  
+  .box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+  }
+  
+  button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+  }
+  
+  /* Sticky footer styles
+  -------------------------------------------------- */
+  html {
+    position: relative;
+    min-height: 100%;
+  }
+  
+  body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+  }
+  .footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
+  }
+  
+  /* -------- Additional styles added by me (BF) ---------- */
+  .userName {
+      font-size: x-small !important;
+  }
+  
+  .pageInfo {
+      vertical-align: central;
+      padding-left: 20px;
+  }
+  
+  /* to increase spacing between rows in the scrap entry table */
+  .scrapRow {
+      padding-bottom: 3px;
+  }
+  
+  /* to fix positioning of the shift select buttons on data entry create/edit views */
+  .shiftSelect {
+      padding: 0 5px 0 5px;
+      border: 0;
+  }
+  
+  /* to increase spacing on data entry detail view rows */
+  div .detail {
+      margin-bottom: 1rem;
+  }
+  
+  div .reject-header {
+      color: red !important;
+      font-weight: bold;
+  }
+  
+  /* START - These are used for testing placment of elements - disable or remove if not in use. */
+  /*form div {
+      border: 1px solid cyan;
+  }*/
+  
+  /*form label {
+      border: 1px solid green;
+  }*/
+  
+  /*div {
+      border: 1px solid green;
+  }*/
+  
+  /*td {
+      border: 1px solid orange;
+  }*/
+  /* END - These are used for testing placment of elements - disable or remove if not in use. */
+  
+  /* from https://mdbootstrap.com/docs/b4/jquery/tables/scroll/ for a scrollable table */
+  .my-custom-scrollbar {
+      position: relative;
+      height: 400px;
+      overflow: auto;
+  }
+  
+  /** similar to above, but for the mass approval table */
+  .my-custom-mass-scrollbar {
+      position: relative;
+      height: 60vh;
+      min-height: 40vh;
+      overflow: auto;
+      border: 1px solid black;
+  }
+  
+  .table-wrapper-scroll-y {
+      display: block;
+  }
+  
+  /* https://stackoverflow.com/questions/14745297/how-to-display-an-unordered-list-in-two-columns */
+  .linesList {
+      columns: 2;
+      -webkit-columns: 2;
+      -moz-columns: 2;
+  }
+  
+  .approved {
+      color: green;
+  }
+  
+  .rejected-updated {
+      color: orange;
+      font-weight: bold;
+  }
+  
+  .notApproved {
+      color: red;
+  }
+  
+  a.right {
+      float: right;
+  }
+  
+  th {
+      font-size: 0.85rem;
+  }
+  
+  .mass-submit-row {
+      padding-top: 10px;
+  }
+  
+  /* https://stackoverflow.com/questions/8423768/freeze-the-top-row-for-an-html-table-only-fixed-table-header-scrolling */
+  /*table.mass-approve {
+      border-collapse: separate;
+  }*/
+  
+  .mass-approve tr:first-child > th {
+      position: sticky;
+      top: 0;
+      background-color: white;
+      z-index: 1;
+      border-top: 1px solid white;
+  }
+  
+  .disabled {
+      color: lightgray !important;
+  }
+  
+  .reject-row {
+      width: 100% !important;
+  }
+  
+  .reject-hidden {
+      visibility: hidden;
+      display: none;
+  }
+  
+  /* Widths of the mass scrap colums before adding nested tables */
+  td.mass-col1, th.mass-col1 {
+      width: 10% !important;
+  }
+  td.mass-col2, th.mass-col2 {
+      width: 24% !important;
+  }
+  td.mass-col3, th.mass-col3 {
+      width: 9% !important;
+  }
+  td.mass-col4, th.mass-col4 {
+      width: 19% !important;
+  }
+  td.mass-col5, th.mass-col5 {
+      width: 13% !important;
+  }
+  td.mass-col6, th.mass-col6 {
+      width: 14% !important;
+  }
+  td.mass-col7, th.mass-col7 {
+      width: 12% !important;
+  }
+  
+  /* To allow the nested table representing a scrap request with 
+      rejection reason to be displayed without padding */
+  td.no-padding {
+      padding: 0px;
+  }
+  
+  .nested-table {
+      border-top: 1px solid gray;
+      border-bottom: 1px solid gray;
+  }

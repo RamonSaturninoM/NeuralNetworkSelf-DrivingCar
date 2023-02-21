@@ -1,0 +1,3017 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scrap Approved Scrap Requests - Scrap Requests</title>
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/prueba/scrap.css">
+    <link rel="stylesheet" href="/lib/bootstrap-icons/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="/lib/bootstrap-select/css/bootstrap-select.min.css" />
+</head>
+<body>
+    <header>
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-toggleable-lg navbar-dark bg-dark border-bottom box-shadow mb-3">
+        <div class="container">
+            <a class="navbar-brand" href="/">Scrap Request Entry</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-lg-inline-flex flex-lg-row-reverse">
+
+                <ul class="navbar-nav flex-grow-1 justify-content-end">
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/">Home</a>
+                    </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Request Entry</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/ScrapRequestEntry">View Scrap Requests</a>
+                                    <a class="dropdown-item" href="/ScrapRequestEntry/Create">Create Scrap Request</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Request Approval</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/ScrapRequestApproval">Approve Scrap Requests</a>
+                                    <a class="dropdown-item" href="/ScrapRequestApproval/MassApproval">Approve Multiple Requests</a>
+                                    <a class="dropdown-item" href="/ScrapRequestApproval/ApprovedIndex">View Approved Requests</a>
+
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Scrap Entries</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/ScrapApprovedRequests">Scrap Approved Requests</a>
+                                    <a class="dropdown-item" href="/ScrapApprovedRequests/MassScrap">Scrap Multiple Requests</a>
+                                    <a class="dropdown-item" href="/ScrapApprovedRequests/ScrappedIndex">View Scrapped Requests</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-info" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administration</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/Admin/UserLineIndex">User Lines</a>
+                                    <a class="dropdown-item" href="/Admin/HideEntryIndex">Hide/Show Entries</a>
+                                    <a class="dropdown-item" href="/docs/admin_guide.pdf" target="_blank">Administrator Guide</a>
+                                </div>
+                            </li>
+                        <li class="nav-item nav-link">
+                            <span class="nav-item text-warning">Hello ramonsaturnino!</span>
+                        </li>
+<form action="/Account/Logout" id="logoutForm" method="post" role="form">                            <li class="nav-item">
+                                <a class="nav-link text-light btn btn-outline-light" onclick="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+                            </li>
+<input name="__RequestVerificationToken" type="hidden" value="CfDJ8ENwm_4HTOhFjti9R1-rHhwOF_H6fN-aMQJx8b7kDU98VdFBhaQqJ6m90gZJLtIMfXXWy7IxhN5gsly_xtl7ntbc-QpSb05pdKA5IJGm7kmeDw1C5vSH3-a7xmI1gvMqA6NtPgy1JwmIGpZH9uSzW9ksjPhzFYCPvLTE_sW9AulW_P1Glt14bUzo-JZiI9lavg" /></form>                </ul>
+            </div>
+        </div>
+    </nav>
+</header>    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            
+
+<h2>Scrap Approved Scrap Requests</h2>
+
+<div class="row detail">
+    <div class="col-md-6">
+        <a class="btn btn-info" href="/ScrapApprovedRequests/ScrappedIndex">View Scrapped Requests</a>
+    </div>
+    <div class="col-md-6">
+        <a id="filter" class="btn btn-primary right" data-toggle="collapse" href="#collapseFilter" role="button" 
+           aria-expanded="false" aria-controls="collapseFilter" onclick="toggleFilterText()">Show Filter</a>
+    </div>
+</div>
+
+<div class="row detail collapse" id="collapseFilter">
+    <div class="card card-body">
+        <form method="get" action="/ScrapApprovedRequests">
+            <div class="form-row filter">
+                <div class="col-sm-12 col-md-12 col-lg-2 searchCol">
+    <input type="date" id="datepicker" class="form-control" name="dateFilter" />
+</div>
+
+<div class="col-sm-12 col-md-12 col-lg-2 searchCol">
+    <select name="lineFilter" id="lineFilter" class="form-control" onchange="findPartsForLinePromise('','#partNumberFilter','#lineFilter', '- All Parts -').then(getDeptCodesForLine(this))">
+        <option selected value="0">- All Depts -</option>
+    <option value="B800">B800</option>
+<option value="BC01">BC01</option>
+<option value="BC01 VB">BC01 VB</option>
+<option value="Engineering">Engineering</option>
+<option value="G300">G300</option>
+<option value="G300 ATI">G300 ATI</option>
+<option value="G300 C2 Clutch">G300 C2 Clutch</option>
+<option value="G300 Main">G300 Main</option>
+<option value="G300 Sub">G300 Sub</option>
+<option value="G300 VB">G300 VB</option>
+<option value="G903 C1">G903 C1</option>
+<option value="G903 C3C4">G903 C3C4</option>
+<option value="G903 TC">G903 TC</option>
+<option value="G904 C1">G904 C1</option>
+<option value="G904 C3C4">G904 C3C4</option>
+<option value="G904 TC">G904 TC</option>
+<option value="PC">PC</option>
+<option value="Product Assurance">Product Assurance</option>
+<option value="QA">QA</option>
+</select>
+</div>
+
+<div class="col-sm-12 col-md-12 col-lg-2 searchCol">
+    <select name="partNumberFilter" id="partNumberFilter" class="selectpicker form-control" data-live-search="true" data-style="btn-info">
+        <option selected value="0">- All Parts -</option>
+    <option value="0191130A190">0191130A190 - STRAP, CONVERTER SUPT (GR MK)</option>
+<option value="01911TBL010">01911TBL010 - STRAP, SHIPPING CONV. SUPT</option>
+<option value="01911TGB010">01911TGB010 - STRAP, SHIPPING CONVERTER</option>
+<option value="0191230A110">0191230A110 - CAP, SHIPPING</option>
+<option value="0191238A010">0191238A010 - CAP, SHIPPING</option>
+<option value="0191238A010">0191238A010 - Cap, Shipping</option>
+<option value="0191250A070">0191250A070 - CAP, SHIPPING</option>
+<option value="0191280A020">0191280A020 - CAP, SHIPPING</option>
+<option value="019128GA010">019128GA010 - CAP, SHIPPING</option>
+<option value="019128GA020">019128GA020 - CAP, SHIPPING</option>
+<option value="0191290A030">0191290A030 - CAP, SHIPPING</option>
+<option value="0191290A050">0191290A050 - CAP, SHIPPING</option>
+<option value="01912TBA060">01912TBA060 - CAP, SHIPPING</option>
+<option value="01912TBG020">01912TBG020 - CAP, SHIPPING</option>
+<option value="01912TBL010">01912TBL010 - CAP, SHIPPING (4WD)</option>
+<option value="01912TBL020">01912TBL020 - CAP, SHIPPING (2WD)</option>
+<option value="0300139001V">0300139001V - RING, SNAP</option>
+<option value="0350056004F">0350056004F - RETAINER, VALVE</option>
+<option value="0355045013U">0355045013U - GASKET, TRANSMISSION DRAIN PLG</option>
+<option value="0355052005L">0355052005L - PLUG, W/HEAD STRAIGHT SCREW</option>
+<option value="0355113017A">0355113017A - PLUG, CUP</option>
+<option value="0355141009R">0355141009R - RING, O</option>
+<option value="0355149008W">0355149008W - NUT, FLANGE</option>
+<option value="0355191054W">0355191054W - STRAP, SHIPPING CONVERTER SUP.</option>
+<option value="0355237001E">0355237001E - BALL, HARDEND STEEL</option>
+<option value="0355683022L">0355683022L - BOLT, W/WASHER</option>
+<option value="0371040004A">0371040004A - RETAINER, VALVE</option>
+<option value="0371113005Z">0371113005Z - PLUG, SHIFT VALVE</option>
+<option value="0395043001V">0395043001V - SPIRAL PIN</option>
+<option value="0395191002B">0395191002B - CAP, SHIPPING EXTENSION HSNG</option>
+<option value="1040040007W">1040040007W - KEY, STRAIGHT</option>
+<option value="1040043104R">1040043104R - PIN, STRAIGHT</option>
+<option value="1040052103H">1040052103H - PLUG, W/HEAD STRAIGHT SCREW</option>
+<option value="1040139003S">1040139003S - RING, E</option>
+<option value="1040141001S">1040141001S - RING, O</option>
+<option value="2030044001J">2030044001J - SEAL, TYPE T OIL</option>
+<option value="2030045013L">2030045013L - GASKET</option>
+<option value="2030113004A">2030113004A - PLUG</option>
+<option value="3.20E&#x2B;39">3.20E&#x2B;39 - 272 T/C, L-UP PISTON</option>
+<option value="3040040019U">3040040019U - RETAINER, VALVE</option>
+<option value="3040040024M">3040040024M - RETAINER, VALVE</option>
+<option value="3040040030C">3040040030C - KEY, STRAIGHT</option>
+<option value="3040040038B">3040040038B - KEY, STRAIGHT</option>
+<option value="3040040039Y">3040040039Y - KEY, STRAIGHT</option>
+<option value="3040052001B">3040052001B - PLUG, W/HEAD STRAIGHT SCREW</option>
+<option value="3040108013C">3040108013C - PLUNGER, L.U. RELAY VALVE</option>
+<option value="3040109001N">3040109001N - BALL, STEEL</option>
+<option value="3040113017C">3040113017C - PLUG, CUP</option>
+<option value="3040113019W">3040113019W - PLUG</option>
+<option value="3040113033V">3040113033V - PLUG</option>
+<option value="3040113034S">3040113034S - PLUG</option>
+<option value="3040127016C">3040127016C - BUSH, BIMETAL FORMED</option>
+<option value="3040139014T">3040139014T - RING, ACCUM ASSY SNAP</option>
+<option value="3040139023Y">3040139023Y - RING, HOLE SNAP</option>
+<option value="3040141002R">3040141002R - RING, O</option>
+<option value="3040156043Z">3040156043Z - SPRING, COMPRESSION</option>
+<option value="3040156089N">3040156089N - Spring, Compression</option>
+<option value="3040156105Z">3040156105Z - SPRING, COMPRESSION</option>
+<option value="3040156113H">3040156113H - SPRING, COMPRESSION</option>
+<option value="3040156158A">3040156158A - SPRING, COMPRESSION</option>
+<option value="3040156174T">3040156174T - SPRING, COMPRESSION</option>
+<option value="3040188002U">3040188002U - ELBOW (FR/UPPER SIDE)</option>
+<option value="3040191001X">3040191001X - CAP, SHIPPING COOLER PIPE</option>
+<option value="3040237034D">3040237034D - VALVE, BY-PASS</option>
+<option value="3040398002D">3040398002D - COVER, CONNECTOR</option>
+<option value="3040737003Y">3040737003Y - CHECK VALVE</option>
+<option value="3041016001G">3041016001G - RING, SEAL</option>
+<option value="3041018002S">3041018002S - RACE, 1 WAY CLUTCH, INNER</option>
+<option value="305008GB016">305008GB016 - TRANSAXLE ASSY, AUTOMATIC</option>
+<option value="305008GB017">305008GB017 - TRANSAXLE ASSY, AUTOMATIC</option>
+<option value="305008GB018">305008GB018 - TRANSAXLE ASSY, AUTOMATIC</option>
+<option value="305008GB040">305008GB040 - TRANSAXLE ASSY, AUTOMATIC</option>
+<option value="305100R050">305100R050 - Transaxle Assy, Auto W/Torque G300</option>
+<option value="305100R060">305100R060 - Transaxle Assy, Auto W/Torque G300</option>
+<option value="305100R070">305100R070 - Transaxle Assy, Auto W/Torque G300</option>
+<option value="305100R080">305100R080 - Transaxle Assy, Auto W/Torque G300</option>
+<option value="305108GB023">305108GB023 - Transaxle Assy, Auto W/Torque G300</option>
+<option value="305108GB024">305108GB024 - Transaxle Assy, Auto W/Torque G300</option>
+<option value="305108GB025">305108GB025 - Transaxle Assy, Auto W/Torque G300</option>
+<option value="305108GB052">305108GB052 - Transaxle Assy, Auto W/Torque G300</option>
+<option value="3080072002Z">3080072002Z - HOSE, BREATHER</option>
+<option value="3200(02)A-230">3200(02)A-230 - 230 T/C, Fr Cover</option>
+<option value="3200(02)A-230">3200(02)A-230 - 230 T/C, FR COVER</option>
+<option value="3200(02)B-230">3200(02)B-230 - 230 T/C, Pump Impeller</option>
+<option value="3200(02)B-230">3200(02)B-230 - 230 T/C, PUMP IMPELLER</option>
+<option value="3200(02)C-230">3200(02)C-230 - 230 T/C, Turbine &amp; Damper</option>
+<option value="3200(02)C-230">3200(02)C-230 - 230 T/C, TURBINE &amp; DAMPER</option>
+<option value="3200(02)C-231">3200(02)C-231 - 230 T/C, TURBINE &amp; DAMPER</option>
+<option value="3200(02)D-230">3200(02)D-230 - 230 T/C, Stator</option>
+<option value="3200(02)D-230">3200(02)D-230 - 230 T/C, STATOR</option>
+<option value="3200(02)D-231">3200(02)D-231 - 230 T/C, STATOR</option>
+<option value="3200006060">3200006060 - Converter Assy, Torque</option>
+<option value="3200006070">3200006070 - CONVERTER ASSY, TORQUE G904</option>
+<option value="320002A074">320002A074 - 272 T/C, FR COVER - 409K</option>
+<option value="320002A123">320002A123 - 272 T/C, FR COVER</option>
+<option value="320002B040">320002B040 - 272 T/C, PUMP IMPELLER - 409K</option>
+<option value="320002B058">320002B058 - 272 T/C, PUMP IMPELLER</option>
+<option value="320002C064">320002C064 - 272 T/C, TURBINE &amp; DAMPER-409K</option>
+<option value="320002C081">320002C081 - 272 T/C, TURBINE &amp; DAMPER</option>
+<option value="320002D040">320002D040 - 272 T/C, STATOR</option>
+<option value="320002D066">320002D066 - 272 T/C, STATOR</option>
+<option value="320002E043">320002E043 - 272 T/C, L-UP PISTON</option>
+<option value="3200038A040">3200038A040 - CONVERTER ASSY, TORQUE</option>
+<option value="3200038A040">3200038A040 - Converter Assy, Torque</option>
+<option value="3200038A050">3200038A050 - CONVERTER ASSY, TORQUE G904</option>
+<option value="3200042A100">3200042A100 - CONVERTER ASSY, TORQUE</option>
+<option value="3200058A090">3200058A090 - CONVERTER ASSY, TORQUE 409K-V8</option>
+<option value="3200058A100">3200058A100 - CONVERTER ASSY, TORQUE</option>
+<option value="3210238A032">3210238A032 - COVER SUB-ASSY, CONVERTER, FR</option>
+<option value="3210238A032">3210238A032 - Cover Sub-Assy, Converter, Fr</option>
+<option value="3210258A031">3210258A031 - COVER SUB-ASSY, CONVERTER, FR</option>
+<option value="3210258A060">3210258A060 - COVER SUB-ASSY, CONVERTER, FR</option>
+<option value="3210338A010">3210338A010 - COVER ASSY, CONVERTER W/CLUTCH</option>
+<option value="3210338A010">3210338A010 - Cover Assy, Converter W/Clutch</option>
+<option value="3212138A020">3212138A020 - COVER, CONVERTER, FR</option>
+<option value="3212138A020">3212138A020 - Cover, Converter, Fr</option>
+<option value="3212158A021">3212158A021 - COVER, CONVERTER, FR - 409K</option>
+<option value="3212158A040">3212158A040 - COVER, CONVERTER, FR</option>
+<option value="3212234A010">3212234A010 - PIECE, CONVERTER FR COVER, CTR</option>
+<option value="3212238A010">3212238A010 - PIECE, CONVERTER FR COVER</option>
+<option value="3212238A010">3212238A010 - Piece, Converter Fr Cover</option>
+<option value="3212253A020">3212253A020 - PIECE, CONVERTER FR CVR, CTR</option>
+<option value="3212437A010">3212437A010 - BLOCK, CONVERTER FR COVER SET</option>
+<option value="3212437A010">3212437A010 - Block, Converter Fr Cover Set</option>
+<option value="3212453A050">3212453A050 - BLOCK, CONVERTER FR COVER SET</option>
+<option value="3212453A150">3212453A150 - BLOCK, CONVERTER FR COVER SET</option>
+<option value="3212848A010">3212848A010 - RACE, CONVERTER THRUST BEARING</option>
+<option value="3212948A010">3212948A010 - RACE, CONVERTER THRUST BEARING</option>
+<option value="3212948A020">3212948A020 - RACE, CONVERTER THRUST BEARING</option>
+<option value="3212948A030">3212948A030 - RACE, CONVERTER THRUST BEARING</option>
+<option value="3220137A011">3220137A011 - DAMPER SUB-ASSY, LOCK UP</option>
+<option value="3220138A010">3220138A010 - DAMPER SUB-ASSY, LOCK UP</option>
+<option value="3220138A010">3220138A010 - Damper Sub-Assy, Lock Up</option>
+<option value="3220153A090">3220153A090 - DAMPER SUB-ASSY, LOCK UP</option>
+<option value="3220153A130">3220153A130 - DAMPER SUB-ASSY, LOCK UP</option>
+<option value="3220253A030">3220253A030 - PISTON S/A, LOCK UP CLUTCH</option>
+<option value="3220253A090">3220253A090 - PISTON S/A, LOCK UP CLUTCH</option>
+<option value="3221237A011">3221237A011 - PISTON, LOCK UP CLUTCH</option>
+<option value="3221237A011">3221237A011 - Piston, Lock Up Clutch</option>
+<option value="3221637A012">3221637A012 - Hub, Lock Up Clutch</option>
+<option value="3221637A012">3221637A012 - HUB, LOCK UP CLUTCH</option>
+<option value="3221637A01220">3221637A01220 - HUB, LOCK UP CLUTCH</option>
+<option value="3221637A01220">3221637A01220 - Hub, Lock Up Clutch</option>
+<option value="3221737A011">3221737A011 - DISC, CLUTCH</option>
+<option value="3221737A011">3221737A011 - Disc, Clutch</option>
+<option value="3221737A021">3221737A021 - DISC, CLUTCH</option>
+<option value="3221737A021">3221737A021 - Disc, Clutch</option>
+<option value="3221737A030">3221737A030 - Disc, Clutch</option>
+<option value="3221837A010">3221837A010 - PLATE, LOCK UP CLUTCH</option>
+<option value="3221837A010">3221837A010 - Plate, Lock Up Clutch</option>
+<option value="3221837A020">3221837A020 - PLATE, LOCK UP CLUTCH</option>
+<option value="3221837A020">3221837A020 - Plate, Lock Up Clutch</option>
+<option value="3221837A030">3221837A030 - PLATE, LOCK UP CLUTCH</option>
+<option value="3221837A030">3221837A030 - Plate, Lock Up Clutch</option>
+<option value="3221837A040">3221837A040 - PLATE, LOCK UP CLUTCH</option>
+<option value="3221837A040">3221837A040 - Plate, Lock Up Clutch</option>
+<option value="3221837A050">3221837A050 - PLATE, LOCK UP CLUTCH</option>
+<option value="3221837A050">3221837A050 - Plate, Lock Up Clutch</option>
+<option value="3221837A060">3221837A060 - PLATE, LOCK UP CLUTCH</option>
+<option value="3221837A060">3221837A060 - Plate, Lock Up Clutch</option>
+<option value="3221837A070">3221837A070 - PLATE, LOCK UP CLUTCH</option>
+<option value="3221837A070">3221837A070 - Plate, Lock Up Clutch</option>
+<option value="3221837A080">3221837A080 - PLATE, LOCK UP CLUTCH</option>
+<option value="3221837A080">3221837A080 - Plate, Lock Up Clutch</option>
+<option value="3221937A021">3221937A021 - FLANGE, LOCK UP CLUTCH</option>
+<option value="3221937A021">3221937A021 - Flange, Lock Up Clutch</option>
+<option value="3230138A020">3230138A020 - IMPELLER SUB-ASSY, PUMP</option>
+<option value="3230138A020">3230138A020 - Impeller Sub-Assy, Pump</option>
+<option value="3230158A020">3230158A020 - IMPELLER SUB-ASSY, PUMP - 409K</option>
+<option value="3230158A040">3230158A040 - IMPELLER SUB-ASSY, PUMP</option>
+<option value="3230338A020">3230338A020 - BLADE SUB-ASSY, PUMP IMPELLER</option>
+<option value="3230338A020">3230338A020 - Blade Sub-Assy, Pump Impeller</option>
+<option value="3230358A010">3230358A010 - BLADE SUB-ASSY, PUMP IMPELLER</option>
+<option value="3230358A020">3230358A020 - BLADE SUB-ASSY, PUMP IMPELLER</option>
+<option value="3231138A020">3231138A020 - BLADE, PUMP</option>
+<option value="3231138A020">3231138A020 - Blade, Pump</option>
+<option value="3231158A010">3231158A010 - BLADE, PUMP</option>
+<option value="3231158A020">3231158A020 - BLADE, PUMP</option>
+<option value="3231238A020">3231238A020 - CORE, PUMP IMPELLER, INNER</option>
+<option value="3231238A020">3231238A020 - Core, Pump Impeller, Inner</option>
+<option value="3231258A010">3231258A010 - CORE, PUMP IMPELLER, INNER</option>
+<option value="3231258A020">3231258A020 - CORE, PUMP IMPELLER, INNER</option>
+<option value="3231338A020">3231338A020 - SHELL, PUMP IMPELLER, OUTER</option>
+<option value="3231338A020">3231338A020 - Shell, Pump Impeller, Outer</option>
+<option value="3231358A010">3231358A010 - SHELL, PUMP IMPELLER, OUTER</option>
+<option value="3231358A020">3231358A020 - SHELL, PUMP IMPELLER, OUTER</option>
+<option value="3232138A020">3232138A020 - SLEEVE, PUMP IMPELLER EXT</option>
+<option value="3232138A020">3232138A020 - Sleeve, Pump Impeller Ext</option>
+<option value="3232158A050">3232158A050 - SLEEVE, PUMP IMP. EXTENSION</option>
+<option value="3232158A060">3232158A060 - SLEEVE, PUMP IMP. EXTENSION</option>
+<option value="3232158A06020">3232158A06020 - SLEEVE, PUMP IMP. EXTENSION</option>
+<option value="3240238A030">3240238A030 - RUNNER SUB-ASSY, TURBINE W/L</option>
+<option value="3240238A030">3240238A030 - Runner Sub-Assy, Turbine W/L</option>
+<option value="3240238A040">3240238A040 - RUNNER SUB-ASSY, TURBINE W/L</option>
+<option value="3240258A040">3240258A040 - RUNNER S/A, TURB W/L-UP DAMPER</option>
+<option value="3240258A050">3240258A050 - RUNNER S/A, TURB W/L-UP DAMPER</option>
+<option value="3240338A020">3240338A020 - BLADE SUB-ASSY, TURBINE RUNNER</option>
+<option value="3240338A020">3240338A020 - Blade Sub-Assy, Turbine Runner</option>
+<option value="3240358A010">3240358A010 - BLADE SUB-ASSY, TURBINE RUNNER</option>
+<option value="3240358A020">3240358A020 - BLADE SUB-ASSY, TURBINE RUNNER</option>
+<option value="3241138A020">3241138A020 - BLADE, TURBINE</option>
+<option value="3241138A020">3241138A020 - Blade, Turbine</option>
+<option value="3241158A010">3241158A010 - BLADE, TURBINE</option>
+<option value="3241158A020">3241158A020 - BLADE, TURBINE</option>
+<option value="3241238A020">3241238A020 - CORE, TURBINE RUNNER, INNER</option>
+<option value="3241238A020">3241238A020 - Core, Turbine Runner, Inner</option>
+<option value="3241258A010">3241258A010 - CORE, TURBINE RUNNER, INNER</option>
+<option value="3241258A020">3241258A020 - CORE, TURBINE RUNNER, INNER</option>
+<option value="3241338A020">3241338A020 - SHELL, TURBINE RUNNER, OUTER</option>
+<option value="3241338A020">3241338A020 - Shell, Turbine Runner, Outer</option>
+<option value="3241358A010">3241358A010 - SHELL, TURBINE RUNNER, OUTER</option>
+<option value="3241358A020">3241358A020 - SHELL, TURBINE RUNNER, OUTER</option>
+<option value="3242138A020">3242138A020 - HUB, TURBINE RUNNER</option>
+<option value="3242138A020">3242138A020 - Hub, Turbine Runner</option>
+<option value="3242138A030">3242138A030 - HUB, TURBINE RUNNER</option>
+<option value="3242158A040">3242158A040 - HUB, TURBINE RUNNER</option>
+<option value="3242158A050">3242158A050 - HUB, TURBINE RUNNER</option>
+<option value="3250038A030">3250038A030 - STATOR ASSY</option>
+<option value="3250038A030">3250038A030 - Stator Assy</option>
+<option value="3250038A040">3250038A040 - STATOR ASSY</option>
+<option value="3250058A020">3250058A020 - STATOR ASSY</option>
+<option value="3250058A030">3250058A030 - STATOR ASSY</option>
+<option value="3250158A020">3250158A020 - WHEEL SUB-ASSY, STATOR</option>
+<option value="3250538A020">3250538A020 - CLUTCH, 1WAY STATOR</option>
+<option value="3250538A020">3250538A020 - Clutch, 1way Stator</option>
+<option value="3250558A010">3250558A010 - CLUTCH, 1 WAY STATOR</option>
+<option value="3250558A020">3250558A020 - CLUTCH, 1 WAY STATOR</option>
+<option value="3251138A030">3251138A030 - WHEEL, STATOR</option>
+<option value="3251138A030">3251138A030 - Wheel, Stator</option>
+<option value="3251138A040">3251138A040 - WHEEL, STATOR</option>
+<option value="3251138D010">3251138D010 - (CA), STATOR WHEEL</option>
+<option value="3251138D010">3251138D010 - (Ca), Stator Wheel</option>
+<option value="3251138D020">3251138D020 - (CA), STATOR WHEEL</option>
+<option value="3251158A020">3251158A020 - WHEEL, STATOR</option>
+<option value="3251158A030">3251158A030 - WHEEL, STATOR</option>
+<option value="3251158D020">3251158D020 - (CA), STATOR WHEEL</option>
+<option value="3251158D030">3251158D030 - (CA), STATOR WHEEL</option>
+<option value="3251437A010">3251437A010 - WASHER, STATOR THRUST, FR</option>
+<option value="3251437A010">3251437A010 - Washer, Stator Thrust, Fr</option>
+<option value="3251453A010">3251453A010 - WASHER, STATOR THRUST, FR</option>
+<option value="3251453A020">3251453A020 - WASHER, STATOR THRUST, FR</option>
+<option value="3252137A010">3252137A010 - RACE, 1WAY CLUTCH, INNER</option>
+<option value="3252137A020">3252137A020 - RACE, 1WAY CLUTCH, INNER</option>
+<option value="3252137A020">3252137A020 - Race, 1way Clutch, Inner</option>
+<option value="3252150A010">3252150A010 - RACE, 1WAY CLUTCH, INNER</option>
+<option value="3252237A010">3252237A010 - RACE, 1WAY CLUTCH, OUTER</option>
+<option value="3252237A010">3252237A010 - Race, 1way Clutch, Outer</option>
+<option value="3252253A010">3252253A010 - RACE, 1WAY CLUTCH, OUTER</option>
+<option value="3252290A010">3252290A010 - RACE, 1WAY CLUTCH, OUTER</option>
+<option value="3253132A010">3253132A010 - RACE, THRUST BEARING</option>
+<option value="3253132A010">3253132A010 - Race, Thrust Bearing</option>
+<option value="3253135A010">3253135A010 - RACE, THRUST BEARING</option>
+<option value="3253135A010">3253135A010 - Race, Thrust Bearing</option>
+<option value="3253135A020">3253135A020 - RACE, THRUST BEARING</option>
+<option value="3253135A020">3253135A020 - Race, Thrust Bearing</option>
+<option value="3253135A030">3253135A030 - RACE, THRUST BEARING</option>
+<option value="3253135A030">3253135A030 - Race, Thrust Bearing</option>
+<option value="3253153A020">3253153A020 - RACE, THRUST BEARING</option>
+<option value="3253158A010">3253158A010 - RACE, THRUST BEARING</option>
+<option value="3253158A030">3253158A030 - RACE, THRUST BEARING</option>
+<option value="3290148020">3290148020 - UNION SUB-ASSY, OIL COOLER</option>
+<option value="3349034010">3349034010 - COOLER, TRANSMISSION OIL</option>
+<option value="3362128021">3362128021 - LABEL, TRANSAXLE OIL NOTICE</option>
+<option value="34119TBA010">34119TBA010 - GASKET, LIQUID OIL PAN</option>
+<option value="34360TBL020">34360TBL020 - CLUTCH ASSY, 1 WAY, NO.4</option>
+<option value="34361TBL020">34361TBL020 - CLUTCH, 1WAY, NO.4</option>
+<option value="346018GA100">346018GA100 - CLUTCH SUB-ASSY, C-3 &amp; C-4</option>
+<option value="346018GB060">346018GB060 - CLUTCH SUB-ASSY, C-3 &amp; C-4</option>
+<option value="346108GB040">346108GB040 - Clutch Assy, C-3 &amp; C-4</option>
+<option value="346108GB040">346108GB040 - CLUTCH ASSY, C-3 &amp; C-4</option>
+<option value="346388GA010">346388GA010 - PISTON, C-4 CLUTCH</option>
+<option value="346388GB030">346388GB030 - PISTON, C-4 CLUTCH</option>
+<option value="34738TBL010">34738TBL010 - RACE, RADIAL BEARING, INNER</option>
+<option value="35000TBG009">35000TBG009 - TRANSMISSION ASSY</option>
+<option value="35000TBG010">35000TBG010 - TRANSMISSION ASSY</option>
+<option value="35000TBH006">35000TBH006 - TRANSMISSION ASSY</option>
+<option value="35000TBH007">35000TBH007 - TRANSMISSION ASSY</option>
+<option value="35000TBL033">35000TBL033 - TRANSMISSION ASSY V8-4WD NOCLR</option>
+<option value="35000TBL035">35000TBL035 - TRANSMISSION ASSY V8-2WD W/CLR</option>
+<option value="3501004230">3501004230 - Transaxle Assy, Auto W/Torque BC01</option>
+<option value="3501004240">3501004240 - Transaxle Assy, Auto W/Torque BC01</option>
+<option value="3501004250">3501004250 - Transaxle Assy, Auto W/Torque BC01</option>
+<option value="3501004260">3501004260 - Transaxle Assy, Auto W/Torque BC01</option>
+<option value="3501004270">3501004270 - Transaxle Assy, Auto W/Torque BC01</option>
+<option value="3501004280">3501004280 - Transaxle Assy, Auto W/Torque BC01</option>
+<option value="350100C260">350100C260 - Transaxle Assy, Auto W/Torque B800</option>
+<option value="350100C280">350100C280 - Transaxle Assy, Auto W/Torque B800</option>
+<option value="35010TBG011">35010TBG011 - Transaxle Assy, Auto W/Torque BC01</option>
+<option value="35010TBG012">35010TBG012 - Transaxle Assy, Auto W/Torque BC01</option>
+<option value="35010TBG013">35010TBG013 - Transaxle Assy, Auto W/Torque BC01</option>
+<option value="35010TBG014">35010TBG014 - Transaxle Assy, Auto W/Torque BC01</option>
+<option value="35010TBH007">35010TBH007 - Transaxle Assy, Auto W/Torque BC01</option>
+<option value="35010TBH008">35010TBH008 - Transaxle Assy, Auto W/Torque BC01</option>
+<option value="35010TBL034">35010TBL034 - Transaxle Assy, Auto W/Torque BC01</option>
+<option value="35010TBL036">35010TBL036 - Transaxle Assy, Auto W/Torque BC01</option>
+<option value="35015TBG030">35015TBG030 - ADAPTOR S/A, TRANS. CASE, RR</option>
+<option value="35015TBL010">35015TBL010 - ADT/HOUSING</option>
+<option value="35045TBG020">35045TBG020 - SPRING S/A, BRAKE PISTON RTRN</option>
+<option value="35045TBL010">35045TBL010 - B2 RETURN SPRING</option>
+<option value="35046TBL010">35046TBL010 - SPRING S/A, BRK PISTON RTRN #3</option>
+<option value="35047TBL010">35047TBL010 - SPRING S/A, REV. CLTCH RETRN</option>
+<option value="35048TBL010">35048TBL010 - PISTON S/A, REV. CLUTCH (C3)</option>
+<option value="35049TBL010">35049TBL010 - HUB S/A, REV., CLTCH (C-3 HUB)</option>
+<option value="35061TBG020">35061TBG020 - HUB SUB-ASSY, CLUTCH</option>
+<option value="35061TBL010">35061TBL010 - HUB SUB-ASSY, CLUTCH (C-2HUB)</option>
+<option value="35064TBL010">35064TBL010 - HUB S/A, COAST CLUTCH (C4 HUB)</option>
+<option value="35065TBL010">35065TBL010 - DRUM S/A REV CLUTCH (C3 DRUM)</option>
+<option value="35066TBL010">35066TBL010 - DISC SET, BRAKE</option>
+<option value="350688GB030">350688GB030 - SPRING SUB-ASSY, 1ST &amp; REVS BR</option>
+<option value="35068TBA020">35068TBA020 - SPRING S/A, 1ST &amp; REV BRK RTRN</option>
+<option value="35068TBL010">35068TBL010 - B4 RETURN SPRING</option>
+<option value="35071TBL010">35071TBL010 - SHAFT, INPUT</option>
+<option value="35071TBL01020">35071TBL01020 - SHAFT, INPUT</option>
+<option value="35073TBG050">35073TBG050 - SHAFT SUB-ASSY, OUTPUT</option>
+<option value="35073TBG060">35073TBG060 - SHAFT SUB-ASSY, OUTPUT</option>
+<option value="35077TBG020">35077TBG020 - FLANGE S/A, RR PLANETRY RNG GR</option>
+<option value="35077TBL010">35077TBL010 - FLANGE S/A, RR PLANETRY RNG GR</option>
+<option value="350808GB070">350808GB070 - GEAR ASSY, COUNTER DRIVEN</option>
+<option value="351048GB040">351048GB040 - CASE SUB-ASSY, TRANSAXLE</option>
+<option value="35104TBG020">35104TBG020 - CASE SUB-ASSY, TRANSMISSION</option>
+<option value="35104TBL010">35104TBL010 - CASE SUB-ASSY, TRANSMISSION</option>
+<option value="351058GB050">351058GB050 - HOUSING SUB-ASSY, TRANSAXLE</option>
+<option value="351058GB060">351058GB060 - HOUSING SUB-ASSY, TRANSAXLE</option>
+<option value="35106TBG030">35106TBG030 - PAN SUB-ASSY, TRANSMISSION OIL</option>
+<option value="35106TBL040">35106TBL040 - PAN SUB-ASSY, TRANSMISSION OIL</option>
+<option value="35108TBG040">35108TBG040 - HOUSING SUB-ASSY, EXTENSION</option>
+<option value="35108TBL010">35108TBL010 - EXT/HOUSING</option>
+<option value="351118GB050">351118GB050 - HOUSING, TRANSAXLE</option>
+<option value="351118GB060">351118GB060 - HOUSING, TRANSAXLE</option>
+<option value="351118GD050">351118GD050 - (CA), TRANSAXLE HOUSING</option>
+<option value="351118GD060">351118GD060 - (CA), TRANSAXLE HOUSING</option>
+<option value="35111TBG040">35111TBG040 - HOUSING, CONVERTER</option>
+<option value="35111TBG050">35111TBG050 - HOUSING, CONVERTER</option>
+<option value="35111TBL010">35111TBL010 - CONVERTER HOUSING</option>
+<option value="35122TBL040">35122TBL040 - TUBE, BREATHER</option>
+<option value="3512506120">3512506120 - TUBE, TRANSMISSION OIL FILLER</option>
+<option value="351418GB040">351418GB040 - CASE, TRANSAXLE</option>
+<option value="351418GD090">351418GD090 - (CA), TRANSAXLE CASE</option>
+<option value="35141TBD100">35141TBD100 - (CA), TRANSMISSION CASE</option>
+<option value="35141TBD170">35141TBD170 - (CA), TRANSMISSION CASE</option>
+<option value="35141TBG020">35141TBG020 - CASE, TRANSMISSION</option>
+<option value="35141TBL010">35141TBL010 - TRANSMISSION CASE</option>
+<option value="3514533010">3514533010 - GASKET, TRANSAXLE CASE</option>
+<option value="351458GA010">351458GA010 - Gasket, Transaxle Case</option>
+<option value="351458GA020">351458GA020 - Gasket, Transaxle Case</option>
+<option value="35145TBA020">35145TBA020 - TRANSAXLE GASKET</option>
+<option value="35145TGB010">35145TGB010 - GASKET, TRANSAXLE CASE</option>
+<option value="3515106010">3515106010 - COVER SUB-ASSY, TRANSAXLE SIDE</option>
+<option value="35154TBG030">35154TBG030 - ADAPTOR, TRANSMISSION CASE, RR</option>
+<option value="35154TBL010">35154TBL010 - ADAPTOR, TRANSMISSION CASE, RR</option>
+<option value="351558GB010">351558GB010 - SLEEVE, TRANSAXLE CASE</option>
+<option value="351558GB050">351558GB050 - SLEEVE</option>
+<option value="35155TBG010">35155TBG010 - SLEEVE</option>
+<option value="35155TBL010">35155TBL010 - SLEEVE</option>
+<option value="35157TBG010">35157TBG010 - WEIR, EXTENSION HOUSING</option>
+<option value="35159TBG010">35159TBG010 - GASKET, BRAKE DRUM</option>
+<option value="35159TBG020">35159TBG020 - GASKET, BRAKE DRUM</option>
+<option value="35159TBL010">35159TBL010 - BRAKE DRUM GASKET (L)</option>
+<option value="35159TBL020">35159TBL020 - BRAKE DRUM GASKET (S)</option>
+<option value="35159TBL040">35159TBL040 - Gasket, Brake Drum</option>
+<option value="3516573010">3516573010 - PLATE, TRANSMISSION CASE, NO.1</option>
+<option value="35168TBG020">35168TBG020 - GASKET, TRANSMISSION OIL PAN</option>
+<option value="35168TBL020">35168TBL020 - GASKET, TRANSMISSION OIL PAN</option>
+<option value="351748GB010">351748GB010 - PLATE, OIL RESERVOIR LOCK</option>
+<option value="35180TBL010">35180TBL010 - HOUSING ASSY, EXTENSION</option>
+<option value="352068GA010">352068GA010 - VALVE SUB-ASSY, CHECK, NO.1</option>
+<option value="35206TLA010">35206TLA010 - SPRING SUB-ASSY, VALVE, NO.1</option>
+<option value="352078GA010">352078GA010 - VALVE SUB-ASSY, CHECK, NO.2</option>
+<option value="35208TBA010">35208TBA010 - SPRING SUB-ASSY, ACCUMULATOR</option>
+<option value="35208TBL010">35208TBL010 - SPRING SUB-ASSY, ACCUMULATOR</option>
+<option value="35208TBL030">35208TBL030 - SPRING SUB-ASSY, ACCUMULATOR</option>
+<option value="352108GA020">352108GA020 - SOLENOID ASSY, CLUTCH CONTROL</option>
+<option value="35210TBA020">35210TBA020 - SOLENOID ASSY, CLTCH CNTRL, #1</option>
+<option value="35210TBG020">35210TBG020 - SOLENOID ASSY, CLTCH CNTRL, #1</option>
+<option value="35211TBG010">35211TBG010 - SLEEVE, LOCK UP CONTROL VALVE</option>
+<option value="35211TBL010">35211TBL010 - SLEEVE, LOCK UP CONTROL VALVE</option>
+<option value="352128GA010">352128GA010 - VALVE, LOCK UP RELAY</option>
+<option value="35212TBA010">35212TBA010 - VALVE, LOCK UP RELAY</option>
+<option value="35212TBG020">35212TBG020 - VALVE, LOCK UP RELAY</option>
+<option value="35214TBG020">35214TBG020 - VALVE, LOCK UP CONTROL</option>
+<option value="35214TBL010">35214TBL010 - VALVE, LOCK UP CONTROL</option>
+<option value="3521980A010">3521980A010 - PLUNGER, LOCK UP CNTRL VALVE</option>
+<option value="35219TBG010">35219TBG010 - PLUNGER, LOCK UP CNTRL VALVE</option>
+<option value="352408GA010">352408GA010 - SOLENOID ASSY, TRANS. 3 WAY</option>
+<option value="35240TBA030">35240TBA030 - SOLENOID ASSY, TRANS. 3 WAY</option>
+<option value="35240TBA040">35240TBA040 - SOLENOID ASSY, TRANS. 3 WAY</option>
+<option value="35240TBA050">35240TBA050 - SOLENOID ASSY, TRANS. 3 WAY</option>
+<option value="35240TBA060">35240TBA060 - SOLENOID ASSY, TRANS. 3 WAY</option>
+<option value="35240TBG010">35240TBG010 - SOLENOID ASSY, TRANS. 3 WAY</option>
+<option value="35245TBA010">35245TBA010 - VALVE, CLUTCH APPLY RELAY</option>
+<option value="3524630A010">3524630A010 - VALVE, CHECK # 1</option>
+<option value="3524655A040">3524655A040 - VALVE SUB-ASSY, ACCUMULATOR CH</option>
+<option value="352468GA020">352468GA020 - VALVE, CHECK, NO.1</option>
+<option value="35246TFG010">35246TFG010 - VALVE SUB-ASSY, ACCUMULATOR</option>
+<option value="35246TLA010">35246TLA010 - VALVE, CHECK, NO.1</option>
+<option value="3524730A010">3524730A010 - VALVE, CHECK # 2</option>
+<option value="352478GA020">352478GA020 - VALVE, CHECK, NO.2</option>
+<option value="352478GA030">352478GA030 - VALVE, CHECK, NO.2</option>
+<option value="35247TLA010">35247TLA010 - VALVE, CHECK, NO.2</option>
+<option value="35248TLA010">35248TLA010 - VALVE, CHECK, NO.3</option>
+<option value="352758GA020">352758GA020 - VALVE, CIRCULATION MODULATOR</option>
+<option value="35275TBA020">35275TBA020 - VALVE, SOLENOID MODULATOR</option>
+<option value="35275TBG010">35275TBG010 - VALVE, SOLENOID MODULATOR</option>
+<option value="35275TBG020">35275TBG020 - VALVE, SOLENOID MODULATOR</option>
+<option value="352808GA040">352808GA040 - SOLENOID ASSY, LOCK UP CONTROL</option>
+<option value="35280TBA040">35280TBA040 - SOLENOID ASSY, LOCK UP CNTRL</option>
+<option value="35280TBG020">35280TBG020 - SOLENOID, ASSY LOCK UP CTRL</option>
+<option value="35284TBA010">35284TBA010 - VALVE, SOLENOID RELAY</option>
+<option value="35284TBG020">35284TBG020 - VALVE, SOLENOID RELAY</option>
+<option value="352858GA010">352858GA010 - PLATE, SOLENOID LOCK</option>
+<option value="35285TBA020">35285TBA020 - COVER, SOLENOID LOCK PIN</option>
+<option value="35285TBG010">35285TBG010 - PLATE, SOLENOID LOCK</option>
+<option value="35285TBG020">35285TBG020 - PLATE, SOLENOID LOCK</option>
+<option value="352908GA030">352908GA030 - SOLENOID ASSY, LINE PRESSURE</option>
+<option value="35290TBA050">35290TBA050 - SOLENOID ASSY, LN PRESS. CNTRL</option>
+<option value="35290TBG020">35290TBG020 - SOLENOID ASSY, LN PRESS. CNTRL</option>
+<option value="353008GB030">353008GB030 - PUMP ASSY, OIL W/STRAINER</option>
+<option value="353008GB040">353008GB040 - PUMP ASSY, OIL W/STNR</option>
+<option value="35307TBG02020">35307TBG02020 - SHAFT SUB-ASSY, STATOR</option>
+<option value="35307TBL030">35307TBL030 - SHAFT SUB-ASSY, STATOR</option>
+<option value="35307TBL03020">35307TBL03020 - SHAFT SUB-ASSY, STATOR</option>
+<option value="35308TBG020">35308TBG020 - COVER SUB-ASSY, OIL PUMP</option>
+<option value="35308TBGPH01">35308TBGPH01 - OP COVER W/ SLEEVE AND STATOR</option>
+<option value="35308TBGPH02">35308TBGPH02 - OP COVER WITH STATOR SHAFT</option>
+<option value="35308TBL030">35308TBL030 - COVER SUB-ASSY, OIL PUMP</option>
+<option value="35309TBG020">35309TBG020 - BODY S/A, OIL L/SEAL</option>
+<option value="35309TBL030">35309TBL030 - BODY SUB-ASSY, OIL  L/SEAL</option>
+<option value="35310TBG020">35310TBG020 - PUMP ASSY, OIL</option>
+<option value="35310TBL060">35310TBL060 - PUMP ASSY, OIL</option>
+<option value="35311TBF070">35311TBF070 - (CA), OIL PUMP BODY</option>
+<option value="35311TBF090">35311TBF090 - (CA), OIL PUMP BODY</option>
+<option value="35311TBG020">35311TBG020 - BODY, OIL PUMP</option>
+<option value="35311TBL030">35311TBL030 - BODY, OIL PUMP</option>
+<option value="35312TBD090">35312TBD090 - (CA), OIL PUMP COVER</option>
+<option value="35312TBF020">35312TBF020 - (CA), OIL PUMP COVER</option>
+<option value="35312TBG020">35312TBG020 - COVER, OIL PUMP</option>
+<option value="35312TBK090">35312TBK090 - COVER, OIL PUMP</option>
+<option value="35312TBL030">35312TBL030 - COVER, OIL PUMP</option>
+<option value="353138GA020">353138GA020 - GASKET, OIL PUMP</option>
+<option value="353138GA030">353138GA030 - GASKET, OIL PUMP</option>
+<option value="35314TBG011">35314TBG011 - PLATE, OIL PUMP</option>
+<option value="35320TBG020">35320TBG020 - PUMP ASSY, OIL L/ SEAL</option>
+<option value="35320TBL040">35320TBL040 - PUMP ASSY, OIL L/ SEAL</option>
+<option value="35321TBG020">35321TBG020 - GEAR, OIL PUMP DRIVE</option>
+<option value="35321TBL010">35321TBL010 - GEAR, OIL PUMP DRIVE</option>
+<option value="35321TBL020">35321TBL020 - GEAR, OIL PUMP DRIVE</option>
+<option value="35321TBL030">35321TBL030 - GEAR, OIL PUMP DRIVE</option>
+<option value="35321TBL040">35321TBL040 - GEAR, OIL PUMP DRIVE</option>
+<option value="35321TBL050">35321TBL050 - GEAR, OIL PUMP DRIVE</option>
+<option value="35321TBL060">35321TBL060 - GEAR, OIL PUMP DRIVE</option>
+<option value="35321TBL070">35321TBL070 - GEAR, OIL PUMP DRIVE</option>
+<option value="35322TBG020">35322TBG020 - GEAR, OIL PUMP DRIVEN</option>
+<option value="35322TBL010">35322TBL010 - GEAR, OIL PUMP DRIVEN</option>
+<option value="35322TBL020">35322TBL020 - GEAR, OIL PUMP DRIVEN</option>
+<option value="35322TBL030">35322TBL030 - GEAR, OIL PUMP DRIVEN</option>
+<option value="35322TBL040">35322TBL040 - GEAR, OIL PUMP DRIVEN</option>
+<option value="35322TBL050">35322TBL050 - GEAR, OIL PUMP DRIVEN</option>
+<option value="35322TBL060">35322TBL060 - GEAR, OIL PUMP DRIVEN</option>
+<option value="35322TBL070">35322TBL070 - GEAR, OIL PUMP DRIVEN</option>
+<option value="3532406010">3532406010 - SPROCKET, DRIVE</option>
+<option value="35330TBG030">35330TBG030 - STRAINER ASSY, OIL</option>
+<option value="35330TBL040">35330TBL040 - Strainer Assy, Oil</option>
+<option value="35330TBL050">35330TBL050 - Strainer Assy, Oil</option>
+<option value="35330TBL061">35330TBL061 - STRAINER ASSY, OIL</option>
+<option value="35370TBG020">35370TBG020 - SHAFT ASSY, STATOR</option>
+<option value="35370TBL030">35370TBL030 - SHAFT ASSY, STATOR</option>
+<option value="3539430011">3539430011 - MAGNET, OIL CLEANER</option>
+<option value="3539450A010">3539450A010 - MAGNET, OIL CLEANER</option>
+<option value="35400TBG060">35400TBG060 - BODY ASSY, TRANS. VALVE W/SOL</option>
+<option value="35400TBL011">35400TBL011 - BODY ASSY, TRANS. VALVE W/SOL</option>
+<option value="35404TBL010">35404TBL010 - PLATE SUB-ASSY, UPR VALVE BODY</option>
+<option value="35407TBA010">35407TBA010 - PLATE SUB-ASSY, LWR VALVE BODY</option>
+<option value="35407TBG010">35407TBG010 - PLATE SUB-ASSY, V/B COVER</option>
+<option value="35407TBG020">35407TBG020 - PLATE SUB-ASSY, V/B COVER</option>
+<option value="354098GA010">354098GA010 - SPRING S/A, MANUAL DETENT</option>
+<option value="35409TBS010">35409TBS010 - SPRING SUB-ASSY, MAN. DETENT(P</option>
+<option value="354108GA070">354108GA070 - BODY ASSY, TRANSMISSION VALVE</option>
+<option value="354108GA080">354108GA080 - BODY ASSY, TRANSMISSION VALVE</option>
+<option value="35410TBG060">35410TBG060 - BODY ASSY, TRANSMISSION VALVE</option>
+<option value="35410TBL012">35410TBL012 - BODY ASSY, TRANSMISSION VALVE</option>
+<option value="354118GA030">354118GA030 - BODY, MIDDLE VALVE</option>
+<option value="354118GD050">354118GD050 - (CA), MIDDLE VALVE BODY</option>
+<option value="35411TBD090">35411TBD090 - (CA), LWR VALVE BODY</option>
+<option value="35411TBD120">35411TBD120 - (CA), LWR VALVE BODY</option>
+<option value="35411TBG040">35411TBG040 - BODY, LWR VALVE</option>
+<option value="35411TBL011">35411TBL011 - BODY, LOWER VALVE</option>
+<option value="354128GA050">354128GA050 - BODY, FR VALVE</option>
+<option value="354128GD050">354128GD050 - (CA), FR VALVE BODY</option>
+<option value="35412TBD050">35412TBD050 - (CA), UPR VALVE BODY, NO.2</option>
+<option value="35412TBL010">35412TBL010 - BODY, UPERR VALVE, NO.2</option>
+<option value="354138GA030">354138GA030 - BODY, RR VALVE</option>
+<option value="354138GD050">354138GD050 - (CA), RR VALVE BODY</option>
+<option value="35413TBD030">35413TBD030 - (CA), LWR VALVE BODY, NO.2</option>
+<option value="35413TBL010">35413TBL010 - BODY, LOWER VALVE # 2</option>
+<option value="35414TBD080">35414TBD080 - (CA), UPR VALVE BODY</option>
+<option value="35414TBD120">35414TBD120 - (CA), UPR VALVE BODY</option>
+<option value="35414TBG040">35414TBG040 - BODY, UPR VALVE</option>
+<option value="35414TBL011">35414TBL011 - BODY, UPPER VALVE</option>
+<option value="354158GA010">354158GA010 - VALVE, PRIMARY REGULATOR</option>
+<option value="35415TBA010">35415TBA010 - VALVE, PRIMARY REGULATOR</option>
+<option value="35415TBG020">35415TBG020 - VALVE, PRIMARY REGULATOR</option>
+<option value="35416TBA010">35416TBA010 - PLUNGER, PRIMARY REG VALVE, #1</option>
+<option value="35417TBA010">35417TBA010 - SLEEVE, PRIMARY REG VALVE</option>
+<option value="354188GA010">354188GA010 - VALVE, MANUAL</option>
+<option value="35418TBA010">35418TBA010 - VALVE, MANUAL</option>
+<option value="35418TBG010">35418TBG010 - VALVE, MANUAL</option>
+<option value="354198GA020">354198GA020 - VALVE, BY-PASS</option>
+<option value="354198GA040">354198GA040 - VALVE, BY-PASS</option>
+<option value="35419TRA010">35419TRA010 - VALVE, BY-PASS</option>
+<option value="354208GA050">354208GA050 - BODY ASSY, FR VALVE</option>
+<option value="35420TBG040">35420TBG040 - BODY ASSY, LWR VALVE</option>
+<option value="35420TBL011">35420TBL011 - BODY ASSY, LOWER VALVE</option>
+<option value="35421TBA020">35421TBA020 - PISTON, DAMPER</option>
+<option value="35421TLA010">35421TLA010 - PISTON, DAMPER</option>
+<option value="35421TLA040">35421TLA040 - PISTON, DAMPER</option>
+<option value="35422TBA010">35422TBA010 - PLUNGER, PRIMARY REG VALVE, #2</option>
+<option value="35423TBA010">35423TBA010 - VALVE,  B-2 ACCUMULATOR</option>
+<option value="354248GA010">354248GA010 - PISTON, C-1 ACCUMULATOR</option>
+<option value="35424TBA010">35424TBA010 - B1 ACCUM PISTON</option>
+<option value="35424TGB010">35424TGB010 - PISTON, C-1 ACCUMULATOR</option>
+<option value="35425TBL010">35425TBL010 - C2 ACCUM PISTON</option>
+<option value="35426TBA020">35426TBA020 - C3 ACCUM PISTON</option>
+<option value="35427TBA020">35427TBA020 - B3 ACCUM PISTON</option>
+<option value="35428TBG010">35428TBG010 - PLUG, PRIMARY REGULATOR VALVE</option>
+<option value="354308GA030">354308GA030 - BODY ASSY, RR VALVE</option>
+<option value="35430TBL010">35430TBL010 - BODY ASSY, UPR VALVE, NO.2</option>
+<option value="35432TBG050">35432TBG050 - PLATE, VALVE BODY</option>
+<option value="35432TBL011">35432TBL011 - PLATE, VALVE BODY</option>
+<option value="354378GA010">354378GA010 - PLATE, RR VALVE BODY</option>
+<option value="354378GA020">354378GA020 - PLATE, RR VALVE BODY</option>
+<option value="354388GA010">354388GA010 - PLATE, FR VALVE BODY</option>
+<option value="354388GA020">354388GA020 - PLATE, FR VALVE BODY</option>
+<option value="354408GA050">354408GA050 - BODY ASSY, MIDDLE VALVE</option>
+<option value="3544173010">3544173010 - STRAINER, SOLENOID OIL</option>
+<option value="35441TBG010">35441TBG010 - STRAINER, SOLENOID OIL</option>
+<option value="354428GA010">354428GA010 - VALVE, LUBRICATION RELAY</option>
+<option value="35442TBG020">35442TBG020 - VALVE, B-1 APPLY CONTROL</option>
+<option value="35442TBG030">35442TBG030 - VALVE, B-1 APPLY CONTROL</option>
+<option value="35443TLA010">35443TLA010 - SLEEVE, B-1 APPLY CONTROL</option>
+<option value="35444TBG010">35444TBG010 - PLUNGER, B-1 APPLY CTRL VALVE</option>
+<option value="35444TLA010">35444TLA010 - PLUNGER, B-1 APPLY CONTROL</option>
+<option value="35445TBA010">35445TBA010 - VALVE, BRAKE CONTROL</option>
+<option value="35445TBG020">35445TBG020 - VALVE, B-4 CONTROL</option>
+<option value="35447TBA020">35447TBA020 - PLUNGER, ACCUM. CNTRL VALVE</option>
+<option value="3544955A020">3544955A020 - VALVE, PRESSURE RELIEF</option>
+<option value="354498GA010">354498GA010 - VALVE, SEQUENCE</option>
+<option value="35449TBA020">35449TBA020 - VALVE, SEQUENCE</option>
+<option value="35449TBG020">35449TBG020 - VALVE, PRESSURE RELIEF</option>
+<option value="35449TBG030">35449TBG030 - VALVE, SEQUENCE</option>
+<option value="35450TBG060">35450TBG060 - BODY ASSY, UPR VALVE</option>
+<option value="35450TBL011">35450TBL011 - BODY ASSY, UPPER VALVE</option>
+<option value="354528GA010">354528GA010 - VALVE, B-2 APPLY CONTROL</option>
+<option value="35453TBG010">35453TBG010 - SLEEVE, B-2 APPLY CONTROL VAL</option>
+<option value="35456TBA020">35456TBA020 - VALVE, 2-3 SHIFT</option>
+<option value="35464TBA020">35464TBA020 - VALVE, 1-2 SHIFT</option>
+<option value="35465TBA020">35465TBA020 - VALVE, CLUTCH CONTROL</option>
+<option value="35465TBG020">35465TBG020 - VALVE, CLUTCH CONTROL</option>
+<option value="354668GA010">354668GA010 - VALVE, CLUTCH APPLY CONTROL</option>
+<option value="354668GA020">354668GA020 - VALVE, CUT OFF</option>
+<option value="35466TBG010">35466TBG010 - VALVE, CLUTCH APPLY CONTROL</option>
+<option value="35468TBA020">35468TBA020 - VALVE, SECONDARY REGULATOR</option>
+<option value="35468TBG020">35468TBG020 - VALVE, SECONDARY REGULATOR</option>
+<option value="3546934010">3546934010 - SPACER, TRANSMISSION OIL</option>
+<option value="3546980A010">3546980A010 - KEY, VALVE SPRING, NO.3</option>
+<option value="35469TBA010">35469TBA010 - SPACER</option>
+<option value="35470TBL010">35470TBL010 - BODY ASSY, LOWER VALVE # 2</option>
+<option value="354718GA010">354718GA010 - COVER, VALVE BODY NO.1</option>
+<option value="354718GA020">354718GA020 - COVER, VALVE BODY NO.1</option>
+<option value="35475TBG020">35475TBG020 - VALVE, B-4 RELAY</option>
+<option value="35476TLA010">35476TLA010 - PLUNGER, CLUTCH APPLY</option>
+<option value="35477TBA010">35477TBA010 - VALVE, CLUTCH APPLY CNTRL, #2</option>
+<option value="35479TBA010">35479TBA010 - RETAINER</option>
+<option value="35479XAA010">35479XAA010 - KEY, VALVE SPRING # 1</option>
+<option value="35481TBA020">35481TBA020 - CLAMP, VALVE BODY WIRE HARNESS</option>
+<option value="35481TBL020">35481TBL020 - CLAMP, VALVE BODY WIRE HARNESS</option>
+<option value="3548206020">3548206020 - CLAMP, TEMPERATURE SENSOR</option>
+<option value="3548255A010">3548255A010 - CLAMP, TEMPERATURE SENSOR</option>
+<option value="354828GA010">354828GA010 - CLAMP, CONNECTOR WIRE HARNESS</option>
+<option value="354828GA050">354828GA050 - CLAMP, CONNECTOR WIRE HARNESS</option>
+<option value="35482TBA010">35482TBA010 - TEMPERATURE SENSOR CLAMP</option>
+<option value="35488TBA010">35488TBA010 - VALVE, C-3 APPLY RELAY</option>
+<option value="35489TBA010">35489TBA010 - VALVE, B-1 APPLY RELAY</option>
+<option value="35491TBA010">35491TBA010 - VALVE, ACCUMULATOR CONTROL</option>
+<option value="35492TBA010">35492TBA010 - SLEEVE, ACCUM. CONTROL VALVE</option>
+<option value="35492TLA010">35492TLA010 - SLEEVE, CLUTCH APPLY</option>
+<option value="35493TBA010">35493TBA010 - RETAINER, VALVE</option>
+<option value="35493TRA020">35493TRA020 - RETAINER, VALVE</option>
+<option value="35493TRA030">35493TRA030 - RETAINER, VALVE</option>
+<option value="3549508010">3549508010 - BALL, CHECK NO.1</option>
+<option value="35497TBA020">35497TBA020 - VALVE, 3-4 SHIFT</option>
+<option value="35498TBA010">35498TBA010 - VALVE, 4-5 SHIFT</option>
+<option value="355018GB010">355018GB010 - ROD SUB-ASSY, PARKING LOCK</option>
+<option value="35501TBG010">35501TBG010 - ROD SUB-ASSY, PARKING LOCK</option>
+<option value="35501TBL010">35501TBL010 - AQUATING ROD</option>
+<option value="355028GB010">355028GB010 - LEVER SUB-ASSY, MANUAL VALVE</option>
+<option value="355038GA010">355038GA010 - SHAFT SUB-ASSY, MANUAL VALVE</option>
+<option value="35505TBA050">35505TBA050 - LEVER SUB-ASSY, MANUAL VALVE</option>
+<option value="35505TBG010">35505TBG010 - LEVER SUB-ASSY, MANUAL VALVE</option>
+<option value="355068GB010">355068GB010 - SHAFT SUB-ASSY, MANUAL VALVE</option>
+<option value="35554TBA010">35554TBA010 - ROD, MANUAL VALVE CONNECTING</option>
+<option value="355568GA010">355568GA010 - SHAFT, PARKING LOCK PAWL</option>
+<option value="35556TBA010">35556TBA010 - PIVOT PIN</option>
+<option value="355578GB010">355578GB010 - PAWL, PARKING LOCK</option>
+<option value="35557TBG010">35557TBG010 - PAWL, PARKING LOCK</option>
+<option value="35557TBL010">35557TBL010 - PARKING PAWL</option>
+<option value="35561TBA010">35561TBA010 - SHAFT, MANUAL VALVE LEVER</option>
+<option value="35561TBL010">35561TBL010 - MANAUL SHAFT</option>
+<option value="3557234010">3557234010 - LEVER, TRANS. CNTRL SHAFT, RH</option>
+<option value="355728GA010">355728GA010 - LEVER, TRANSMISSION CONTROL</option>
+<option value="3557335090">3557335090 - LEVER, TRANS. CNTRL SHAFT, LH</option>
+<option value="35595TBG010">35595TBG010 - BRACKET, PARKING LOCK PAWL</option>
+<option value="35595TBL010">35595TBL010 - CAM PLATE</option>
+<option value="355968GB010">355968GB010 - PLATE, PAWL STOPPER</option>
+<option value="3559806020">3559806020 - SLEEVE, PARKING LOCK</option>
+<option value="35599TBS010">35599TBS010 - SPRING, MANUAL DETENT(DOMESTIC</option>
+<option value="356018GA060">356018GA060 - DRUM SUB-ASSY, C-1</option>
+<option value="356018GB050">356018GB050 - DRUM SUB-ASSY, C-1</option>
+<option value="356018GB050">356018GB050 - Drum Sub-Assy, C-1</option>
+<option value="35601TBG030">35601TBG030 - DRUM S/A FORWARD CLUTCH</option>
+<option value="35601TBG031">35601TBG031 - DRUM SUB-ASSY, FORWARD CLUTCH</option>
+<option value="35601TBG040">35601TBG040 - DRUM S/A FORWARD CLUTCH</option>
+<option value="35601TBG041">35601TBG041 - DRUM SUB-ASSY, FORWARD CLUTCH</option>
+<option value="35601TBL010">35601TBL010 - DRUM S/A REV CLUTCH</option>
+<option value="356028GB030">356028GB030 - DRUM S/A, C-1 CLUTCH, INNER</option>
+<option value="356028GB030">356028GB030 - Drum S/A, C-1 Clutch, Inner</option>
+<option value="356028GB03020">356028GB03020 - Drum S/A, C-1 Clutch, Inner</option>
+<option value="356028GB05020">356028GB05020 - DRUM S/A, C-1 CLUTCH, INNER</option>
+<option value="35602TBL011">35602TBL011 - PISTON, S/A FWD CLUTCH</option>
+<option value="3560338A010">3560338A010 - SPRING SUB-ASSY, CLUTCH RETURN</option>
+<option value="3560338A010">3560338A010 - Spring Sub-Assy, Clutch Return</option>
+<option value="35603TBA040">35603TBA040 - SPRING S/A, FWD CLUTCH RETURN</option>
+<option value="35603TBL010">35603TBL010 - SPRING S/A, FWD CLUTCH RETURN</option>
+<option value="356048GB050">356048GB050 - SPRING SUB-ASSY, CLUTCH PISTON</option>
+<option value="35604TBG020">35604TBG020 - SPRING S/A,DRCT CLUTCH RETURN</option>
+<option value="35604TBL010">35604TBL010 - SPRING S/A, DIR. CLTCH RETURN</option>
+<option value="35605TBG020">35605TBG020 - DRUM SUB-ASSY, C-2 CLUTCH</option>
+<option value="35607TBG020">35607TBG020 - DRUM S/A, C-2 CLUTCH, INNER</option>
+<option value="35607TBG02020">35607TBG02020 - DRUM S/A, C-2 CLUTCH, INNER</option>
+<option value="356088GA070">356088GA070 - SPR SUB-ASSY, CLUTCH RETURN</option>
+<option value="356088GB040">356088GB040 - SPRING SUB-ASSY, 2ND BRAKE</option>
+<option value="35608TBG020">35608TBG020 - SPRING S/A, BRAKE PISTON RTRN</option>
+<option value="35608TBL010">35608TBL010 - SPRING S/A, BRAKE PISTON RETUR</option>
+<option value="3560A06010">3560A06010 - SPR SUB-ASSY, CLUTCH RETURN</option>
+<option value="356108GA040">356108GA040 - Clutch Assy C-1</option>
+<option value="356108GB050">356108GB050 - Clutch Assy, C-1</option>
+<option value="356108GB050">356108GB050 - CLUTCH ASSY, C-1</option>
+<option value="35610TBG030">35610TBG030 - CLUTCH ASSY, FWD MULTIPLE DISC</option>
+<option value="35610TBG040">35610TBG040 - CLUTCH ASSY, FWD MULTIPLE DISC</option>
+<option value="35610TBL080">35610TBL080 - CLUTCH ASSY, FWD MULTIPLE DISC</option>
+<option value="356118GA030">356118GA030 - DRUM, FORWARD CLUTCH, OUTER</option>
+<option value="356118GA03011">356118GA03011 - DRUM, FORWARD CLUTCH, OUTER</option>
+<option value="356118GA03034">356118GA03034 - DRUM, FORWARD CLUTCH, OUTER</option>
+<option value="356118GA03036">356118GA03036 - DRUM, FORWARD CLUTCH, OUTER</option>
+<option value="356118GB020">356118GB020 - DRUM, FORWARD CLUTCH, OUTER</option>
+<option value="356118GB020">356118GB020 - Drum, Forward Clutch, Outer</option>
+<option value="356118GB02010">356118GB02010 - Drum, Forward Clutch, Outer</option>
+<option value="356118GB02011">356118GB02011 - Drum, Forward Clutch, Outer</option>
+<option value="356118GB02034">356118GB02034 - DRUM, FORWARD CLUTCH, OUTER</option>
+<option value="356118GB02035">356118GB02035 - DRUM, FORWARD CLUTCH, OUTER</option>
+<option value="35611TBG020">35611TBG020 - DRUM, FORWARD CLUTCH</option>
+<option value="35611TBG02034">35611TBG02034 - DRUM, FORWARD CLUTCH</option>
+<option value="35611TBG02035">35611TBG02035 - DRUM, FORWARD CLUTCH</option>
+<option value="35611TBG021">35611TBG021 - DRUM, FORWARD CLUTCH</option>
+<option value="35611TBL010">35611TBL010 - DRUM, FORWARD CLUTCH</option>
+<option value="356128GA010">356128GA010 - PISTON, FORWARD CLUTCH</option>
+<option value="356128GB010">356128GB010 - PISTON, FORWARD CLUTCH</option>
+<option value="356128GB010">356128GB010 - Piston, Forward Clutch</option>
+<option value="35612TBG020">35612TBG020 - PISTON, FORWARD CLUTCH</option>
+<option value="35613TBA011">35613TBA011 - WASHER, CLUTCH HUB THRUST #2</option>
+<option value="35614TBL010">35614TBL010 - WASHER, CLUTCH HUB THRUST # 3</option>
+<option value="35616TBL010">35616TBL010 - F2 THRUST WASHER</option>
+<option value="3561760A011">3561760A011 - RING, CLUTCH DRUM OIL SEAL</option>
+<option value="356178GA020">356178GA020 - RING, CLUTCH DRUM OIL SEAL</option>
+<option value="356178GB010">356178GB010 - RING, CLUTCH DRUM OIL SEAL</option>
+<option value="356178GB020">356178GB020 - RING, CLUTCH DRUM OIL SEAL</option>
+<option value="356178GB030">356178GB030 - RING, INPUT SHAFT OIL SEAL</option>
+<option value="356178GB040">356178GB040 - RING, INPUT SHAFT OIL SEAL</option>
+<option value="35617TBG010">35617TBG010 - RING, SEAL</option>
+<option value="35617TBL010">35617TBL010 - RING, SEAL</option>
+<option value="35617TLA010">35617TLA010 - RING, SEAL</option>
+<option value="35617TRA020">35617TRA020 - RING, SEAL</option>
+<option value="356188GA03020">356188GA03020 - DRUM, FORWARD CLUTCH, INNER</option>
+<option value="356188GB060">356188GB060 - Drum, Forward Clutch, Inner</option>
+<option value="356188GF050">356188GF050 - (FO) DRUM,FORWARD CLUTCH, INNER</option>
+<option value="35621TBG030">35621TBG030 - PISTON, BRAKE, NO.1</option>
+<option value="35621TBG040">35621TBG040 - PISTON, BRAKE, NO.1</option>
+<option value="35621TBL010">35621TBL010 - PISTON, BRAKE, NO.1</option>
+<option value="35621TBL020">35621TBL020 - B1 PISTON</option>
+<option value="35622TBG030">35622TBG030 - PISTON, BRAKE, NO.2</option>
+<option value="35622TBG040">35622TBG040 - PISTON, BRAKE, NO.2</option>
+<option value="35622TBL010">35622TBL010 - B2  PISTON</option>
+<option value="356238GB030">356238GB030 - PISTON, 1ST &amp; REVERSE BRAKE</option>
+<option value="35623TBG030">35623TBG030 - PISTON, 1ST &amp; REVERSE BRAKE</option>
+<option value="35623TBG040">35623TBG040 - PISTON, 1ST &amp; REVERSE BRAKE</option>
+<option value="35623TBL010">35623TBL010 - B4 PISTON</option>
+<option value="35624TBL010">35624TBL010 - B3 PISTON</option>
+<option value="35626TBA020">35626TBA020 - SLEEVE, BRAKE REACTION</option>
+<option value="356288GA020">356288GA020 - SPRING, DIRECT CLUTCH RETURN</option>
+<option value="356288GB030">356288GB030 - SPRING, DIRECT CLUTCH RETURN</option>
+<option value="356288GB030">356288GB030 - Spring, Direct Clutch Return</option>
+<option value="35629TBA020">35629TBA020 - PISTON, BRAKE NO.4 INNER</option>
+<option value="35631TBG010">35631TBG010 - HUB, FORWARD CLUTCH</option>
+<option value="35631TBL010">35631TBL010 - HUB, FORWARD CLUTCH</option>
+<option value="356338GA030">356338GA030 - DISC, CLUTCH, NO.1</option>
+<option value="356338GB030">356338GB030 - DISC, CLUTCH, NO.1</option>
+<option value="356338GB030">356338GB030 - Disc, Clutch, No.1</option>
+<option value="35633TBG020">35633TBG020 - DISC, CLUTCH, NO.1</option>
+<option value="35633TBL040">35633TBL040 - DISC, CLUTCH, NO.1</option>
+<option value="356348GA050">356348GA050 - PLATE, CLUTCH, NO.1</option>
+<option value="356348GA060">356348GA060 - PLATE, CLUTCH, NO.1</option>
+<option value="356348GB030">356348GB030 - PLATE, CLUTCH, NO.1</option>
+<option value="356348GB030">356348GB030 - Plate, Clutch, No.1</option>
+<option value="35634TBG020">35634TBG020 - PLATE, CLUTCH, NO.1</option>
+<option value="35634TBL010">35634TBL010 - PLATE, CLUTCH, NO.1</option>
+<option value="356358GA180">356358GA180 - FLANGE, FORWARD CLUTCH #0</option>
+<option value="356358GA190">356358GA190 - FLANGE, FORWARD CLUTCH #1</option>
+<option value="356358GA200">356358GA200 - FLANGE, FORWARD CLUTCH #2</option>
+<option value="356358GA210">356358GA210 - FLANGE, FORWARD CLUTCH #3</option>
+<option value="356358GA220">356358GA220 - FLANGE, FORWARD CLUTCH #4</option>
+<option value="356358GA230">356358GA230 - FLANGE, FORWARD CLUTCH #5</option>
+<option value="356358GA240">356358GA240 - FLANGE, FORWARD CLUTCH #6</option>
+<option value="356358GA250">356358GA250 - FLANGE, FORWARD CLUTCH #7</option>
+<option value="356358GA260">356358GA260 - FLANGE, FORWARD CLUTCH #8</option>
+<option value="356358GB150">356358GB150 - FLANGE, FORWARD CLUTCH #0</option>
+<option value="356358GB150">356358GB150 - Flange, Forward Clutch #0</option>
+<option value="356358GB160">356358GB160 - FLANGE, FORWARD CLUTCH #1</option>
+<option value="356358GB160">356358GB160 - Flange, Forward Clutch #1</option>
+<option value="356358GB170">356358GB170 - FLANGE, FORWARD CLUTCH #2</option>
+<option value="356358GB170">356358GB170 - Flange, Forward Clutch #2</option>
+<option value="356358GB180">356358GB180 - FLANGE, FORWARD CLUTCH #3</option>
+<option value="356358GB180">356358GB180 - Flange, Forward Clutch #3</option>
+<option value="356358GB190">356358GB190 - FLANGE, FORWARD CLUTCH #4</option>
+<option value="356358GB190">356358GB190 - Flange, Forward Clutch #4</option>
+<option value="356358GB200">356358GB200 - FLANGE, FORWARD CLUTCH #5</option>
+<option value="356358GB200">356358GB200 - Flange, Forward Clutch #5</option>
+<option value="356358GB210">356358GB210 - FLANGE, FORWARD CLUTCH #6</option>
+<option value="356358GB210">356358GB210 - Flange, Forward Clutch #6</option>
+<option value="35635TBG140">35635TBG140 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBG150">35635TBG150 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBG160">35635TBG160 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBG170">35635TBG170 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBG180">35635TBG180 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBG190">35635TBG190 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBG200">35635TBG200 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBG210">35635TBG210 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBG220">35635TBG220 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBG230">35635TBG230 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBG240">35635TBG240 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBG250">35635TBG250 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBG260">35635TBG260 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBL250">35635TBL250 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBL260">35635TBL260 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBL270">35635TBL270 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBL280">35635TBL280 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBL290">35635TBL290 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBL300">35635TBL300 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBL310">35635TBL310 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBL320">35635TBL320 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBL330">35635TBL330 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBL340">35635TBL340 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBL350">35635TBL350 - FLANGE, FORWARD CLUTCH</option>
+<option value="35635TBL360">35635TBL360 - FLANGE, FORWARD CLUTCH</option>
+<option value="35639TBA010">35639TBA010 - SPRING, PLATE STOPPER</option>
+<option value="35639TBG010">35639TBG010 - SPRING, PLATE STOPPER</option>
+<option value="35639TBG020">35639TBG020 - SPRING, PLATE STOPPER</option>
+<option value="35641TBL010">35641TBL010 - DRUM, REVERSE CLUTCH, NO. 1</option>
+<option value="35641TBL01020">35641TBL01020 - DRUM REVERSE  CLUTCH #1</option>
+<option value="35642TBL010">35642TBL010 - DRUM, REVERSE CLUTCH, NO. 2</option>
+<option value="35644TBL010">35644TBL010 - HUB, REVERSE CLUTCH</option>
+<option value="35644TBL01010">35644TBL01010 - HUB, REVERSE CLUTCH AB</option>
+<option value="35644TBL01022">35644TBL01022 - HUB, REVERSE CLUTCH AB</option>
+<option value="35644TBL01022">35644TBL01022 - Hub, Reverse Clutch Ab</option>
+<option value="35644TBL01033">35644TBL01033 - HUB, REVERSE CLUTCH BB</option>
+<option value="35646TBL010">35646TBL010 - SLEEVE, REVERSE CLUTCH PISTON</option>
+<option value="35646TBL01010">35646TBL01010 - SLEEVE, REV CLUTCH PSTN. (AB)</option>
+<option value="35646TBL01022">35646TBL01022 - SLEEVE, REV CLUTCH PSTN. (AB)</option>
+<option value="35646TBL01022">35646TBL01022 - Sleeve, Rev Clutch Pstn. (Ab)</option>
+<option value="35646TBL01033">35646TBL01033 - SLEEVE, REV CLUTCH PSTN. (BB)</option>
+<option value="3564706030">3564706030 - PLATE, CLUTCH, NO 2</option>
+<option value="35647TBG020">35647TBG020 - PLATE, CLUTCH, NO.2</option>
+<option value="35647TBL010">35647TBL010 - PLATE, CLUTCH, NO.2</option>
+<option value="356488GA060">356488GA060 - PLATE, CLUTCH, NO.3</option>
+<option value="356488GA070">356488GA070 - PLATE, CLUTCH, NO.3</option>
+<option value="356488GB050">356488GB050 - PLATE, CLUTCH, NO.3</option>
+<option value="356488GB060">356488GB060 - PLATE, CLUTCH, NO.3</option>
+<option value="35648TBL010">35648TBL010 - PLATE, CLUTCH, NO.3</option>
+<option value="356498GA380">356498GA380 - FLANGE, REVERSE CLUTCH #0</option>
+<option value="356498GA390">356498GA390 - FLANGE, REVERSE CLUTCH #1</option>
+<option value="356498GA400">356498GA400 - FLANGE, REVERSE CLUTCH #2</option>
+<option value="356498GA410">356498GA410 - FLANGE, REVERSE CLUTCH #3</option>
+<option value="356498GA420">356498GA420 - FLANGE, REVERSE CLUTCH #4</option>
+<option value="356498GA430">356498GA430 - FLANGE, REVERSE CLUTCH #5</option>
+<option value="356498GA440">356498GA440 - FLANGE, REVERSE CLUTCH #6</option>
+<option value="356498GB100">356498GB100 - FLANGE, REVERSE CLUTCH #0</option>
+<option value="356498GB110">356498GB110 - FLANGE, REVERSE CLUTCH #1</option>
+<option value="356498GB120">356498GB120 - FLANGE, REVERSE CLUTCH #2</option>
+<option value="356498GB130">356498GB130 - FLANGE, REVERSE CLUTCH #3</option>
+<option value="356498GB140">356498GB140 - FLANGE, REVERSE CLUTCH #4</option>
+<option value="356498GB140">356498GB140 - FLANGE, REVERSE CLUTCH</option>
+<option value="356498GB150">356498GB150 - FLANGE, REVERSE CLUTCH #5</option>
+<option value="356498GB150">356498GB150 - FLANGE, REVERSE CLUTCH</option>
+<option value="356498GB160">356498GB160 - FLANGE, REVERSE CLUTCH #6</option>
+<option value="356498GB160">356498GB160 - FLANGE, REVERSE CLUTCH</option>
+<option value="35649TBL250">35649TBL250 - FLANGE, REVERSE CLUTCH</option>
+<option value="35649TBL260">35649TBL260 - FLANGE, REVERSE CLUTCH</option>
+<option value="35649TBL270">35649TBL270 - FLANGE, REVERSE CLUTCH</option>
+<option value="35649TBL280">35649TBL280 - FLANGE, REVERSE CLUTCH</option>
+<option value="35649TBL290">35649TBL290 - FLANGE, REVERSE CLUTCH</option>
+<option value="35649TBL300">35649TBL300 - FLANGE, REVERSE CLUTCH</option>
+<option value="35649TBL310">35649TBL310 - FLANGE, REVERSE CLUTCH</option>
+<option value="35649TBL320">35649TBL320 - FLANGE, REVERSE CLUTCH</option>
+<option value="35649TBL330">35649TBL330 - FLANGE, REVERSE CLUTCH</option>
+<option value="35649TBL340">35649TBL340 - FLANGE, REVERSE CLUTCH</option>
+<option value="35649TBL350">35649TBL350 - FLANGE, REVERSE CLUTCH</option>
+<option value="35649TBL360">35649TBL360 - FLANGE, REVERSE CLUTCH</option>
+<option value="356508GB060">356508GB060 - CLUTCH ASSY, C-2</option>
+<option value="35650TBG030">35650TBG030 - CLUTCH ASSY, C-2</option>
+<option value="35650TBG040">35650TBG040 - CLUTCH ASSY, C-2</option>
+<option value="35650TBL070">35650TBL070 - CLTCH ASY DIR &amp; REV MULTI DISC</option>
+<option value="356518GB030">356518GB030 - DRUM C-2 CLUTCH, OUTER</option>
+<option value="356518GB03034">356518GB03034 - DRUM C-2 CLUTCH, OUTER</option>
+<option value="356518GB03035">356518GB03035 - DRUM C-2 CLUTCH, OUTER</option>
+<option value="35651TBG020">35651TBG020 - DRUM C-2 CLUTCH, OUTER</option>
+<option value="35651TBG02034">35651TBG02034 - DRUM C-2 CLUTCH, OUTER</option>
+<option value="35651TBG02035">35651TBG02035 - DRUM C-2 CLUTCH, OUTER</option>
+<option value="356528GB010">356528GB010 - PISTON, C-2 CLUTCH</option>
+<option value="35652TBG030">35652TBG030 - PISTON, DIRECT CLUTCH</option>
+<option value="35652TBG040">35652TBG040 - PISTON, DIRECT CLUTCH</option>
+<option value="35652TBL010">35652TBL010 - PISTON, DIRECT CLUTCH</option>
+<option value="35654TBG020">35654TBG020 - HUB, DIRECT CLUTCH</option>
+<option value="35654TBG02034">35654TBG02034 - HUB, DIRECT CLUTCH</option>
+<option value="35654TBG02035">35654TBG02035 - HUB, DIRECT CLUTCH</option>
+<option value="35654TBL010">35654TBL010 - HUB, DIRECT CLUTCH</option>
+<option value="35659TBL030">35659TBL030 - SLEEVE, REVERSE CLUTCH REACTIO</option>
+<option value="35661TBL010">35661TBL010 - HUB, BRAKE, NO.1 (B-1 HUB)</option>
+<option value="35661TBL01010">35661TBL01010 - HUB, BRAKE, NO.1 (B-1 HUB) AB</option>
+<option value="35661TBL01022">35661TBL01022 - HUB, BRAKE, NO.1 (B-1 HUB) AB</option>
+<option value="35661TBL01022">35661TBL01022 - Hub, Brake, No.1 (B-1 Hub) Ab</option>
+<option value="35661TBL01033">35661TBL01033 - HUB, BRAKE, NO.1 (B-1 HUB) BB</option>
+<option value="35663TBL010">35663TBL010 - F2 OUTER RACE</option>
+<option value="35664TBL010">35664TBL010 - B3 CYLINDER</option>
+<option value="356668GA010">356668GA010 - BALANCER, C-4 CLUTCH</option>
+<option value="356668GB010">356668GB010 - BALANCER, C-4 CLUTCH</option>
+<option value="3566706020">3566706020 - DISC, CLUTCH, NO.2</option>
+<option value="35667TBG020">35667TBG020 - DISC, CLUTCH, NO.2</option>
+<option value="35667TBL040">35667TBL040 - DISC, CLUTCH, NO.2</option>
+<option value="356688GA010">356688GA010 - BALANCER, CLUTCH, NO.1</option>
+<option value="356688GB010">356688GB010 - BALANCER, CLUTCH, NO.1</option>
+<option value="356688GB010">356688GB010 - Balancer, Clutch, No.1</option>
+<option value="35668TBG020">35668TBG020 - BALANCER, CLUTCH, NO1</option>
+<option value="35668TBL010">35668TBL010 - BALANCER, CLUTCH, NO.1</option>
+<option value="35669TBG020">35669TBG020 - BALANCER, CLUTCH, NO.2</option>
+<option value="35669TBL010">35669TBL010 - BALANCER, CLUTCH, NO.2</option>
+<option value="35672TBL060">35672TBL060 - PLATE, CLUTCH CUSHION</option>
+<option value="35672TBL070">35672TBL070 - PLATE, CLUTCH CUSHION</option>
+<option value="3567506070">3567506070 - FLANGE, DIRECT CLUTCH #0</option>
+<option value="3567506080">3567506080 - FLANGE, DIRECT CLUTCH #1</option>
+<option value="3567506090">3567506090 - FLANGE, DIRECT CLUTCH #2</option>
+<option value="3567506100">3567506100 - FLANGE, DIRECT CLUTCH #3</option>
+<option value="3567506110">3567506110 - FLANGE, DIRECT CLUTCH #4</option>
+<option value="3567506120">3567506120 - FLANGE, DIRECT CLUTCH #5</option>
+<option value="3567506130">3567506130 - FLANGE, DIRECT CLUTCH #6</option>
+<option value="3567508020">3567508020 - Flange, Direct Mrk=2, T=3.1</option>
+<option value="356758GA370">356758GA370 - FLANGE, DIRECT CLUTCH #0</option>
+<option value="356758GA380">356758GA380 - FLANGE, DIRECT CLUTCH #1</option>
+<option value="356758GA390">356758GA390 - FLANGE, DIRECT CLUTCH #2</option>
+<option value="356758GA400">356758GA400 - FLANGE, DIRECT CLUTCH #3</option>
+<option value="356758GA410">356758GA410 - FLANGE, DIRECT CLUTCH #4</option>
+<option value="356758GA420">356758GA420 - FLANGE, DIRECT CLUTCH #5</option>
+<option value="356758GA430">356758GA430 - FLANGE, DIRECT CLUTCH #6</option>
+<option value="356758GA440">356758GA440 - FLANGE, DIRECT CLUTCH #7</option>
+<option value="356758GA450">356758GA450 - FLANGE, DIRECT CLUTCH #8</option>
+<option value="356758GB280">356758GB280 - FLANGE, DIRECT CLUTCH #0</option>
+<option value="356758GB280">356758GB280 - FLANGE, DIRECT CLUTCH</option>
+<option value="356758GB290">356758GB290 - FLANGE, DIRECT CLUTCH #1</option>
+<option value="356758GB290">356758GB290 - FLANGE, DIRECT CLUTCH</option>
+<option value="356758GB300">356758GB300 - FLANGE, DIRECT CLUTCH #2</option>
+<option value="356758GB300">356758GB300 - FLANGE, DIRECT CLUTCH</option>
+<option value="356758GB310">356758GB310 - FLANGE, DIRECT CLUTCH #3</option>
+<option value="356758GB310">356758GB310 - FLANGE, DIRECT CLUTCH</option>
+<option value="356758GB320">356758GB320 - FLANGE, DIRECT CLUTCH #4</option>
+<option value="356758GB320">356758GB320 - FLANGE, DIRECT CLUTCH</option>
+<option value="356758GB330">356758GB330 - FLANGE, DIRECT CLUTCH #5</option>
+<option value="356758GB330">356758GB330 - FLANGE, DIRECT CLUTCH</option>
+<option value="356758GB340">356758GB340 - FLANGE, DIRECT CLUTCH #6</option>
+<option value="356758GB340">356758GB340 - FLANGE, DIRECT CLUTCH</option>
+<option value="35675TBG100">35675TBG100 - FLANGE, DIRECT CLUTCH</option>
+<option value="35675TBG110">35675TBG110 - FLANGE, DIRECT CLUTCH</option>
+<option value="35675TBG120">35675TBG120 - FLANGE, DIRECT CLUTCH</option>
+<option value="35675TBG130">35675TBG130 - FLANGE, DIRECT CLUTCH</option>
+<option value="35675TBG140">35675TBG140 - FLANGE, DIRECT CLUTCH</option>
+<option value="35675TBG150">35675TBG150 - FLANGE, DIRECT CLUTCH</option>
+<option value="35675TBG160">35675TBG160 - FLANGE, DIRECT CLUTCH</option>
+<option value="35675TBG170">35675TBG170 - FLANGE, DIRECT CLUTCH</option>
+<option value="35675TBG180">35675TBG180 - FLANGE, DIRECT CLUTCH</option>
+<option value="35675TBL420">35675TBL420 - FLANGE, COAST CLUTCH</option>
+<option value="35675TBL430">35675TBL430 - FLANGE, COAST CLUTCH</option>
+<option value="35675TBL440">35675TBL440 - FLANGE, COAST CLUTCH</option>
+<option value="35675TBL450">35675TBL450 - FLANGE, COAST CLUTCH</option>
+<option value="35675TBL460">35675TBL460 - FLANGE, COAST CLUTCH</option>
+<option value="35675TBL470">35675TBL470 - FLANGE, COAST CLUTCH</option>
+<option value="35675TBL480">35675TBL480 - FLANGE, COAST CLUTCH</option>
+<option value="35675TBL490">35675TBL490 - FLANGE, COAST CLUTCH</option>
+<option value="35675TBL500">35675TBL500 - FLANGE, COAST CLUTCH</option>
+<option value="35675TBL510">35675TBL510 - FLANGE, COAST CLUTCH</option>
+<option value="35675TBL520">35675TBL520 - FLANGE, COAST CLUTCH</option>
+<option value="35675TBL530">35675TBL530 - FLANGE, COAST CLUTCH</option>
+<option value="35675TBL540">35675TBL540 - FLANGE, COAST CLUTCH</option>
+<option value="35675TBL550">35675TBL550 - FLANGE, COAST CLUTCH</option>
+<option value="35675TBL560">35675TBL560 - FLANGE, COAST CLUTCH</option>
+<option value="35675TBL570">35675TBL570 - FLANGE, COAST CLUTCH</option>
+<option value="35675TBL580">35675TBL580 - FLANGE, COAST CLUTCH</option>
+<option value="35675TBL590">35675TBL590 - FLANGE, COAST CLUTCH</option>
+<option value="35675TBL600">35675TBL600 - FLANGE, COAST CLUTCH</option>
+<option value="35675TBL610">35675TBL610 - FLANGE, COAST CLUTCH</option>
+<option value="3567606160">3567606160 - FLANGE, BRAKE</option>
+<option value="3567606170">3567606170 - FLANGE, BRAKE</option>
+<option value="3567606180">3567606180 - FLANGE, BRAKE</option>
+<option value="3567606190">3567606190 - FLANGE, BRAKE</option>
+<option value="3567606200">3567606200 - FLANGE, BRAKE</option>
+<option value="3567606210">3567606210 - FLANGE, BRAKE</option>
+<option value="3567606220">3567606220 - FLANGE, BRAKE</option>
+<option value="35676TBG110">35676TBG110 - FLANGE, BRAKE, NO.1</option>
+<option value="35676TBG120">35676TBG120 - FLANGE, BRAKE, NO.1</option>
+<option value="35676TBG130">35676TBG130 - FLANGE, BRAKE, NO.1</option>
+<option value="35676TBG140">35676TBG140 - FLANGE, BRAKE, NO.1</option>
+<option value="35676TBG150">35676TBG150 - FLANGE, BRAKE, NO.1</option>
+<option value="35676TBG160">35676TBG160 - FLANGE, BRAKE, NO.1</option>
+<option value="35676TBG170">35676TBG170 - FLANGE, BRAKE, NO.1</option>
+<option value="35676TBG180">35676TBG180 - FLANGE, BRAKE, NO.1</option>
+<option value="35676TBG190">35676TBG190 - FLANGE, BRAKE, NO.1</option>
+<option value="35676TBG200">35676TBG200 - FLANGE, BRAKE, NO.1</option>
+<option value="35676TBL090">35676TBL090 - FLANGE, BRAKE NO1</option>
+<option value="35676TBL100">35676TBL100 - FLANGE, BRAKE NO1</option>
+<option value="35676TBL110">35676TBL110 - FLANGE, BRAKE NO1</option>
+<option value="35676TBL120">35676TBL120 - FLANGE, BRAKE NO1</option>
+<option value="356778GA030">356778GA030 - DISC, CLUTCH, NO.3</option>
+<option value="356778GB030">356778GB030 - DISC, CLUTCH, NO.3</option>
+<option value="35677TBL030">35677TBL030 - DISC, CLUTCH, NO.3</option>
+<option value="3567806140">3567806140 - FLANGE, BRAKE NO.2</option>
+<option value="3567806150">3567806150 - FLANGE, BRAKE NO.2</option>
+<option value="3567806160">3567806160 - FLANGE, BRAKE NO.2</option>
+<option value="3567806170">3567806170 - FLANGE, BRAKE NO.2</option>
+<option value="3567806180">3567806180 - FLANGE, BRAKE NO.2</option>
+<option value="3567806190">3567806190 - FLANGE, BRAKE NO.2</option>
+<option value="3567806200">3567806200 - FLANGE, BRAKE NO.2</option>
+<option value="356788GB030">356788GB030 - Drum, C-2 Clutch, Inner</option>
+<option value="356788GB030">356788GB030 - DRUM, C-2 CLUTCH, INNER</option>
+<option value="356788GB03020">356788GB03020 - DRUM, C-2 CLUTCH, INNER</option>
+<option value="35678TBG110">35678TBG110 - FLANGE, BRAKE, NO.2</option>
+<option value="35678TBG120">35678TBG120 - FLANGE, BRAKE, NO.2</option>
+<option value="35678TBG130">35678TBG130 - FLANGE, BRAKE, NO.2</option>
+<option value="35678TBG140">35678TBG140 - FLANGE, BRAKE, NO.2</option>
+<option value="35678TBG150">35678TBG150 - FLANGE, BRAKE, NO.2</option>
+<option value="35678TBG160">35678TBG160 - FLANGE, BRAKE, NO.2</option>
+<option value="35678TBG170">35678TBG170 - FLANGE, BRAKE, NO.2</option>
+<option value="35678TBG180">35678TBG180 - FLANGE, BRAKE, NO.2</option>
+<option value="35678TBG190">35678TBG190 - FLANGE, BRAKE, NO.2</option>
+<option value="35678TBG200">35678TBG200 - FLANGE, BRAKE, NO.2</option>
+<option value="35678TBL100">35678TBL100 - B2 THICK FLANGE</option>
+<option value="35678TBL190">35678TBL190 - FLANGE, BRAKE NO2</option>
+<option value="35678TBL200">35678TBL200 - FLANGE, BRAKE NO2</option>
+<option value="35678TBL210">35678TBL210 - FLANGE, BRAKE NO2</option>
+<option value="35678TBL220">35678TBL220 - FLANGE, BRAKE NO2</option>
+<option value="35678TBL230">35678TBL230 - FLANGE, BRAKE NO2</option>
+<option value="35678TBL240">35678TBL240 - FLANGE, BRAKE NO2</option>
+<option value="35678TBL250">35678TBL250 - FLANGE, BRAKE NO2</option>
+<option value="35678TBL260">35678TBL260 - FLANGE, BRAKE NO2</option>
+<option value="35679TBL050">35679TBL050 - FLANGE, BRAKE NO3</option>
+<option value="35679TBL060">35679TBL060 - FLANGE, BRAKE NO3</option>
+<option value="3568106031">3568106031 - DISC, BRAKE, NO.1</option>
+<option value="35681TBG020">35681TBG020 - DISC, BRAKE, NO.1</option>
+<option value="35681TBL020">35681TBL020 - HUB, COAST CLUTCH</option>
+<option value="35681TBL02020">35681TBL02020 - HUB, COAST CLUTCH</option>
+<option value="35681TBL040">35681TBL040 - DISC, BRAKE, NO.1</option>
+<option value="3568206020">3568206020 - DISC, BRAKE, NO.2</option>
+<option value="35682TBG020">35682TBG020 - DISC, BRAKE, NO.2</option>
+<option value="35682TBL020">35682TBL020 - DISC, BRAKE, NO.2</option>
+<option value="35684TBG010">35684TBG010 - DISC, BRAKE, NO.4</option>
+<option value="35684TBL020">35684TBL020 - DISC, BRAKE, NO.4</option>
+<option value="35685TBL030">35685TBL030 - DISC, COAST CLUTCH</option>
+<option value="35686TBL010">35686TBL010 - WASHER, CLTCH DRUM THRST, #2</option>
+<option value="3568836A020">3568836A020 - STOPPER, SNAP RING</option>
+<option value="3568836A020">3568836A020 - Stopper, Snap Ring</option>
+<option value="35688TBL010">35688TBL010 - BALANCER, CLUTCH, NO.3</option>
+<option value="35689TBA270">35689TBA270 - FLANGE, BRAKE, NO.4</option>
+<option value="35689TBA280">35689TBA280 - FLANGE, BRAKE, NO.4</option>
+<option value="35689TBA290">35689TBA290 - FLANGE, BRAKE, NO.4</option>
+<option value="35689TBA300">35689TBA300 - FLANGE, BRAKE, NO.4</option>
+<option value="35689TBA310">35689TBA310 - FLANGE, BRAKE, NO.4</option>
+<option value="35689TBA320">35689TBA320 - FLANGE, BRAKE, NO.4</option>
+<option value="35689TBA330">35689TBA330 - FLANGE, BRAKE, NO.4</option>
+<option value="35689TBA340">35689TBA340 - FLANGE, BRAKE, NO.4</option>
+<option value="35689TBA350">35689TBA350 - FLANGE, BRAKE, NO.4</option>
+<option value="35689TBA360">35689TBA360 - FLANGE, BRAKE, NO.4</option>
+<option value="35689TBG020">35689TBG020 - FLANGE, BRAKE, NO.4</option>
+<option value="35689TBL250">35689TBL250 - Flange, Brake, No. 4</option>
+<option value="35689TBL260">35689TBL260 - Flange, Brake, No. 4</option>
+<option value="35689TBL270">35689TBL270 - Flange, Brake, No. 4</option>
+<option value="35689TBL280">35689TBL280 - Flange, Brake, No. 4</option>
+<option value="35689TBL290">35689TBL290 - Flange, Brake, No. 4</option>
+<option value="35689TBL300">35689TBL300 - Flange, Brake, No. 4</option>
+<option value="35689TBL310">35689TBL310 - Flange, Brake, No. 4</option>
+<option value="35689TBL320">35689TBL320 - Flange, Brake, No. 4</option>
+<option value="35689TBL330">35689TBL330 - Flange, Brake, No. 4</option>
+<option value="35689TBL340">35689TBL340 - Flange, Brake, No. 4</option>
+<option value="3569106030">3569106030 - PLATE, BRAKE, NO.1</option>
+<option value="3569106040">3569106040 - PLATE, BRAKE, NO.1</option>
+<option value="35691TBG020">35691TBG020 - PLATE, BRAKE, NO.1</option>
+<option value="35691TBL010">35691TBL010 - PLATE, BRAKE, NO.1</option>
+<option value="3569206020">3569206020 - PLATE, BRAKE NO.2</option>
+<option value="35692TBG020">35692TBG020 - PLATE, BRAKE, NO.2</option>
+<option value="35692TBL010">35692TBL010 - PLATE, BRAKE, NO.2</option>
+<option value="35694TBA040">35694TBA040 - PLATE, BRAKE, NO.4</option>
+<option value="35694TBL010">35694TBL010 - Plate, Brake, No.4</option>
+<option value="35695TBL010">35695TBL010 - PLATE, COAST CLUTCH</option>
+<option value="35697TBG010">35697TBG010 - RING, TRANSAXLE OIL SEAL</option>
+<option value="356988GB010">356988GB010 - BALANCER, C-2 CLUTCH</option>
+<option value="35698TBG020">35698TBG020 - CYLINDER, BRAKE, NO.1</option>
+<option value="35698TBL010">35698TBL010 - B1  CYLINDER</option>
+<option value="35699TBG020">35699TBG020 - CYLINDER, BRAKE, NO.2</option>
+<option value="35699TBL010">35699TBL010 - B2 CYLINDER</option>
+<option value="35700TBG010">35700TBG010 - GEAR ASSY FR. &amp; MID PLANETARY</option>
+<option value="35700TBL010">35700TBL010 - GEAR KIT (FR &amp; MIDDLE PLNTRY)</option>
+<option value="35701TBG030">35701TBG030 - SHAFT SUB-ASSY, INPUT</option>
+<option value="35701TBG03020">35701TBG03020 - SHAFT SUB-ASSY, INPUT</option>
+<option value="35701TBG040">35701TBG040 - SHAFT SUB-ASSY, INPUT</option>
+<option value="35701TBG04020">35701TBG04020 - SHAFT SUB-ASSY, INPUT</option>
+<option value="35701TBL010">35701TBL010 - SHAFT SUB-ASSY, INPUT</option>
+<option value="3570306010">3570306010 - Carrier S/A, Planetary , RR</option>
+<option value="3570333080">3570333080 - CARRIER S/A, PLANETARY, RR</option>
+<option value="35703TBG050">35703TBG050 - CARRIER S/A, PLANETARY, RR</option>
+<option value="35703TBG060">35703TBG060 - CARRIER S/A, PLANETARY, RR</option>
+<option value="35703TBL010">35703TBL010 - CARRIER S/A, PLNTRY, RR (4WD)</option>
+<option value="35703TBL020">35703TBL020 - CARRIER S/A, PLNTRY, RR (2WD)</option>
+<option value="357048GB130">357048GB130 - GEAR SUB-ASSY, COUNTER DRIVEN</option>
+<option value="357068GB010">357068GB010 - GEAR S/A, PLANETARY SUN</option>
+<option value="35706TBG010">35706TBG010 - GEAR S/A, FR PLANETARY SUN</option>
+<option value="35706TBL010">35706TBL010 - GEAR S/A, FR PLANETARY SUN</option>
+<option value="357078GB010">357078GB010 - GEAR S/A, RR PLANETARY SUN</option>
+<option value="35707TBL010">35707TBL010 - RACE S/A, 1 WAY CLUTCH, INNER</option>
+<option value="357088GB060">357088GB060 - SHAFT SUB-ASSY, INTERMEDIATE</option>
+<option value="35708TBG020">35708TBG020 - SHAFT S/A, MIDDLE CARR. INPUT</option>
+<option value="35708TBG02020">35708TBG02020 - SHAFT S/A, MIDDLE CARR. INPUT</option>
+<option value="35708TBL030">35708TBL030 - SHAFT S/A, MIDDLE CARR. INPUT</option>
+<option value="357098GB080">357098GB080 - DRUM S/A, SUN GEAR INPUT</option>
+<option value="357098GB100">357098GB100 - SUPPORT SUB-ASSY, CENTER</option>
+<option value="35709TBG020">35709TBG020 - DRUM S/A, SUN GEAR INPUT</option>
+<option value="35709TBL010">35709TBL010 - SHAFT &amp; DRUM S/A INPUT (C1)</option>
+<option value="357138GB060">357138GB060 - Shaft, Intermediate</option>
+<option value="357138GB060">357138GB060 - SHAFT, INTERMEDIATE</option>
+<option value="357138GB06020">357138GB06020 - SHAFT, INTERMEDIATE</option>
+<option value="35713TBG020">35713TBG020 - SHAFT, INTERMEDIATE</option>
+<option value="35713TBG02020">35713TBG02020 - SHAFT, INTERMEDIATE</option>
+<option value="35713TBL010">35713TBL010 - SHAFT, INTERMEDIATE</option>
+<option value="35713TBL01020">35713TBL01020 - SHAFT, INTERMEDIATE</option>
+<option value="35716TBA010">35716TBA010 - WASHR, PLNTRY PINION THRST, #5</option>
+<option value="35716TBL010">35716TBL010 - WASHR, PLNTRY PINION THRST, #5</option>
+<option value="35717TBG010">35717TBG010 - WASHR, PLNTRY PINION THRST, #6</option>
+<option value="35717TBL010">35717TBL010 - WASHR, PLNTRY PINION THRST, #6</option>
+<option value="357198GB010">357198GB010 - GEAR, FR PLANETARY SUN</option>
+<option value="35719TBG010">35719TBG010 - GEAR, PLANETARY SUN</option>
+<option value="35719TBL010">35719TBL010 - GEAR, PLANETARY SUN</option>
+<option value="357208GB010">357208GB010 - GEAR ASSY, FR PLANETARY</option>
+<option value="357218GB020">357218GB020 - PINION, PLANETARY LONG</option>
+<option value="357228GB010">357228GB010 - PINION, PLANETARY SHORT</option>
+<option value="35722TBG020">35722TBG020 - PINION, RR PLANETARY</option>
+<option value="35722TBL010">35722TBL010 - PINION, RR PLANETARY</option>
+<option value="357238GB021">357238GB021 - SHAFT, PLANET PINION, LONG</option>
+<option value="357248GB020">357248GB020 - SHAFT, PLANET PINION, SHORT</option>
+<option value="35724TBG020">35724TBG020 - PIN, PLANETARY PINION</option>
+<option value="35724TBL010">35724TBL010 - PIN, PLANETARY PINION</option>
+<option value="357288GB030">357288GB030 - WASHER, PLANETARY PINION</option>
+<option value="357288GB040">357288GB040 - WASHER, PLANETARY PINION</option>
+<option value="35733TBF090">35733TBF090 - (FO) GEAR, PARKING LOCK</option>
+<option value="35733TBG030">35733TBG030 - GEAR, PARKING LOCK</option>
+<option value="35733TBG03020">35733TBG03020 - GEAR, PARKING LOCK</option>
+<option value="35733TBL010">35733TBL010 - GEAR, PARKING LOCK</option>
+<option value="357378GA010">357378GA010 - WASHER, THRUST</option>
+<option value="357378GA020">357378GA020 - WASHER, THRUST</option>
+<option value="357378GA030">357378GA030 - WASHER, THRUST</option>
+<option value="357378GB010">357378GB010 - WASHER, THRUST</option>
+<option value="357378GB020">357378GB020 - WASHER, THRUST</option>
+<option value="35737TBL010">35737TBL010 - WASHER, PLNTRY CARR. THRST, #1</option>
+<option value="357388GB010">357388GB010 - WASHER, PLANETARY CARRIER</option>
+<option value="357438GB010">357438GB010 - GEAR, FR PLANETARY RING</option>
+<option value="35744TBG020">35744TBG020 - CARRIER S/A, PLANETARY, RR</option>
+<option value="35744TBG02034A">35744TBG02034A - BLANK</option>
+<option value="35744TBG02035">35744TBG02035 - BLANK CARRIER S/A PLANETARY RR</option>
+<option value="35744TBG02035">35744TBG02035 - CARRIER, PLANETARY, RR</option>
+<option value="35744TBL010">35744TBL010 - CARRIER, PLANETARY, RR</option>
+<option value="35744TBL01030">35744TBL01030 - CARRIER, PLANETARY, RR</option>
+<option value="357458GB020">357458GB020 - FLANGE, FR PLANETARY RING GEAR</option>
+<option value="35752TBF060">35752TBF060 - (FO) Shaft S/A, Middle Carr. Input</option>
+<option value="35754TBG010">35754TBG010 - RECEIVER, PLANTARY OIL, #2</option>
+<option value="35754TBL010">35754TBL010 - RECEIVER, PLANTARY OIL, #2</option>
+<option value="35755TBG020">35755TBG020 - DRUM, SUN GEAR INPUT</option>
+<option value="35755TBG02034">35755TBG02034 - DRUM, SUN GEAR INPUT</option>
+<option value="35755TBG02035">35755TBG02035 - DRUM, SUN GEAR INPUT</option>
+<option value="357608GB040">357608GB040 - GEAR ASSY, RR PLANETARY</option>
+<option value="35760TBG070">35760TBG070 - GEAR ASSY, RR PLANETARY</option>
+<option value="35760TBG080">35760TBG080 - GEAR ASSY, RR PLANETARY</option>
+<option value="35760TBL010">35760TBL010 - GEAR ASSY, RR PLANETARY (4WD)</option>
+<option value="35760TBL020">35760TBL020 - GEAR ASSY, RR PLANETARY (2WD)</option>
+<option value="357618GB010">357618GB010 - GEAR, RR PLANETARY RING</option>
+<option value="35761TBF070">35761TBF070 - (FO) Gear, Rr Planetary Ring</option>
+<option value="35761TBF120">35761TBF120 - (FO) GEAR, RR PLANETARY RING</option>
+<option value="35761TBG030">35761TBG030 - GEAR, RR PLANETARY RING</option>
+<option value="35761TBG03020">35761TBG03020 - GEAR, RR PLANETARY RING</option>
+<option value="35761TBL030">35761TBL030 - GEAR, RR PLANETARY RING</option>
+<option value="35761TBL03020">35761TBL03020 - GEAR, RR PLANETARY RING</option>
+<option value="35762TBL010">35762TBL010 - FLANGE, RR PLANETRY RING GEAR</option>
+<option value="35770TBG010">35770TBG010 - CLUTCH ASSY, 1 WAY, NO.3</option>
+<option value="35770TBL010">35770TBL010 - CLUTCH ASSY, 1 WAY, NO.3</option>
+<option value="35771TBG050">35771TBG050 - SHAFT, OUTPUT</option>
+<option value="35771TBG05020">35771TBG05020 - SHAFT, OUTPUT</option>
+<option value="35771TBG060">35771TBG060 - SHAFT, OUTPUT</option>
+<option value="35771TBG06020">35771TBG06020 - SHAFT, OUTPUT</option>
+<option value="35771TBL020">35771TBL020 - SHAFT, OUTPUT (2WD)</option>
+<option value="35771TBL040">35771TBL040 - SHAFT, OUTPUT (4WD)</option>
+<option value="35771TBL04020">35771TBL04020 - SHAFT, OUTPUT (4WD)</option>
+<option value="35771TBL05020">35771TBL05020 - SHAFT, OUTPUT (2WD)</option>
+<option value="3577506010">3577506010 - RACE, THRUST BEARING, NO.5</option>
+<option value="3577606010">3577606010 - RACE, THRUST BEARING, NO.6</option>
+<option value="3577706010">3577706010 - RACE, THRUST BEARING, NO.7</option>
+<option value="35777TBA020">35777TBA020 - RACE, THRUST BEARING, NO.7</option>
+<option value="35777TBL010">35777TBL010 - RACE, THRUST BEARING, NO.7</option>
+<option value="3577806010">3577806010 - RACE, THRUST BEARING, NO.8</option>
+<option value="35778TBA020">35778TBA020 - RACE, THRUST BEARING, NO.8</option>
+<option value="35778TBL010">35778TBL010 - RACE, THRUST BEARING, NO.8</option>
+<option value="3577906010">3577906010 - RACE, THRUST BEARING, NO.9</option>
+<option value="35779TBL010">35779TBL010 - RACE, THRUST BEARING, NO. 9</option>
+<option value="35780TBL020">35780TBL020 - CLUTCH ASSY, 1 WAY, NO.2</option>
+<option value="3578106010">3578106010 - CHAIN, OIL PUMP DRIVE</option>
+<option value="357828GB050">357828GB050 - GEAR, COUNTER DRIVE</option>
+<option value="3578506020">3578506020 - RACE, THRUST BEARING, NO.4</option>
+<option value="3578606020">3578606020 - RACE, THRUST BEARING, NO.1</option>
+<option value="35786TBA020">35786TBA020 - O/P RACE</option>
+<option value="35786TBG010">35786TBG010 - RACE, THRUST BEARING, NO.1</option>
+<option value="3578706020">3578706020 - RACE, THRUST BEARING, NO.2</option>
+<option value="35787TBA020">35787TBA020 - RACE, THRUST BEARING, NO.2</option>
+<option value="3578806020">3578806020 - RACE, THRUST BEARING, NO.3</option>
+<option value="3578906020">3578906020 - RACE, THRUST BEARING</option>
+<option value="35789TBA140">35789TBA140 - RACE, THRUST BEARING</option>
+<option value="35789TBA150">35789TBA150 - RACE, THRUST BEARING</option>
+<option value="35789TBA160">35789TBA160 - RACE, THRUST BEARING</option>
+<option value="35789TBA170">35789TBA170 - RACE, THRUST BEARING</option>
+<option value="35789TBA180">35789TBA180 - RACE, THRUST BEARING</option>
+<option value="35789TBA300">35789TBA300 - RACE, THRUST BEARING</option>
+<option value="35789TBA310">35789TBA310 - RACE, THRUST BEARING</option>
+<option value="35789TBA320">35789TBA320 - RACE, THRUST BEARING</option>
+<option value="35789TBA330">35789TBA330 - RACE, THRUST BEARING</option>
+<option value="35789TBA340">35789TBA340 - RACE, THRUST BEARING</option>
+<option value="35789TBA350">35789TBA350 - RACE, THRUST BEARING</option>
+<option value="35789TBA360">35789TBA360 - RACE, THRUST BEARING</option>
+<option value="35789TBA370">35789TBA370 - RACE, THRUST BEARING</option>
+<option value="35789TBG010">35789TBG010 - RACE, THRUST BEARING</option>
+<option value="35789TBG080">35789TBG080 - RACE, THRUST BEARING</option>
+<option value="35789TBG090">35789TBG090 - RACE, THRUST BEARING</option>
+<option value="35789TBG100">35789TBG100 - RACE, THRUST BEARING</option>
+<option value="35789TBG110">35789TBG110 - RACE, THRUST BEARING</option>
+<option value="35789TBL010">35789TBL010 - C1 RACE</option>
+<option value="35789TBL020">35789TBL020 - RACE, THRUST BEARING</option>
+<option value="35789TBL030">35789TBL030 - RACE, THRUST BEARING</option>
+<option value="35789TBL040">35789TBL040 - 2WD RACE</option>
+<option value="35789TBL050">35789TBL050 - SHIM RACE- A</option>
+<option value="35789TBL060">35789TBL060 - SHIM RACE -B</option>
+<option value="35789TBL070">35789TBL070 - SHIM RACE -C</option>
+<option value="35789TBL080">35789TBL080 - SHIM RACE -F</option>
+<option value="35789TBL090">35789TBL090 - SHIM RACE -H</option>
+<option value="35789TBL100">35789TBL100 - SHIM RACE -J</option>
+<option value="35789TBL110">35789TBL110 - SHIM RACE -L</option>
+<option value="35789TBL120">35789TBL120 - SHIM RACE -M</option>
+<option value="35789TBL130">35789TBL130 - SHIM RACE -S</option>
+<option value="35789TBL140">35789TBL140 - SHIM RACE -T</option>
+<option value="35789TBL150">35789TBL150 - SHIM RACE -X</option>
+<option value="35789TBL160">35789TBL160 - SHIM RACE -Z</option>
+<option value="35790TBL020">35790TBL020 - CLUTCH ASSY, 1WAY, NO.1</option>
+<option value="35791TBL010">35791TBL010 - F1 OWC</option>
+<option value="3579210A020">3579210A020 - CLUTCH, 1WAY, NO.2</option>
+<option value="35792TBL020">35792TBL020 - Clutch, 1way, No.2</option>
+<option value="35794TBA020">35794TBA020 - CLUTCH, 1WAY, NO.3</option>
+<option value="35794TBL020">35794TBL020 - F3 OWC</option>
+<option value="35795TBA040">35795TBA040 - RACE, 1 WAY CLUTCH, OUTER</option>
+<option value="35795TBL010">35795TBL010 - F1 OUTER RACE</option>
+<option value="35795TBL020">35795TBL020 - F3 OUTER RACE</option>
+<option value="35796TBL010">35796TBL010 - F2 RETAINER</option>
+<option value="35797TBG010">35797TBG010 - RACE, 1WAY CLUTCH, INNER</option>
+<option value="35797TBL010">35797TBL010 - RACE, 1 WAY CLTCH, INR (B1 HB)</option>
+<option value="35797TBL010">35797TBL010 - Race, 1 Way Cltch, Inr (C4 Hb)</option>
+<option value="35797TBL01020">35797TBL01020 - RACE, 1 WAY CLTCH, INR (B1 HB)</option>
+<option value="35797TBL020">35797TBL020 - RACE, 1 WAY CLTCH, INR (C4 HB)</option>
+<option value="35797TBL020">35797TBL020 - Race, 1 Way Cltch, Inr (C4 Hb)</option>
+<option value="35797TBL02020">35797TBL02020 - RACE, 1 WAY CLTCH, INR (C4 HB)</option>
+<option value="35797TBL030">35797TBL030 - RACE, 1 WAY CLUTCH, INNER</option>
+<option value="35798TBL010">35798TBL010 - F3 RETAINER</option>
+<option value="35799TBA010">35799TBA010 - RETAINER, 1WAY CLUTCH, NO.4</option>
+<option value="358218GB030">358218GB030 - PISTON, B-1 BRAKE</option>
+<option value="3584706010">3584706010 - TUBE, TRANSAXLE LUBE APPLY</option>
+<option value="35861TBL010">35861TBL010 - PISTON, REVERSE</option>
+<option value="35861TBL01020">35861TBL01020 - PISTON, REVERSE</option>
+<option value="3588206030">3588206030 - TUBE, DIFFERENTIAL GEAR LUBE A</option>
+<option value="358838GA030">358838GA030 - DISC, CLUTCH, NO.4</option>
+<option value="358838GB030">358838GB030 - DISC, CLUTCH, NO.4</option>
+<option value="358848GA030">358848GA030 - PLATE, CLUTCH, NO.4</option>
+<option value="358848GB030">358848GB030 - PLATE, CLUTCH, NO.4</option>
+<option value="359328GB010">359328GB010 - RING, TOLERANCE</option>
+<option value="38117TFE010">38117TFE010 - SLEEVE</option>
+<option value="412068GB080">412068GB080 - PINION &amp; COUNTER DRIVEN GEAR</option>
+<option value="412218GB010">412218GB010 - GEAR, DIFFERENTIAL RING</option>
+<option value="413008GB030">413008GB030 - GEAR ASSY, DIFFERENTIAL</option>
+<option value="413008GB040">413008GB040 - GEAR ASSY, DIFFERENTIAL</option>
+<option value="4130106020">4130106020 - CASE SUB-ASSY, DIFF</option>
+<option value="413018GB060">413018GB060 - CASE SUB-ASSY, DIFF</option>
+<option value="413108GB100">413108GB100 - GEAR ASSY, DIFFERENTIAL</option>
+<option value="413108GB110">413108GB110 - GEAR ASSY, DIFFERENTIAL</option>
+<option value="4133128060">4133128060 - GEAR, DIFFERENTIAL SIDE</option>
+<option value="4134128050">4134128050 - PINION, DIFFERENTIAL</option>
+<option value="413428GB010">413428GB010 - SHAFT, DIFFERENTIAL PINION</option>
+<option value="4135147010">4135147010 - WASHER, DIFFERENTIAL PINION</option>
+<option value="413618GB050">413618GB050 - WASHER, DIFFERENTIAL SIDE GEAR</option>
+<option value="413618GB060">413618GB060 - WASHER, DIFFERENTIAL SIDE GEAR</option>
+<option value="413618GB070">413618GB070 - WASHER, DIFFERENTIAL SIDE GEAR</option>
+<option value="413618GB080">413618GB080 - WASHER, DIFFERENTIAL SIDE GEAR</option>
+<option value="413618GB090">413618GB090 - WASHER, DIFFERENTIAL SIDE GEAR</option>
+<option value="413618GB100">413618GB100 - WASHER, DIFFERENTIAL SIDE GEAR</option>
+<option value="413618GB110">413618GB110 - WASHER, DIFFERENTIAL SIDE GEAR</option>
+<option value="413618GB120">413618GB120 - WASHER, DIFFERENTIAL SIDE GEAR</option>
+<option value="8212506281">8212506281 - WIRE, TRANSMISSION</option>
+<option value="821258GA070">821258GA070 - WIRE, TRANSMISSION</option>
+<option value="821258GA100">821258GA100 - WIRE, TRANSMISSION</option>
+<option value="82125TBA080">82125TBA080 - WIRE, TRANSMISSION (SMALL)</option>
+<option value="82125TBA100">82125TBA100 - WIRE, TRANSMISSION</option>
+<option value="82125TBG030">82125TBG030 - WIRE, TRANSMISSION</option>
+<option value="8282190A010">8282190A010 - COVER, CONNECTOR</option>
+<option value="82821TBA010">82821TBA010 - COVER, CONNECTOR</option>
+<option value="82821TBA020">82821TBA020 - COVER, CONNECTOR</option>
+<option value="82821TLA010">82821TLA010 - COVER, CONNECTOR</option>
+<option value="8454004021">8454004021 - SWITCH ASSY, NEUTRAL START</option>
+<option value="8454006020">8454006020 - SWITCH ASSY, NEUTRAL START</option>
+<option value="84540TBA030">84540TBA030 - SWITCH ASSY, NEUTRAL START</option>
+<option value="89411TBG010">89411TBG010 - SENSOR, SPEED</option>
+<option value="8941306021">8941306021 - SENSOR, TRANSMISSION</option>
+<option value="8941306031">8941306031 - SENSOR, TRANSMISSION</option>
+<option value="89413TBG010">89413TBG010 - SENSOR, SPEED</option>
+<option value="89413TBL010">89413TBL010 - SPEED SENSOR</option>
+<option value="89429CWA010">89429CWA010 - Sensor, Temperature</option>
+<option value="8G30(01)A-005">8G30(01)A-005 - T/A Housing</option>
+<option value="8G30(01)A-005">8G30(01)A-005 - T/A HOUSING</option>
+<option value="8G30(01)A-006">8G30(01)A-006 - T/A HOUSING</option>
+<option value="8G30(01)B-004">8G30(01)B-004 - T/A CASE AND SIDE COVER</option>
+<option value="8G30(01)C-005">8G30(01)C-005 - M/V  LEVER AND PARKING</option>
+<option value="8G30(01)D-006">8G30(01)D-006 - Oil Pump</option>
+<option value="8G30(01)D-006">8G30(01)D-006 - OIL PUMP</option>
+<option value="8G30(01)D-007">8G30(01)D-007 - OIL PUMP</option>
+<option value="8G30(01)E-004">8G30(01)E-004 - C-1 CLUTCH</option>
+<option value="8G30(01)F-004">8G30(01)F-004 - C-2 CLUTCH</option>
+<option value="8G30(01)G-006">8G30(01)G-006 - C-3 C-4 CLUTCH</option>
+<option value="8G30(01)J-003">8G30(01)J-003 - B-2 BRAKE</option>
+<option value="8G30(01)K-006">8G30(01)K-006 - GEAR AND SHAFT</option>
+<option value="8G30(01)L-012">8G30(01)L-012 - COUNTER GEAR AND SHAFT</option>
+<option value="8G30(01)M-007">8G30(01)M-007 - Differential</option>
+<option value="8G30(01)M-007">8G30(01)M-007 - DIFFERENTIAL</option>
+<option value="8G30(01)M-008">8G30(01)M-008 - DIFFERENTIAL</option>
+<option value="8G45(01)N-007">8G45(01)N-007 - Valve Body</option>
+<option value="8G45(01)N-007">8G45(01)N-007 - VALVE BODY</option>
+<option value="8G45(01)N-008">8G45(01)N-008 - VALVE BODY</option>
+<option value="8G45(01)P-005">8G45(01)P-005 - FR VALVE BODY</option>
+<option value="8G45(01)Q-005">8G45(01)Q-005 - MIDDLE VALVE BODY</option>
+<option value="8G45(01)R-003">8G45(01)R-003 - RR VALVE BODY</option>
+<option value="8G45(01)T-005">8G45(01)T-005 - Valve Body Others</option>
+<option value="8G45(01)T-005">8G45(01)T-005 - VALVE BODY OTHERS</option>
+<option value="8G45(01)T-006">8G45(01)T-006 - VALVE BODY OTHERS</option>
+<option value="8G45(01)Z-005">8G45(01)Z-005 - SHIPPING PARTS (4WD)</option>
+<option value="8G45(01)Z-006">8G45(01)Z-006 - SHIPPING PARTS (2WD)</option>
+<option value="8G45(01)Z-006">8G45(01)Z-006 - Shipping Parts</option>
+<option value="9008010400">9008010400 - BOLT, FLANGE - C209</option>
+<option value="9008011209">9008011209 - BOLT, W/WASHER</option>
+<option value="9008011683">9008011683 - BOLT, W/WASHER</option>
+<option value="9010505A028">9010505A028 - BOLT, FLANGE - C709</option>
+<option value="9010506A045">9010506A045 - BOLT, FLANGE (#36)</option>
+<option value="9010506A046">9010506A046 - BOLT, FLANGE (TEMP CLAMP BOLT)</option>
+<option value="9010506A047">9010506A047 - BOLT, FLANGE</option>
+<option value="9010506A048">9010506A048 - BOLT, FLANGE (#25)</option>
+<option value="9010506A049">9010506A049 - BOLT, FLANGE (#45)</option>
+<option value="9010506A056">9010506A056 - BOLT, FLANGE</option>
+<option value="9010506A057">9010506A057 - BOLT, FLANGE</option>
+<option value="9010506A058">9010506A058 - BOLT, FLANGE (#50)</option>
+<option value="9010506A063">9010506A063 - BOLT, FLANGE</option>
+<option value="9010506A064">9010506A064 - BOLT, FLANGE</option>
+<option value="9010506A065">9010506A065 - BOLT, FLANGE</option>
+<option value="9010506A066">9010506A066 - BOLT, FLANGE</option>
+<option value="9010506A067">9010506A067 - BOLT, FLANGE</option>
+<option value="9010506A078">9010506A078 - BOLT, FLANGE - C378</option>
+<option value="9010508A052">9010508A052 - BOLT, FLANGE</option>
+<option value="9010508A064">9010508A064 - BOLT, FLANGE</option>
+<option value="9010508A066">9010508A066 - BOLT, FLANGE</option>
+<option value="9010508A068">9010508A068 - BOLT, FLANGE</option>
+<option value="9010508A070">9010508A070 - BOLT, FLANGE - C307</option>
+<option value="9010510A023">9010510A023 - EXT/ADT HOUSING BOLT</option>
+<option value="9010510A025">9010510A025 - BOLT, FLANGE</option>
+<option value="9010510A030">9010510A030 - BOLT, FLANGE</option>
+<option value="9010510A034">9010510A034 - BOLT, FLANGE - C334</option>
+<option value="9010512302">9010512302 - BOLT, WASHER BASED HEAD</option>
+<option value="90105A0079">90105A0079 - BOLT, FLANGE - C379</option>
+<option value="90105A0101">90105A0101 - BOLT, FLANGE - C301</option>
+<option value="90105A0102">90105A0102 - BOLT, FLANGE - C302</option>
+<option value="90105A0103">90105A0103 - BOLT, FLANGE - C217</option>
+<option value="90105A0128">90105A0128 - BOLT, FLANGE - C328</option>
+<option value="90105A0367">90105A0367 - BOLT, FLANGE - C367</option>
+<option value="90105A0370">90105A0370 - BOLT, FLANGE - C370</option>
+<option value="90105A0371">90105A0371 - BOLT, FLANGE - C371</option>
+<option value="90105A0372">90105A0372 - BOLT, FLANGE - C372</option>
+<option value="90105A0373">90105A0373 - BOLT, FLANGE - C373</option>
+<option value="9011906A045">9011906A045 - BOLT, W/WASHER</option>
+<option value="9011906A053">9011906A053 - BOLT, WASHER</option>
+<option value="9011906A054">9011906A054 - BOLT, WASHER</option>
+<option value="9011906A056">9011906A056 - BOLT, WASHER</option>
+<option value="9011908A033">9011908A033 - BOLT W/WASHER</option>
+<option value="9011909A001">9011909A001 - BOLT, W/WASHER</option>
+<option value="9011910A012">9011910A012 - CONVERTER HOUSING BOLT</option>
+<option value="9011910A014">9011910A014 - BOLT, WASHER</option>
+<option value="9011910A015">9011910A015 - BOLT W/WASHER</option>
+<option value="9011910A016">9011910A016 - BOLT W/WASHER</option>
+<option value="9011910A017">9011910A017 - BOLT W/WASHER</option>
+<option value="9011910A018">9011910A018 - BOLT W/WASHER</option>
+<option value="9011912A007">9011912A007 - BOLT W/WASHER</option>
+<option value="9014806A002">9014806A002 - SCREW, HEX LOBULAR</option>
+<option value="9014806A003">9014806A003 - SCREW, HEX LOBULAR</option>
+<option value="90148A0027">90148A0027 - SCREW, HEXALOBULAR</option>
+<option value="90170A0001">90170A0001 - NUT, HEXAGON</option>
+<option value="9017908A007">9017908A007 - NUT (SPECIAL)</option>
+<option value="9017910A009">9017910A009 - NUT, FLANGE</option>
+<option value="9017972A001">9017972A001 - NUT</option>
+<option value="9020108A006">9020108A006 - WASHER, PLATE</option>
+<option value="9020151A027">9020151A027 - WASHER, PLATE</option>
+<option value="9020151A027">9020151A027 - Washer, Plate</option>
+<option value="9020840003">9020840003 - WASHER, CONICAL SPRING</option>
+<option value="9020925A004">9020925A004 - WASHER</option>
+<option value="9020925A005">9020925A005 - WASHER</option>
+<option value="9020925A006">9020925A006 - WASHER</option>
+<option value="9020933A001">9020933A001 - WASHER</option>
+<option value="9020933A001">9020933A001 - Washer</option>
+<option value="9020933A002">9020933A002 - Washer</option>
+<option value="9020972A002">9020972A002 - WASHER</option>
+<option value="9025003A017">9025003A017 - PIN, STRAIGHT</option>
+<option value="9025003A019">9025003A019 - PIN, STRAIGHT</option>
+<option value="9025006A005">9025006A005 - PIN, STRAIGHT</option>
+<option value="9025008A004">9025008A004 - PIN, STRAIGHT</option>
+<option value="9025011003">9025011003 - PIN, STRAIGHT</option>
+<option value="9026305A002">9026305A002 - RIVET, FLATTEND</option>
+<option value="9026305A009">9026305A009 - RIVET, FLATTEND</option>
+<option value="9026305A009">9026305A009 - Rivet, Flattend</option>
+<option value="9026305A012">9026305A012 - RIVET, FLATTEND</option>
+<option value="9026311A003">9026311A003 - RIVET, FLATTEND</option>
+<option value="9030104A002">9030104A002 - RING, O</option>
+<option value="9030106021">9030106021 - RING, O</option>
+<option value="9030108A004">9030108A004 - RING, O</option>
+<option value="9030109173">9030109173 - RING, O</option>
+<option value="9030110018">9030110018 - RING, O</option>
+<option value="9030111031">9030111031 - RING, O</option>
+<option value="9030111A007">9030111A007 - RING, O</option>
+<option value="9030115A006">9030115A006 - RING, O</option>
+<option value="9030118A005">9030118A005 - RING, O</option>
+<option value="9030120A001">9030120A001 - RING, O</option>
+<option value="9030123A001">9030123A001 - RING, O</option>
+<option value="9030126A001">9030126A001 - C3 ACCUM O-RING</option>
+<option value="9030127A003">9030127A003 - RING, O</option>
+<option value="9030128A001">9030128A001 - RING, O</option>
+<option value="9030131A002">9030131A002 - RING, O</option>
+<option value="9030133A001">9030133A001 - RING, O</option>
+<option value="9030133A003">9030133A003 - RING, O</option>
+<option value="9030134A001">9030134A001 - C3 ACCUM O-RING</option>
+<option value="9030145A002">9030145A002 - RING, O</option>
+<option value="9030145A003">9030145A003 - RING, O</option>
+<option value="9030146A004">9030146A004 - RING, O</option>
+<option value="9030146A004">9030146A004 - Ring, O</option>
+<option value="9030146A007">9030146A007 - Ring. O</option>
+<option value="9030156A004">9030156A004 - RING, O</option>
+<option value="9030167A001">9030167A001 - B4 O-RING (SMALL)</option>
+<option value="9030167A002">9030167A002 - RING, O</option>
+<option value="9030174A004">9030174A004 - RING, O</option>
+<option value="9030174A005">9030174A005 - RING, O</option>
+<option value="9030174A005">9030174A005 - Ring, O</option>
+<option value="9030174A007">9030174A007 - Ring. O</option>
+<option value="9030176A001">9030176A001 - RING, O</option>
+<option value="9030179A002">9030179A002 - RING, O</option>
+<option value="9030199A005">9030199A005 - RING, O</option>
+<option value="9030199A011">9030199A011 - B4 O-RING (LARGE)</option>
+<option value="9030199A022">9030199A022 - B3 O-RING (INNER)</option>
+<option value="9030199A028">9030199A028 - B2 O-RING (INNER)</option>
+<option value="9030199A029">9030199A029 - B1  O-RING (INNER)</option>
+<option value="9030199A080">9030199A080 - B4 O-RING (MED)</option>
+<option value="9030199A096">9030199A096 - B3 O-RING (OUTER)</option>
+<option value="9030199A097">9030199A097 - RING, O</option>
+<option value="9030199A098">9030199A098 - RING, O</option>
+<option value="9030199A099">9030199A099 - RING, O</option>
+<option value="9030199A100">9030199A100 - RING, O</option>
+<option value="9030199A101">9030199A101 - B1  O-RING (OUTER)</option>
+<option value="9030199A102">9030199A102 - RING, O (OIL PUMP)</option>
+<option value="9030199A103">9030199A103 - RING, O</option>
+<option value="9030199A141">9030199A141 - RING, O</option>
+<option value="9030199A142">9030199A142 - RING, O</option>
+<option value="9030199A143">9030199A143 - RING, O</option>
+<option value="9030199A144">9030199A144 - RING, O</option>
+<option value="9030199A145">9030199A145 - RING, O</option>
+<option value="9030199A146">9030199A146 - RING, O</option>
+<option value="9030199A147">9030199A147 - RING, O</option>
+<option value="9030199A148">9030199A148 - RING, O</option>
+<option value="9030199A149">9030199A149 - RING, O</option>
+<option value="9030199A150">9030199A150 - RING, O</option>
+<option value="9030199A151">9030199A151 - RING, O</option>
+<option value="9030199A152">9030199A152 - RING, O</option>
+<option value="9030199A155">9030199A155 - RING, O</option>
+<option value="9030199A155">9030199A155 - Ring, O</option>
+<option value="9030199A163">9030199A163 - RING, O</option>
+<option value="9030199A164">9030199A164 - RING, O</option>
+<option value="9030199A165">9030199A165 - RING, O</option>
+<option value="9030199A165">9030199A165 - Ring, O</option>
+<option value="9030199A168">9030199A168 - RING, O</option>
+<option value="9030199A169">9030199A169 - RING, O</option>
+<option value="9030199A214">9030199A214 - Ring. O</option>
+<option value="9031112A004">9031112A004 - SEAL, TYPE T OIL</option>
+<option value="9031138A012">9031138A012 - Seal, Type T Oil</option>
+<option value="9031138A024">9031138A024 - SEAL, TYPE T OIL</option>
+<option value="9031140A028">9031140A028 - SEAL, TYPE T OIL</option>
+<option value="9031140A030">9031140A030 - SEAL, TYPE T OIL</option>
+<option value="9031143A013">9031143A013 - SEAL, TYPE T OIL</option>
+<option value="9031145A008">9031145A008 - SEAL, TYPE T OIL</option>
+<option value="9031149A003">9031149A003 - SEAL, TYPE T OIL</option>
+<option value="9031150A011">9031150A011 - SEAL, TYPE T OIL</option>
+<option value="9031151A001">9031151A001 - SEAL, TYPE T OIL</option>
+<option value="9031151A002">9031151A002 - SEAL, TYPE T OIL</option>
+<option value="9031155A002">9031155A002 - SEAL, TYPE T OIL</option>
+<option value="9031219A001">9031219A001 - SEAL, TYPE V OIL</option>
+<option value="9031634A001">9031634A001 - SEAL, TYPE D OIL</option>
+<option value="9033121A001">9033121A001 - PLUG, TIGHT</option>
+<option value="9033126A001">9033126A001 - PLUG, TIGHT</option>
+<option value="9033405A004">9033405A004 - PLUG, STRAIGHT</option>
+<option value="9033904A003">9033904A003 - CAP</option>
+<option value="9033905A003">9033905A003 - PLUG</option>
+<option value="9033906A003">9033906A003 - PLUG</option>
+<option value="9033909A012">9033909A012 - PLUG</option>
+<option value="9033909A013">9033909A013 - PLUG</option>
+<option value="9033911A009">9033911A009 - PLUG</option>
+<option value="9033912A006">9033912A006 - PLUG</option>
+<option value="9033913A004">9033913A004 - PLUG</option>
+<option value="9034111A001">9034111A001 - PL Plug</option>
+<option value="9034111A001">9034111A001 - PLUG, W/HEAD STRAIGHT SCREW</option>
+<option value="9034111A001">9034111A001 - Plug, W/Head Straight Screw</option>
+<option value="9034114015">9034114015 - PLUG, STRAIGHT SCREW W/HEAD</option>
+<option value="9034118A007">9034118A007 - PLUG, W/HEAD STRAIGHT SCREW</option>
+<option value="9034118A008">9034118A008 - PLUG, W/HEAD STRAIGHT SCREW</option>
+<option value="9034118A021">9034118A021 - PLUG, W/HEAD STRAIGHT SCREW</option>
+<option value="90341A0003">90341A0003 - PLUG, W/HEAD STRAIGHT SCREW</option>
+<option value="9036006A019">9036006A019 - BALL</option>
+<option value="9036008A001">9036008A001 - BALL, STEEL</option>
+<option value="9036104A004">9036104A004 - ROLLER</option>
+<option value="9036104A009">9036104A009 - ROLLER</option>
+<option value="9036340A006">9036340A006 - ADAPTOR RADIAL BALL BEARING</option>
+<option value="9036340A008">9036340A008 - BEARING, RADIAL BALL</option>
+<option value="9036375A002">9036375A002 - RACE, ANGULAR BALL BEARING</option>
+<option value="9036375A003">9036375A003 - RACE, ANGULAR BALL BEARING</option>
+<option value="9036408A001">9036408A001 - BEARING, NEEDLE ROLLER</option>
+<option value="9036413A005">9036413A005 - BEARING, NEEDLE ROLLER</option>
+<option value="9036414A009">9036414A009 - BEARING, NEEDLE ROLLER</option>
+<option value="9036423A003">9036423A003 - BEARING, NEEDLE ROLLER</option>
+<option value="9036427A001">9036427A001 - BEARING, NEEDLE ROLLER</option>
+<option value="9036427A001">9036427A001 - Bearing, Needle Roller</option>
+<option value="9036430A002">9036430A002 - BEARING, NEEDLE ROLLER</option>
+<option value="9036434A002">9036434A002 - BEARING, NEEDLE ROLLER</option>
+<option value="9036435A001">9036435A001 - BEARING, NEEDLE ROLLER</option>
+<option value="9036436A002">9036436A002 - BEARING, NEEDLE ROLLER</option>
+<option value="9036442A001">9036442A001 - CASE BEARING</option>
+<option value="9036451A001">9036451A001 - BEARING, NEEDLE ROLLER</option>
+<option value="9036457A001">9036457A001 - BEARING, NEEDLE ROLLER</option>
+<option value="90366A0059">90366A0059 - RACE, TAPERED ROLLER BEARING</option>
+<option value="90366A0060">90366A0060 - RACE, TAPERED ROLLER BEARING</option>
+<option value="90366A0062">90366A0062 - RACE, TAPERED ROLLER BEARING</option>
+<option value="90366A0063">90366A0063 - RACE, TAPERED ROLLER BEARING</option>
+<option value="90366A0064">90366A0064 - RACE, TAPERED ROLLER BEARING</option>
+<option value="90366A0065">90366A0065 - RACE, TAPERED ROLLER BEARING</option>
+<option value="90366A0066">90366A0066 - RACE, TAPERED ROLLER BEARING</option>
+<option value="90366A0075">90366A0075 - RACE, TAPERED ROLLER BEARING,</option>
+<option value="9037420A005">9037420A005 - BEARING, THRUST NEEDLE ROLLER</option>
+<option value="9037421A005">9037421A005 - BRNG, THRST NEEDL ROLLR W/RACE</option>
+<option value="9037421A010">9037421A010 - BRNG, THRST NEEDL ROLLR W/RACE</option>
+<option value="9037423A012">9037423A012 - BRNG, THRST NEEDL ROLLR W/RACE</option>
+<option value="9037428A002">9037428A002 - BEARING, THRUST NEEDLE ROLLER</option>
+<option value="9037432A008">9037432A008 - BEARING, THRUST NEEDLE ROLLER</option>
+<option value="9037433A007">9037433A007 - BEARING, THRUST NEEDLE ROLLER</option>
+<option value="9037434A012">9037434A012 - BRNG, THRST NEEDL ROLLR W/RACE</option>
+<option value="9037436A006">9037436A006 - BEARING, THRUST NEEDLE ROLLER</option>
+<option value="9037436A008">9037436A008 - C1 BEARING</option>
+<option value="9037436A010">9037436A010 - BEARING, THRUST NEEDLE ROLLER</option>
+<option value="9037439A006">9037439A006 - BRNG, THRST NEEDL ROLLR W/RACE</option>
+<option value="9037439A009">9037439A009 - BRNG, THRST NEEDL ROLLR W/RACE</option>
+<option value="9037440A004">9037440A004 - 2WD BEARING</option>
+<option value="9037443A011">9037443A011 - BEARING, THRUST NEEDLE ROLLER</option>
+<option value="9037443A013">9037443A013 - BRNG, THRST NEEDL ROLLR W/RACE</option>
+<option value="9037444A002">9037444A002 - BEARING, THRUST W/RACE (RR)</option>
+<option value="9037446A002">9037446A002 - BRNG, THRST NEEDL ROLLR W/RACE</option>
+<option value="9037448A003">9037448A003 - BRNG, THRST NEEDL ROLLR W/RACE</option>
+<option value="9037453A005">9037453A005 - BEARING, THRUST NEEDLE ROLLER</option>
+<option value="9037453A005">9037453A005 - Bearing, Thrust Needle Roller</option>
+<option value="9037458A003">9037458A003 - BRNG, THRST NEEDL ROLLR W/RACE</option>
+<option value="9037471A003">9037471A003 - Bearing, Thrust Needle Roller</option>
+<option value="9037471A004">9037471A004 - BEARING, THRUST NEEDLE ROLLER</option>
+<option value="9037472A001">9037472A001 - O/P BEARING</option>
+<option value="9037482A002">9037482A002 - BEARING, THRUST NEEDLE ROLLER</option>
+<option value="9037482A002">9037482A002 - Bearing, Thrust Needle Roller</option>
+<option value="90374A0048">90374A0048 - BEARING, THRUST NEEDLE ROLLER</option>
+<option value="90374A0049">90374A0049 - BEARING, THRUST NEEDLE ROLLER</option>
+<option value="90374A0050">90374A0050 - BEARING, THRUST NEEDLE ROLLER</option>
+<option value="90374A0051">90374A0051 - BEARING, THRUST NEEDLE ROLLER</option>
+<option value="90374A0052">90374A0052 - BEARING, THRUST NEEDLE ROLLER</option>
+<option value="90374A0053">90374A0053 - BEARING, THRUST NEEDLE ROLLER</option>
+<option value="90374A0054">90374A0054 - BEARING, THRUST NEEDLE ROLLER</option>
+<option value="9038420A007">9038420A007 - BUSH, BIMETAL FORMED</option>
+<option value="9038422A002">9038422A002 - Bush, Bimetal Formed</option>
+<option value="9038430A007">9038430A007 - BUSH, BIMETAL FORMED</option>
+<option value="9038430A007">9038430A007 - Bush, Bimetal Formed</option>
+<option value="9038432A008">9038432A008 - Bush, Bimetal Formed</option>
+<option value="9038432A009">9038432A009 - Bush, Bimetal Formed</option>
+<option value="9038432A009">9038432A009 - Bushing</option>
+<option value="9038445A004">9038445A004 - BUSH, BIMETAL FORMED</option>
+<option value="9038459A001">9038459A001 - BUSH, BIMETAL FORMED</option>
+<option value="9040114A005">9040114A005 - BOLT, UNION</option>
+<option value="9040414A009">9040414A009 - CONNECTOR, TUBE</option>
+<option value="9040714A012">9040714A012 - ELBOW</option>
+<option value="9043014008">9043014008 - GASKET</option>
+<option value="9043014A006">9043014A006 - GASKET</option>
+<option value="9044105001">9044105001 - TUBE</option>
+<option value="9044711A069">9044711A069 - HOSE, BREATHER</option>
+<option value="9046112A005">9046112A005 - CLAMP</option>
+<option value="9050105A012">9050105A012 - SPRING, COMPRESSION</option>
+<option value="9050105A014">9050105A014 - SPRING, COMPRESSION</option>
+<option value="9050105A019">9050105A019 - SPRING, COMPRESSION</option>
+<option value="9050106A019">9050106A019 - SPRING, COMPRESSION</option>
+<option value="9050106A022">9050106A022 - SPRING, COMPRESSION</option>
+<option value="9050106A040">9050106A040 - SPRING, COMPRESSION</option>
+<option value="9050106A041">9050106A041 - SPRING, COMPRESSION</option>
+<option value="9050106A042">9050106A042 - SPRING, COMPRESSION</option>
+<option value="9050106A043">9050106A043 - SPRING, COMPRESSION</option>
+<option value="9050107172">9050107172 - SPRING, COMPRESSION</option>
+<option value="9050107173">9050107173 - SPRING, COMPRESSION</option>
+<option value="9050107174">9050107174 - SPRING, COMPRESSION</option>
+<option value="9050107A044">9050107A044 - SPRING, COMPRESSION</option>
+<option value="9050107A047">9050107A047 - SPRING, COMPRESSION</option>
+<option value="9050107A050">9050107A050 - SPRING, COMPRESSION</option>
+<option value="9050107A071">9050107A071 - SPRING, COMPRESSION</option>
+<option value="9050108A033">9050108A033 - SPRING, COMPRESSION</option>
+<option value="9050108A059">9050108A059 - SPRING, COMPRESSION</option>
+<option value="9050108A063">9050108A063 - SPRING, COMPRESSION</option>
+<option value="9050108A070">9050108A070 - SPRING, COMPRESSION</option>
+<option value="9050109A053">9050109A053 - SPRING, COMPRESSION</option>
+<option value="9050109A058">9050109A058 - SPRING, COMPRESSION</option>
+<option value="9050109A059">9050109A059 - SPRING, COMPRESSION</option>
+<option value="9050109A060">9050109A060 - SPRING, COMPRESSION</option>
+<option value="9050110A011">9050110A011 - SPRING, COMPRESSION</option>
+<option value="9050111A053">9050111A053 - SPRING, COMPRESSION</option>
+<option value="9050112A023">9050112A023 - SPRING, COMPRESSION</option>
+<option value="9050112A037">9050112A037 - SPRING, COMPRESSION</option>
+<option value="9050113A010">9050113A010 - SPRING, COMPRESSION</option>
+<option value="9050113A031">9050113A031 - SPRING, COMPRESSION</option>
+<option value="9050113A074">9050113A074 - SPRING, COMPRESSION</option>
+<option value="9050114A021">9050114A021 - SPRING, COMPRESSION</option>
+<option value="9050114A049">9050114A049 - SPRING, COMPRESSION</option>
+<option value="9050115A031">9050115A031 - SPRING, COMPRESSION</option>
+<option value="9050116A024">9050116A024 - SPRING, COMPRESSION</option>
+<option value="9050116A039">9050116A039 - SPRING, COMPRESSION</option>
+<option value="9050116A040">9050116A040 - SPRING, COMPRESSION</option>
+<option value="9050117A015">9050117A015 - SPRING, COMPRESSION</option>
+<option value="9050117A018">9050117A018 - SPRING, COMPRESSION</option>
+<option value="9050118A025">9050118A025 - SPRING, COMPRESSION</option>
+<option value="9050120A041">9050120A041 - SPRING, COMPRESSION</option>
+<option value="9050121A039">9050121A039 - SPRING, COMPRESSION</option>
+<option value="9050122A037">9050122A037 - SPRING, COMPRESSION</option>
+<option value="9050124A012">9050124A012 - SPRING, COMPRESSION</option>
+<option value="9050125A016">9050125A016 - SPRING, COMPRESSION</option>
+<option value="9050126A019">9050126A019 - SPRING, COMPRESSION</option>
+<option value="9050406A001">9050406A001 - SPRING, COMPRESSION</option>
+<option value="9050407A001">9050407A001 - SPRING, COMPRESSION</option>
+<option value="9050407A003">9050407A003 - SPRING, COMPRESSION</option>
+<option value="9050407A004">9050407A004 - SPRING, COMPRESSION</option>
+<option value="9050407A005">9050407A005 - SPRING, COMPRESSION</option>
+<option value="9050407A007">9050407A007 - SPRING, COMPRESSION</option>
+<option value="9050407A008">9050407A008 - SPRING, COMPRESSION</option>
+<option value="9050407A009">9050407A009 - SPRING, COMPRESSION</option>
+<option value="9050407A010">9050407A010 - SPRING, COMPRESSION</option>
+<option value="9050409A001">9050409A001 - SPRING, COMPRESSION</option>
+<option value="9050411A001">9050411A001 - SPRING, COMPRESSION</option>
+<option value="9050411A003">9050411A003 - SPRING, COMPRESSION</option>
+<option value="9050412A005">9050412A005 - SPRING, COMPRESSION</option>
+<option value="9050421A003">9050421A003 - SPRING, COMPRESSION</option>
+<option value="9050827A002">9050827A002 - SPRING, TORSION</option>
+<option value="9050831A001">9050831A001 - SPRING, TORSION</option>
+<option value="9052034A002">9052034A002 - RING, SHAFT SNAP</option>
+<option value="9052035A002">9052035A002 - RING, SHAFT SNAP</option>
+<option value="9052038A004">9052038A004 - 2WD SHAFT SNAP RING</option>
+<option value="9052044A007">9052044A007 - RING, SHAFT SNAP</option>
+<option value="9052044A007">9052044A007 - Ring, Shaft Snap</option>
+<option value="9052045A005">9052045A005 - RING, SHAFT SNAP</option>
+<option value="9052046A008">9052046A008 - RING, SHAFT SNAP</option>
+<option value="9052047A004">9052047A004 - RING, SHAFT SNAP</option>
+<option value="9052047A004">9052047A004 - Ring, Shaft Snap</option>
+<option value="9052055A003">9052055A003 - RING, SHAFT SNAP</option>
+<option value="9052061A001">9052061A001 - RING, SHAFT SNAP</option>
+<option value="9052061A003">9052061A003 - RING, SHAFT SNAP</option>
+<option value="9052068A002">9052068A002 - RING, SHAFT SNAP</option>
+<option value="9052068A003">9052068A003 - RING, SHAFT SNAP</option>
+<option value="9052079A002">9052079A002 - RING, SHAFT SNAP</option>
+<option value="90520A0068">90520A0068 - RING, SNAP</option>
+<option value="90520A0070">90520A0070 - RING, SNAP</option>
+<option value="9052180A003">9052180A003 - RING, HOLE SNAP</option>
+<option value="9052188A003">9052188A003 - RING, HOLE SNAP</option>
+<option value="9052192A002">9052192A002 - RING, HOLE SNAP</option>
+<option value="9052194A002">9052194A002 - RING, HOLE SNAP</option>
+<option value="9052198A002">9052198A002 - RING, HOLE SNAP</option>
+<option value="9052199A080">9052199A080 - RING, HOLE SNAP</option>
+<option value="9052199A081">9052199A081 - F3 TAPER SNAP</option>
+<option value="9052199A120">9052199A120 - RING, B3 TAPER SNAP</option>
+<option value="9052199A159">9052199A159 - RING, HOLE SNAP</option>
+<option value="9052199A161">9052199A161 - RING, HOLE SNAP</option>
+<option value="9052199A162">9052199A162 - RING, HOLE SNAP</option>
+<option value="9052199A163">9052199A163 - RING, HOLE SNAP</option>
+<option value="9052199A165">9052199A165 - RING, HOLE SNAP</option>
+<option value="9052199A176">9052199A176 - RING, HOLE SNAP</option>
+<option value="9052199A177">9052199A177 - RING, HOLE SNAP</option>
+<option value="9052199A178">9052199A178 - RING, HOLE SNAP</option>
+<option value="9052199A179">9052199A179 - RING, HOLE SNAP</option>
+<option value="9052199A180">9052199A180 - RING, HOLE SNAP</option>
+<option value="9052199A181">9052199A181 - RING, HOLE SNAP</option>
+<option value="9052199A182">9052199A182 - RING, HOLE SNAP</option>
+<option value="9052199A195">9052199A195 - RING, HOLE SNAP</option>
+<option value="9052199A196">9052199A196 - RING, HOLE SNAP</option>
+<option value="9052199A197">9052199A197 - RING, HOLE SNAP</option>
+<option value="9052199A198">9052199A198 - RING, HOLE SNAP</option>
+<option value="9052199A199">9052199A199 - RING, HOLE SNAP</option>
+<option value="9052199A200">9052199A200 - RING, HOLE SNAP</option>
+<option value="9052199A201">9052199A201 - RING, HOLE SNAP</option>
+<option value="9052199A202">9052199A202 - RING, HOLE SNAP</option>
+<option value="9052199A203">9052199A203 - RING, HOLE SNAP</option>
+<option value="9052199A224">9052199A224 - RING, HOLE SNAP</option>
+<option value="9052199A251">9052199A251 - RING, HOLE SNAP</option>
+<option value="9052199A251">9052199A251 - Ring, Hole Snap</option>
+<option value="9052199A252">9052199A252 - RING, HOLE SNAP</option>
+<option value="9052199A253">9052199A253 - RING, HOLE SNAP</option>
+<option value="9052199A256">9052199A256 - RING, HOLE SNAP</option>
+<option value="9052199A257">9052199A257 - RING, HOLE SNAP</option>
+<option value="9052199A258">9052199A258 - RING, HOLE SNAP</option>
+<option value="9052199A263">9052199A263 - RING, HOLE SNAP</option>
+<option value="9052199A264">9052199A264 - RING, HOLE SNAP</option>
+<option value="9052199A265">9052199A265 - RING, HOLE SNAP</option>
+<option value="9052199A266">9052199A266 - RING, HOLE SNAP</option>
+<option value="90521A0019">90521A0019 - RING, HOLE SNAP</option>
+<option value="9052409A001">9052409A001 - SPRING, RETAINER</option>
+<option value="9056014A004">9056014A004 - SPACER, PLANET PINION NEEDLE</option>
+<option value="9056017A003">9056017A003 - SPACER, PLANET PINION NEEDLE</option>
+<option value="9056020A001">9056020A001 - COLLAR</option>
+<option value="9056461A001">9056461A001 - SHIM</option>
+<option value="9056461A002">9056461A002 - SHIM</option>
+<option value="9056461A003">9056461A003 - SHIM</option>
+<option value="9056461A004">9056461A004 - SHIM</option>
+<option value="9056461A005">9056461A005 - SHIM</option>
+<option value="9056461A006">9056461A006 - SHIM</option>
+<option value="9056461A007">9056461A007 - SHIM</option>
+<option value="9056461A008">9056461A008 - SHIM</option>
+<option value="9056461A009">9056461A009 - SHIM</option>
+<option value="9056461A010">9056461A010 - SHIM</option>
+<option value="9056461A011">9056461A011 - SHIM</option>
+<option value="9056461A012">9056461A012 - SHIM</option>
+<option value="9056461A013">9056461A013 - SHIM</option>
+<option value="9056461A014">9056461A014 - SHIM</option>
+<option value="9056461A015">9056461A015 - SHIM</option>
+<option value="9056461A016">9056461A016 - SHIM</option>
+<option value="9056461A017">9056461A017 - SHIM</option>
+<option value="9056461A018">9056461A018 - SHIM</option>
+<option value="9056461A019">9056461A019 - SHIM</option>
+<option value="9056461A020">9056461A020 - SHIM</option>
+<option value="9056461A021">9056461A021 - SHIM</option>
+<option value="9056461A022">9056461A022 - SHIM</option>
+<option value="9056461A023">9056461A023 - SHIM</option>
+<option value="9056461A024">9056461A024 - SHIM</option>
+<option value="9056461A025">9056461A025 - SHIM</option>
+<option value="9056461A026">9056461A026 - SHIM</option>
+<option value="9056461A027">9056461A027 - SHIM</option>
+<option value="9056461A028">9056461A028 - SHIM</option>
+<option value="9056461A029">9056461A029 - SHIM</option>
+<option value="9056461A030">9056461A030 - SHIM</option>
+<option value="9056461A031">9056461A031 - SHIM</option>
+<option value="9056461A032">9056461A032 - SHIM</option>
+<option value="9056461A033">9056461A033 - SHIM</option>
+<option value="9056461A034">9056461A034 - SHIM</option>
+<option value="9056461A035">9056461A035 - SHIM</option>
+<option value="9056475A001">9056475A001 - SHIM</option>
+<option value="9056475A002">9056475A002 - SHIM</option>
+<option value="9056475A003">9056475A003 - SHIM</option>
+<option value="9056475A004">9056475A004 - SHIM</option>
+<option value="9056475A005">9056475A005 - SHIM</option>
+<option value="9056475A006">9056475A006 - SHIM</option>
+<option value="9056475A007">9056475A007 - SHIM</option>
+<option value="9056475A008">9056475A008 - SHIM</option>
+<option value="9056475A009">9056475A009 - SHIM</option>
+<option value="9056475A010">9056475A010 - SHIM</option>
+<option value="9056475A011">9056475A011 - SHIM</option>
+<option value="9056475A012">9056475A012 - SHIM</option>
+<option value="9056475A013">9056475A013 - SHIM</option>
+<option value="9056475A014">9056475A014 - SHIM</option>
+<option value="9056475A015">9056475A015 - SHIM</option>
+<option value="9056475A016">9056475A016 - SHIM</option>
+<option value="9056475A017">9056475A017 - SHIM</option>
+<option value="9056475A018">9056475A018 - SHIM</option>
+<option value="9056475A019">9056475A019 - SHIM</option>
+<option value="9056475A020">9056475A020 - SHIM</option>
+<option value="9056475A021">9056475A021 - SHIM</option>
+<option value="9056475A022">9056475A022 - SHIM</option>
+<option value="9056475A023">9056475A023 - SHIM</option>
+<option value="9056475A024">9056475A024 - SHIM</option>
+<option value="9056475A025">9056475A025 - SHIM</option>
+<option value="9056475A026">9056475A026 - SHIM</option>
+<option value="9056475A027">9056475A027 - SHIM</option>
+<option value="9056475A028">9056475A028 - SHIM</option>
+<option value="9056475A029">9056475A029 - SHIM</option>
+<option value="9056475A030">9056475A030 - SHIM</option>
+<option value="9056475A031">9056475A031 - SHIM</option>
+<option value="9090340A001">9090340A001 - RING, D</option>
+<option value="9090340A001">9090340A001 - Ring, D</option>
+<option value="9090342A001">9090342A001 - RING, D</option>
+<option value="9090361A001">9090361A001 - RING, D</option>
+<option value="9090399A008">9090399A008 - RING, D</option>
+<option value="9093003A035">9093003A035 - BREATHER, ASSY</option>
+<option value="9093004A032">9093004A032 - PLUG, BREATHER, NO.1</option>
+<option value="9093004A040">9093004A040 - BREATHER ASSY</option>
+<option value="9093701026">9093701026 - PIECE, BALANCE</option>
+<option value="9093701026">9093701026 - Piece, Balance</option>
+<option value="9093701514">9093701514 - PIECE, BALANCE</option>
+<option value="9093701517">9093701517 - PIECE, BALANCE</option>
+<option value="9093711A001">9093711A001 - PIECE, BALANCE</option>
+<option value="9093711A001">9093711A001 - Piece, Balance</option>
+<option value="9093711A002">9093711A002 - PIECE, BALANCE</option>
+<option value="9093711A002">9093711A002 - Piece, Balance</option>
+<option value="9093715A001">9093715A001 - PIECE, BALANCE</option>
+<option value="9155110840">9155110840 - BOLT, FLANGE - 68G</option>
+<option value="9451200800">9451200800 - WASHER, SPRING</option>
+<option value="9613230400">9613230400 - CLIP, HOSE</option>
+<option value="BS014">BS014 - SPC270C 1.2X15XC</option>
+<option value="BS024C">BS024C - SHELL, PUMP IMP., OUTER (CS)</option>
+<option value="BS026">BS026 - CORE, PUMP IMP., INNER (CS)</option>
+<option value="BS027">BS027 - SHELL, TURB RUNNER, OUTER (CS)</option>
+<option value="BS037C">BS037C - COVER, CONVERTER, FR (CS)</option>
+<option value="BS038">BS038 - CORE, PUMP IMP., INNER (CS)</option>
+<option value="BS039">BS039 - SHELL, TURB RUNNER, OUTER (CS)</option>
+<option value="BS041C">BS041C - HUB, DIRECT CLTCH (C-2HUB)(CS)</option>
+<option value="BS042C">BS042C - HUB, REV. CLTCH (C-3HUB)(CS)</option>
+<option value="BS043C">BS043C - HUB, BRAKE, NO.1 (B-1HUB) (CS)</option>
+<option value="BS044C">BS044C - DRUM, FORWARD CLUTCH (CS)</option>
+<option value="BS045C">BS045C - DRUM, REV. CLUTCH # 2 (CS)</option>
+<option value="BS046C">BS046C - SLEEVE, REV. PISTON (CS)</option>
+<option value="BS067C">BS067C - COVER, CONVERTER FR (COIL)</option>
+<option value="BS068C">BS068C - DRUM, FORWARD CLUTCH</option>
+<option value="BS069C">BS069C - DRUM, C-2 CLUTCH, OUTER</option>
+<option value="BS070">BS070 - HUB, DIRECT CLUTCH</option>
+<option value="BS071">BS071 - DRUM, SUN GEAR INPUT</option>
+<option value="BS072C">BS072C - CYLINDER, BRAKE, NO.1</option>
+<option value="BS073C">BS073C - CYLINDER, BRAKE, NO.2</option>
+<option value="BS074">BS074 - BLADE, PUMP (CS)</option>
+<option value="BS075">BS075 - BLADE, TURBINE (CS)</option>
+<option value="BS076">BS076 - BLADE, TURBINE (CS)</option>
+<option value="BS082">BS082 - COVER, CONVERTER, FR</option>
+<option value="BS083">BS083 - BLADE, PUMP</option>
+<option value="BS084">BS084 - CORE PUMP IMPELLER, INNER</option>
+<option value="BS085">BS085 - SHELL, PUMP IMPELLER, OUTER</option>
+<option value="BS086">BS086 - BLADE, TURBINE</option>
+<option value="BS087">BS087 - CORE, TURBINE RUNNER, INNER</option>
+<option value="BS088">BS088 - SHELL, TURBINE RUNNER, OUTER</option>
+<option value="BS089C">BS089C - DRUM, FORWARD CLUTCH</option>
+<option value="BS092">BS092 - DRUM, C-2 CLUTCH, OUTER</option>
+<option value="BS093">BS093 - DRUM, FORWARD CLUTCH, OUTER</option>
+<option value="RM001">RM001 - PINION, RR PLANETARY (BAR)</option>
+<option value="RM002">RM002 - PINION, RR PLANETARY (BAR)</option>
+<option value="TB5K040001">TB5K040001 - Accum Control Sleeve S/A</option>
+<option value="TB6201A002">TB6201A002 - T/M CASE</option>
+<option value="TB6201B002">TB6201B002 - OIL PUMP</option>
+<option value="TB6201C006">TB6201C006 - VALVE BODY</option>
+<option value="TB6201D004">TB6201D004 - MANUAL LEVER &amp; PARKING</option>
+<option value="TB6201E003">TB6201E003 - C-1 CLUTCH</option>
+<option value="TB6201E004">TB6201E004 - C-1 CLUTCH</option>
+<option value="TB6201F003">TB6201F003 - C-2 CLUTCH</option>
+<option value="TB6201F004">TB6201F004 - C-2 CLUTCH</option>
+<option value="TB6201G005">TB6201G005 - B-1 BRAKE</option>
+<option value="TB6201G006">TB6201G006 - B-1 BRAKE</option>
+<option value="TB6201J007">TB6201J007 - GEAR TRAIN</option>
+<option value="TB6201J008">TB6201J008 - GEAR TRAIN</option>
+<option value="TB6201K003">TB6201K003 - B-2 BRAKE</option>
+<option value="TB6201K004">TB6201K004 - B-2 BRAKE</option>
+<option value="TB6201N004">TB6201N004 - LWR VALVE BODY</option>
+<option value="TB6201P006">TB6201P006 - UPR VALVE BODY</option>
+<option value="TB6201R003">TB6201R003 - VALVE BODY OTHERS</option>
+<option value="TB6201S003">TB6201S003 - ACCUM, BOLT &amp; STRAINER</option>
+<option value="TB6201T003">TB6201T003 - OIL PAN</option>
+<option value="TB6201V003">TB6201V003 - ECT SOLENOID</option>
+<option value="TB6201W006">TB6201W006 - ADAPTOR FOR 4WD</option>
+<option value="TB6201W007">TB6201W007 - EXT HOUSING</option>
+<option value="TB6201Y003">TB6201Y003 - B-4 BRAKE, N=7</option>
+<option value="TB6201Y004">TB6201Y004 - B-4 BRAKE, N=5</option>
+<option value="TB6201Z010">TB6201Z010 - SHIPPING PARTS</option>
+<option value="TB6201Z011">TB6201Z011 - SHIPPING PARTS</option>
+<option value="TB6201Z012">TB6201Z012 - SHIPPING PARTS</option>
+<option value="TB6201Z013">TB6201Z013 - SHIPPING PARTS</option>
+<option value="TB6801A001">TB6801A001 - T/M CASE</option>
+<option value="TB6801B006">TB6801B006 - OIL PUMP</option>
+<option value="TB6801C008">TB6801C008 - VALVE BODY</option>
+<option value="TB6801D001">TB6801D001 - MANUAL LEVER &amp; PARKING</option>
+<option value="TB6801E007">TB6801E007 - C-1 &amp; C-4 CLUTCH</option>
+<option value="TB6801F008">TB6801F008 - C-2 &amp; C-3 CLUTCH</option>
+<option value="TB6801G003">TB6801G003 - B-1 BRAKE</option>
+<option value="TB6801H001">TB6801H001 - B-3 BRAKE, N=4</option>
+<option value="TB6801J001">TB6801J001 - GEAR TRAIN (4WD)</option>
+<option value="TB6801J002">TB6801J002 - GEAR TRAIN (2WD)</option>
+<option value="TB6801K003">TB6801K003 - B-2 BRAKE</option>
+<option value="TB6801N003">TB6801N003 - LWR VALVE BODY # 1</option>
+<option value="TB6801P004">TB6801P004 - UPR VALVE BODY</option>
+<option value="TB6801Q001">TB6801Q001 - UPR VALVE BODY, NO.2</option>
+<option value="TB6801R005">TB6801R005 - VALVE BODY OTHERS</option>
+<option value="TB6801S009">TB6801S009 - ACCUM, BOLT &amp; STRAINER</option>
+<option value="TB6801T005">TB6801T005 - OIL PAN</option>
+<option value="TB6801U001">TB6801U001 - LWR VALVE BODY # 2</option>
+<option value="TB6801V001">TB6801V001 - ECT SOLENOID</option>
+<option value="TB6801W001">TB6801W001 - ADAPTOR FOR 4WD</option>
+<option value="TB6801W002">TB6801W002 - EXT HOUSING FOR 2WD</option>
+<option value="TB6801Y003">TB6801Y003 - B-4 BRAKE, N=7</option>
+<option value="TB6801Z011">TB6801Z011 - SHIPPING PARTS - 2WD</option>
+<option value="TB6801Z012">TB6801Z012 - SHIPPING PARTS - 2WD</option>
+<option value="Y021720110">Y021720110 - CAP, SHIPPING</option>
+<option value="Y8535TBA020">Y8535TBA020 - ATF WS-9638</option>
+<option value="Y8535TMA020">Y8535TMA020 - ATF  WS-3324</option>
+</select>
+</div>
+
+<div class="col-sm-12 col-md-12 col-lg-2 searchCol">
+    <select name="deptCodeFilter" id="deptCodeFilter" class="form-control" onchange="getLineCodesForDept(this)" disabled>
+        <option selected value="0">- All Dept Codes -</option>
+    <option value="166">A230</option>
+<option value="2">E111</option>
+<option value="3">E112</option>
+<option value="4">E113</option>
+<option value="7">E121</option>
+<option value="8">E122</option>
+<option value="11">E123</option>
+<option value="12">E131</option>
+<option value="13">E132</option>
+<option value="14">E133</option>
+<option value="15">E141</option>
+<option value="16">E142</option>
+<option value="17">E143</option>
+<option value="18">E151</option>
+<option value="19">E152</option>
+<option value="20">E153</option>
+<option value="21">E200</option>
+<option value="22">E300</option>
+<option value="23">E400</option>
+<option value="24">E600</option>
+<option value="25">E800</option>
+<option value="26">F110</option>
+<option value="27">F120</option>
+<option value="28">F130</option>
+<option value="29">F140</option>
+<option value="30">F150</option>
+<option value="31">F160</option>
+<option value="32">F170</option>
+<option value="248">F220</option>
+<option value="33">F221</option>
+<option value="34">F222</option>
+<option value="35">F223</option>
+<option value="36">F311</option>
+<option value="37">F312</option>
+<option value="38">F611</option>
+<option value="39">F612</option>
+<option value="40">F613</option>
+<option value="41">G211</option>
+<option value="42">G212</option>
+<option value="43">G213</option>
+<option value="44">G221</option>
+<option value="45">G222</option>
+<option value="46">G223</option>
+<option value="47">G231</option>
+<option value="48">G232</option>
+<option value="49">G233</option>
+<option value="5">G311</option>
+<option value="6">G312</option>
+<option value="50">G431</option>
+<option value="51">G432</option>
+<option value="52">G433</option>
+<option value="53">G611</option>
+<option value="54">G641</option>
+<option value="55">G642</option>
+<option value="56">G651</option>
+<option value="57">G652</option>
+<option value="58">G811</option>
+<option value="59">G821</option>
+<option value="60">H311</option>
+<option value="61">H312</option>
+<option value="62">H411</option>
+<option value="63">H412</option>
+<option value="64">H511</option>
+<option value="65">H512</option>
+<option value="66">H611</option>
+<option value="67">H612</option>
+<option value="68">H711</option>
+<option value="69">H712</option>
+<option value="70">H800</option>
+<option value="71">I111</option>
+<option value="72">I112</option>
+<option value="73">I311</option>
+<option value="76">I312</option>
+<option value="77">I321</option>
+<option value="78">I322</option>
+<option value="79">I511</option>
+<option value="86">I512</option>
+<option value="87">I611</option>
+<option value="88">I612</option>
+<option value="89">I621</option>
+<option value="90">I622</option>
+<option value="91">I631</option>
+<option value="92">I632</option>
+<option value="93">I721</option>
+<option value="94">I722</option>
+<option value="95">J311</option>
+<option value="96">J312</option>
+<option value="74">J321</option>
+<option value="75">J322</option>
+<option value="99">J411</option>
+<option value="100">J412</option>
+<option value="101">J413</option>
+<option value="102">J611</option>
+<option value="103">J612</option>
+<option value="104">J621</option>
+<option value="105">J622</option>
+<option value="106">J631</option>
+<option value="107">J632</option>
+<option value="193">J721</option>
+<option value="194">J722</option>
+<option value="108">J811</option>
+<option value="80">J812</option>
+<option value="81">J821</option>
+<option value="82">J822</option>
+<option value="83">K111</option>
+<option value="84">K112</option>
+<option value="85">K211</option>
+<option value="109">K212</option>
+<option value="110">K221</option>
+<option value="111">K222</option>
+<option value="112">K311</option>
+<option value="113">K312</option>
+<option value="114">K321</option>
+<option value="115">K322</option>
+<option value="116">K331</option>
+<option value="117">K332</option>
+<option value="118">K411</option>
+<option value="119">K412</option>
+<option value="120">K421</option>
+<option value="121">K422</option>
+<option value="122">K511</option>
+<option value="123">K512</option>
+<option value="124">K521</option>
+<option value="125">K522</option>
+<option value="126">K911</option>
+<option value="127">K912</option>
+<option value="9">K931</option>
+<option value="10">K932</option>
+<option value="128">L111</option>
+<option value="129">L112</option>
+<option value="130">L400</option>
+<option value="131">M111</option>
+<option value="132">M112</option>
+<option value="133">M113</option>
+<option value="134">M121</option>
+<option value="135">M122</option>
+<option value="136">M123</option>
+<option value="137">N111</option>
+<option value="138">N112</option>
+<option value="139">N311</option>
+<option value="140">N321</option>
+<option value="141">N511</option>
+<option value="142">N512</option>
+<option value="143">N611</option>
+<option value="144">N612</option>
+<option value="145">N621</option>
+<option value="146">N622</option>
+<option value="147">N631</option>
+<option value="148">N632</option>
+<option value="149">P411</option>
+<option value="150">P412</option>
+<option value="151">R111</option>
+<option value="152">R121</option>
+<option value="153">R211</option>
+<option value="154">R221</option>
+<option value="156">R411</option>
+<option value="157">R421</option>
+<option value="155">R931</option>
+<option value="158">S111</option>
+<option value="159">S112</option>
+<option value="160">S211</option>
+<option value="161">S212</option>
+<option value="162">S221</option>
+<option value="163">S222</option>
+<option value="164">S411</option>
+<option value="165">S412</option>
+<option value="167">S421</option>
+<option value="168">S422</option>
+<option value="169">S931</option>
+<option value="170">S932</option>
+<option value="171">U111</option>
+<option value="172">U112</option>
+<option value="173">U211</option>
+<option value="174">U212</option>
+<option value="175">U311</option>
+<option value="176">U312</option>
+<option value="177">U321</option>
+<option value="178">U322</option>
+<option value="179">U331</option>
+<option value="180">U332</option>
+<option value="181">U341</option>
+<option value="182">U342</option>
+<option value="183">U511</option>
+<option value="184">U512</option>
+<option value="185">U611</option>
+<option value="186">U612</option>
+<option value="187">U621</option>
+<option value="188">U622</option>
+<option value="189">U641</option>
+<option value="190">U642</option>
+<option value="191">U661</option>
+<option value="192">U662</option>
+<option value="195">U811</option>
+<option value="196">U812</option>
+<option value="197">U911</option>
+<option value="198">U912</option>
+<option value="199">W111</option>
+<option value="200">W112</option>
+<option value="201">W121</option>
+<option value="202">W122</option>
+<option value="203">W211</option>
+<option value="204">W212</option>
+<option value="205">W221</option>
+<option value="206">W222</option>
+<option value="207">W411</option>
+<option value="208">W412</option>
+<option value="209">W421</option>
+<option value="210">W422</option>
+<option value="211">W931</option>
+<option value="212">W932</option>
+</select>
+</div>
+
+<div class="col-sm-12 col-md-12 col-lg-2 searchCol">
+    <select name="lineCodeFilter" id="lineCodeFilter" class="form-control" disabled>
+        <option selected value="0">- All Line Codes -</option>
+    <option></option>
+<option>0103-1</option>
+<option>0178-2</option>
+<option>0178-3</option>
+<option>0178-4</option>
+<option>0200-3</option>
+<option>0404-1</option>
+<option>0621-1</option>
+<option>0621-3</option>
+<option>0621-4</option>
+<option>0621-5</option>
+<option>0904-1</option>
+<option>0929-1</option>
+<option>0985-2</option>
+<option>1078-1</option>
+<option>1308-1</option>
+<option>1403-2</option>
+<option>1403-3</option>
+<option>1403-5</option>
+<option>1453-1</option>
+<option>1453-3</option>
+<option>1455-1</option>
+<option>1660-1</option>
+<option>1700-1</option>
+<option>1837-1</option>
+<option>1874-1</option>
+<option>2002-3</option>
+<option>2002-4</option>
+<option>2002-5</option>
+<option>2002-6</option>
+<option>2002-7</option>
+<option>2019-1</option>
+<option>2064-1</option>
+<option>2065-1</option>
+<option>2225-1</option>
+<option>2544-1</option>
+<option>2544-2</option>
+<option>2545-1</option>
+<option>2869-1</option>
+<option>3135-1</option>
+<option>3136-1</option>
+<option>3148-1</option>
+<option>3461006010</option>
+<option>356100R010</option>
+<option>3584-1</option>
+<option>3677-1</option>
+<option>3699-1</option>
+<option>3704-1</option>
+<option>3705-1</option>
+<option>3733-1</option>
+<option>3914-1</option>
+<option>3922-1</option>
+<option>3954-1</option>
+<option>3955-1</option>
+<option>4111-1</option>
+<option>4157-1</option>
+<option>4201-1</option>
+<option>4205-2</option>
+<option>4207-1</option>
+<option>4769-1</option>
+<option>4782-1</option>
+<option>5029-1</option>
+<option>5047-1</option>
+<option>5048-1</option>
+<option>5060-1</option>
+<option>5068-1</option>
+<option>9994-1</option>
+<option>AS112</option>
+<option>AS222</option>
+<option>AS232</option>
+<option>BONDE</option>
+<option>MA112</option>
+<option>MA122</option>
+<option>MA132</option>
+<option>MA142</option>
+<option>MA150</option>
+<option>MA152</option>
+<option>MA162</option>
+<option>MA212</option>
+<option>phantom</option>
+<option>PR110</option>
+<option>PR115</option>
+<option>PR140</option>
+<option>PR160</option>
+<option>PR190</option>
+</select>
+</div>
+
+                <div class="col-sm-12 col-md-12 col-lg-auto searchCol">
+                    <input type="submit" class="btn btn-info" value="Filter" name="Filter" />&nbsp;
+                    <a class="btn btn-dark" href="/ScrapApprovedRequests">Reset</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+
+<th>
+    Department
+    <br />
+    <a href="/ScrapApprovedRequests?sortOrder=Date&amp;pageNumber=1&amp;deptCodeFilter=0&amp;lineCodeFilter=0">
+        Scrap Request Date<i class=""></i>
+    </a>
+    <br />
+    Shift
+</th>
+
+<th>
+    <a href="/ScrapApprovedRequests?sortOrder=partName&amp;pageNumber=1&amp;deptCodeFilter=0&amp;lineCodeFilter=0">
+        Part Name<i class=""></i>
+    </a>
+    <br />
+    <a href="/ScrapApprovedRequests?sortOrder=partNum_desc&amp;pageNumber=1&amp;deptCodeFilter=0&amp;lineCodeFilter=0">
+        Part No.<i class="bi-caret-up-fill"></i>
+    </a>
+    <br />
+    Model No.
+</th>
+
+<th>
+    <a href="/ScrapApprovedRequests?sortOrder=dept&amp;pageNumber=1&amp;deptCodeFilter=0&amp;lineCodeFilter=0">
+        Dept. Code<i class=""></i>
+</a>
+    <br />
+    <a href="/ScrapApprovedRequests?sortOrder=lineCode&amp;pageNumber=1&amp;deptCodeFilter=0&amp;lineCodeFilter=0">
+        Line Code<i class=""></i>
+</a>
+    <br />
+    <a href="/ScrapApprovedRequests?sortOrder=vendor&amp;pageNumber=1&amp;deptCodeFilter=0&amp;lineCodeFilter=0">
+        Vendor<i class=""></i>
+</a>
+</th>
+
+<th>
+    Reason Code<br />
+    Desc. Code<br />
+    &nbsp;
+</th>
+
+<th>
+    Approvals<br />
+    Scrapped By<br />
+    Quantity
+</th>
+
+<th>
+    <a href="/ScrapApprovedRequests?sortOrder=status&amp;pageNumber=1&amp;deptCodeFilter=0&amp;lineCodeFilter=0">
+        Status<i class=""></i>
+</a>
+    <br />
+    <a href="/ScrapApprovedRequests?sortOrder=scrapStatus&amp;pageNumber=1&amp;deptCodeFilter=0&amp;lineCodeFilter=0">
+        Scrap Status<i class=""></i>
+</a>
+    <br />
+    Additional Info
+</th>
+<th>
+    Actions
+</th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
+                    
+
+<td class="mass-col1">
+    G300 ATI<br />
+    4/22/2022<br />
+    A
+</td>
+
+<td class="mass-col2">
+        N/A
+    <br />
+
+    0191290A030<br />
+
+        N/A
+</td>
+
+<td class="mass-col3">
+K211    <br />
+AS292    <br />
+0103-1</td>
+
+<td class="mass-col4">
+    (5) QC Destructive Testing
+    <br />
+    (B) Hydraulic/Pneumatic Failure
+    <br />
+    &nbsp;
+</td>
+
+<td class="mass-col5">
+    <span class='text-success'><strong>TL&nbsp;GL&nbsp;MGR/AM</strong></span>
+    <br />
+    None
+    <br />
+    1
+</td>
+
+<td class="mass-col6">
+        <span class="text-success">Enabled</span>
+    <br />
+                <span>N/A</span>
+    <br />
+    <span data-toggle="tooltip" data-placement="auto" data-html="true" class="additional-info"
+          title='&lt;strong&gt;Entered By:&lt;/strong&gt; calvinflanagan<br>&lt;strong&gt;OP:&lt;/strong&gt; 50<br>&lt;strong&gt;Ringi:&lt;/strong&gt; None<br>&lt;strong&gt;Project Code:&lt;/strong&gt; None<br>&lt;strong&gt;Rejection reason:&lt;/strong&gt; None'>
+        <i>Additional Data</i>
+    </span>
+</td>
+                    <td>
+                            <a href="/ScrapApprovedRequests/ScrapEntry/14167">Scrap</a>
+                            |
+
+                        <a href="/ScrapApprovedRequests/ToggleDisable/14167">
+                                Disable
+                        </a>
+
+                        |
+                        <a href="/ScrapApprovedRequests/Details/14167">Details</a>
+                    </td>
+                </tr>
+                <tr>
+                    
+
+<td class="mass-col1">
+    G300 ATI<br />
+    7/10/2022<br />
+    B
+</td>
+
+<td class="mass-col2">
+CAP, SHIPPING    <br />
+
+    01912TBA060<br />
+
+305108GB052</td>
+
+<td class="mass-col3">
+K212    <br />
+AS292    <br />
+0103-1</td>
+
+<td class="mass-col4">
+    (6) QA Test Pieces
+    <br />
+    (M) Trial Parts
+    <br />
+    &nbsp;
+</td>
+
+<td class="mass-col5">
+    <span class='text-success'><strong>TL&nbsp;GL&nbsp;MGR/AM</strong></span>
+    <br />
+    None
+    <br />
+    1
+</td>
+
+<td class="mass-col6">
+        <span class="text-success">Enabled</span>
+    <br />
+                <span>N/A</span>
+    <br />
+    <span data-toggle="tooltip" data-placement="auto" data-html="true" class="additional-info"
+          title='&lt;strong&gt;Entered By:&lt;/strong&gt; michaelames<br>&lt;strong&gt;OP:&lt;/strong&gt; None<br>&lt;strong&gt;Ringi:&lt;/strong&gt; None<br>&lt;strong&gt;Project Code:&lt;/strong&gt; (D) Depot<br>&lt;strong&gt;Rejection reason:&lt;/strong&gt; None'>
+        <i>Additional Data</i>
+    </span>
+</td>
+                    <td>
+                            <a href="/ScrapApprovedRequests/ScrapEntry/18212">Scrap</a>
+                            |
+
+                        <a href="/ScrapApprovedRequests/ToggleDisable/18212">
+                                Disable
+                        </a>
+
+                        |
+                        <a href="/ScrapApprovedRequests/Details/18212">Details</a>
+                    </td>
+                </tr>
+                <tr>
+                    
+
+<td class="mass-col1">
+    B800<br />
+    8/23/2022<br />
+    A
+</td>
+
+<td class="mass-col2">
+RETAINER, VALVE    <br />
+
+    0350056004F<br />
+
+35010TBL034/0C280</td>
+
+<td class="mass-col3">
+N321    <br />
+MA820    <br />
+0103-1</td>
+
+<td class="mass-col4">
+    (4) Process Defect
+    <br />
+    (D) Offset NG
+    <br />
+    &nbsp;
+</td>
+
+<td class="mass-col5">
+    <span class='text-success'><strong>TL&nbsp;GL&nbsp;MGR/AM</strong></span>
+    <br />
+    None
+    <br />
+    7
+</td>
+
+<td class="mass-col6">
+        <span class="text-success">Enabled</span>
+    <br />
+                <span>N/A</span>
+    <br />
+    <span data-toggle="tooltip" data-placement="auto" data-html="true" class="additional-info"
+          title='&lt;strong&gt;Entered By:&lt;/strong&gt; brianfutrell<br>&lt;strong&gt;OP:&lt;/strong&gt; 1<br>&lt;strong&gt;Ringi:&lt;/strong&gt; 22X055<br>&lt;strong&gt;Project Code:&lt;/strong&gt; (H) DAT/G998-RrCr<br>&lt;strong&gt;Rejection reason:&lt;/strong&gt; None'>
+        <i>Additional Data</i>
+    </span>
+</td>
+                    <td>
+                            <a href="/ScrapApprovedRequests/ScrapEntry/18225">Scrap</a>
+                            |
+
+                        <a href="/ScrapApprovedRequests/ToggleDisable/18225">
+                                Disable
+                        </a>
+
+                        |
+                        <a href="/ScrapApprovedRequests/Details/18225">Details</a>
+                    </td>
+                </tr>
+                <tr>
+                    
+
+<td class="mass-col1">
+    G300 ATI<br />
+    7/11/2022<br />
+    A
+</td>
+
+<td class="mass-col2">
+RING, O    <br />
+
+    0355141009R<br />
+
+305108GB023</td>
+
+<td class="mass-col3">
+K211    <br />
+AS292    <br />
+0103-1</td>
+
+<td class="mass-col4">
+    (2) Operator Defect
+    <br />
+    (G) Dimension NG
+    <br />
+    &nbsp;
+</td>
+
+<td class="mass-col5">
+    <span class='text-success'><strong>TL&nbsp;GL&nbsp;MGR/AM</strong></span>
+    <br />
+    None
+    <br />
+    1
+</td>
+
+<td class="mass-col6">
+        <span class="text-success">Enabled</span>
+    <br />
+                <span>N/A</span>
+    <br />
+    <span data-toggle="tooltip" data-placement="auto" data-html="true" class="additional-info"
+          title='&lt;strong&gt;Entered By:&lt;/strong&gt; michaelames<br>&lt;strong&gt;OP:&lt;/strong&gt; None<br>&lt;strong&gt;Ringi:&lt;/strong&gt; 19M003<br>&lt;strong&gt;Project Code:&lt;/strong&gt; None<br>&lt;strong&gt;Rejection reason:&lt;/strong&gt; None'>
+        <i>Additional Data</i>
+    </span>
+</td>
+                    <td>
+                            <a href="/ScrapApprovedRequests/ScrapEntry/18210">Scrap</a>
+                            |
+
+                        <a href="/ScrapApprovedRequests/ToggleDisable/18210">
+                                Disable
+                        </a>
+
+                        |
+                        <a href="/ScrapApprovedRequests/Details/18210">Details</a>
+                    </td>
+                </tr>
+                <tr>
+                    
+
+<td class="mass-col1">
+    BC01<br />
+    9/8/2022<br />
+    A
+</td>
+
+<td class="mass-col2">
+RING, O    <br />
+
+    0355141009R<br />
+
+35010TBH007/04240</td>
+
+<td class="mass-col3">
+I621    <br />
+MA635    <br />
+0103-1</td>
+
+<td class="mass-col4">
+    (3) Material Defect
+    <br />
+    (D) Offset NG
+    <br />
+    &nbsp;
+</td>
+
+<td class="mass-col5">
+    <span class='text-success'><strong>TL&nbsp;GL&nbsp;MGR/AM</strong></span>
+    <br />
+    None
+    <br />
+    10
+</td>
+
+<td class="mass-col6">
+        <span class="text-success">Enabled</span>
+    <br />
+                <span>N/A</span>
+    <br />
+    <span data-toggle="tooltip" data-placement="auto" data-html="true" class="additional-info"
+          title='&lt;strong&gt;Entered By:&lt;/strong&gt; brianfutrell<br>&lt;strong&gt;OP:&lt;/strong&gt; 3<br>&lt;strong&gt;Ringi:&lt;/strong&gt; 21M038<br>&lt;strong&gt;Project Code:&lt;/strong&gt; (VS2202) Start-up L-B01<br>&lt;strong&gt;Rejection reason:&lt;/strong&gt; None'>
+        <i>Additional Data</i>
+    </span>
+</td>
+                    <td>
+                            <a href="/ScrapApprovedRequests/ScrapEntry/18228">Scrap</a>
+                            |
+
+                        <a href="/ScrapApprovedRequests/ToggleDisable/18228">
+                                Disable
+                        </a>
+
+                        |
+                        <a href="/ScrapApprovedRequests/Details/18228">Details</a>
+                    </td>
+                </tr>
+                <tr>
+                    
+
+<td class="mass-col1">
+    G300<br />
+    5/4/2022<br />
+    A
+</td>
+
+<td class="mass-col2">
+        N/A
+    <br />
+
+    2030044001J<br />
+
+        N/A
+</td>
+
+<td class="mass-col3">
+J821    <br />
+MA143    <br />
+0103-1</td>
+
+<td class="mass-col4">
+    (2) Operator Defect
+    <br />
+    (F) Dropped Part
+    <br />
+    &nbsp;
+</td>
+
+<td class="mass-col5">
+    <span class='text-success'><strong>TL&nbsp;GL&nbsp;MGR/AM</strong></span>
+    <br />
+    None
+    <br />
+    1
+</td>
+
+<td class="mass-col6">
+        <span class="text-success">Enabled</span>
+    <br />
+                <span>N/A</span>
+    <br />
+    <span data-toggle="tooltip" data-placement="auto" data-html="true" class="additional-info"
+          title='&lt;strong&gt;Entered By:&lt;/strong&gt; brianfutrell<br>&lt;strong&gt;OP:&lt;/strong&gt; None<br>&lt;strong&gt;Ringi:&lt;/strong&gt; None<br>&lt;strong&gt;Project Code:&lt;/strong&gt; None<br>&lt;strong&gt;Rejection reason:&lt;/strong&gt; None'>
+        <i>Additional Data</i>
+    </span>
+</td>
+                    <td>
+                            <a href="/ScrapApprovedRequests/ScrapEntry/15179">Scrap</a>
+                            |
+
+                        <a href="/ScrapApprovedRequests/ToggleDisable/15179">
+                                Disable
+                        </a>
+
+                        |
+                        <a href="/ScrapApprovedRequests/Details/15179">Details</a>
+                    </td>
+                </tr>
+                <tr>
+                    
+
+<td class="mass-col1">
+    G300<br />
+    7/11/2022<br />
+    A
+</td>
+
+<td class="mass-col2">
+TRANSAXLE ASSY, AUTOMATIC    <br />
+
+    305008GB016<br />
+
+305108GB023</td>
+
+<td class="mass-col3">
+J621    <br />
+MA212    <br />
+        N/A
+</td>
+
+<td class="mass-col4">
+    (2) Operator Defect
+    <br />
+    (J) Part Loaded Wrong
+    <br />
+    &nbsp;
+</td>
+
+<td class="mass-col5">
+    <span class='text-success'><strong>TL&nbsp;GL&nbsp;MGR/AM</strong></span>
+    <br />
+    None
+    <br />
+    5
+</td>
+
+<td class="mass-col6">
+        <span class="text-success">Enabled</span>
+    <br />
+                <span>N/A</span>
+    <br />
+    <span data-toggle="tooltip" data-placement="auto" data-html="true" class="additional-info"
+          title='&lt;strong&gt;Entered By:&lt;/strong&gt; brianfutrell<br>&lt;strong&gt;OP:&lt;/strong&gt; 6<br>&lt;strong&gt;Ringi:&lt;/strong&gt; 18X022<br>&lt;strong&gt;Project Code:&lt;/strong&gt; (B) B700<br>&lt;strong&gt;Rejection reason:&lt;/strong&gt; None'>
+        <i>Additional Data</i>
+    </span>
+</td>
+                    <td>
+                            <a href="/ScrapApprovedRequests/ScrapEntry/18213">Scrap</a>
+                            |
+
+                        <a href="/ScrapApprovedRequests/ToggleDisable/18213">
+                                Disable
+                        </a>
+
+                        |
+                        <a href="/ScrapApprovedRequests/Details/18213">Details</a>
+                    </td>
+                </tr>
+                <tr>
+                    
+
+<td class="mass-col1">
+    G903 TC<br />
+    5/4/2022<br />
+    A
+</td>
+
+<td class="mass-col2">
+230 T/C, Turbine &amp; Damper    <br />
+
+    3200(02)C-230<br />
+
+        N/A
+</td>
+
+<td class="mass-col3">
+E200    <br />
+EE200    <br />
+phantom</td>
+
+<td class="mass-col4">
+    (3) Material Defect
+    <br />
+    (C) Electrical Failure
+    <br />
+    &nbsp;
+</td>
+
+<td class="mass-col5">
+    <span class='text-success'><strong>TL&nbsp;GL&nbsp;MGR/AM</strong></span>
+    <br />
+    None
+    <br />
+    1
+</td>
+
+<td class="mass-col6">
+        <span class="text-success">Enabled</span>
+    <br />
+                <span>N/A</span>
+    <br />
+    <span data-toggle="tooltip" data-placement="auto" data-html="true" class="additional-info"
+          title='&lt;strong&gt;Entered By:&lt;/strong&gt; brianfutrell<br>&lt;strong&gt;OP:&lt;/strong&gt; None<br>&lt;strong&gt;Ringi:&lt;/strong&gt; None<br>&lt;strong&gt;Project Code:&lt;/strong&gt; None<br>&lt;strong&gt;Rejection reason:&lt;/strong&gt; None'>
+        <i>Additional Data</i>
+    </span>
+</td>
+                    <td>
+                            <a href="/ScrapApprovedRequests/ScrapEntry/15180">Scrap</a>
+                            |
+
+                        <a href="/ScrapApprovedRequests/ToggleDisable/15180">
+                                Disable
+                        </a>
+
+                        |
+                        <a href="/ScrapApprovedRequests/Details/15180">Details</a>
+                    </td>
+                </tr>
+                <tr>
+                    
+
+<td class="mass-col1">
+    G903 TC<br />
+    5/4/2022<br />
+    A
+</td>
+
+<td class="mass-col2">
+230 T/C, Turbine &amp; Damper    <br />
+
+    3200(02)C-230<br />
+
+        N/A
+</td>
+
+<td class="mass-col3">
+J321    <br />
+MA122    <br />
+phantom</td>
+
+<td class="mass-col4">
+    (7) Engineering
+    <br />
+    (E) Preset Tool NG
+    <br />
+    &nbsp;
+</td>
+
+<td class="mass-col5">
+    <span class='text-success'><strong>TL&nbsp;GL&nbsp;MGR/AM</strong></span>
+    <br />
+    None
+    <br />
+    1
+</td>
+
+<td class="mass-col6">
+        <span class="text-success">Enabled</span>
+    <br />
+                <span>N/A</span>
+    <br />
+    <span data-toggle="tooltip" data-placement="auto" data-html="true" class="additional-info"
+          title='&lt;strong&gt;Entered By:&lt;/strong&gt; brianfutrell<br>&lt;strong&gt;OP:&lt;/strong&gt; None<br>&lt;strong&gt;Ringi:&lt;/strong&gt; None<br>&lt;strong&gt;Project Code:&lt;/strong&gt; None<br>&lt;strong&gt;Rejection reason:&lt;/strong&gt; None'>
+        <i>Additional Data</i>
+    </span>
+</td>
+                    <td>
+                            <a href="/ScrapApprovedRequests/ScrapEntry/15183">Scrap</a>
+                            |
+
+                        <a href="/ScrapApprovedRequests/ToggleDisable/15183">
+                                Disable
+                        </a>
+
+                        |
+                        <a href="/ScrapApprovedRequests/Details/15183">Details</a>
+                    </td>
+                </tr>
+                <tr>
+                    
+
+<td class="mass-col1">
+    G903 TC<br />
+    5/4/2022<br />
+    A
+</td>
+
+<td class="mass-col2">
+230 T/C, Turbine &amp; Damper    <br />
+
+    3200(02)C-230<br />
+
+        N/A
+</td>
+
+<td class="mass-col3">
+J311    <br />
+AS112    <br />
+phantom</td>
+
+<td class="mass-col4">
+    (3) Material Defect
+    <br />
+    (E) Preset Tool NG
+    <br />
+    &nbsp;
+</td>
+
+<td class="mass-col5">
+    <span class='text-success'><strong>TL&nbsp;GL&nbsp;MGR/AM</strong></span>
+    <br />
+    None
+    <br />
+    1
+</td>
+
+<td class="mass-col6">
+        <span class="text-success">Enabled</span>
+    <br />
+                <span>N/A</span>
+    <br />
+    <span data-toggle="tooltip" data-placement="auto" data-html="true" class="additional-info"
+          title='&lt;strong&gt;Entered By:&lt;/strong&gt; brianfutrell<br>&lt;strong&gt;OP:&lt;/strong&gt; None<br>&lt;strong&gt;Ringi:&lt;/strong&gt; None<br>&lt;strong&gt;Project Code:&lt;/strong&gt; None<br>&lt;strong&gt;Rejection reason:&lt;/strong&gt; None'>
+        <i>Additional Data</i>
+    </span>
+</td>
+                    <td>
+                            <a href="/ScrapApprovedRequests/ScrapEntry/15184">Scrap</a>
+                            |
+
+                        <a href="/ScrapApprovedRequests/ToggleDisable/15184">
+                                Disable
+                        </a>
+
+                        |
+                        <a href="/ScrapApprovedRequests/Details/15184">Details</a>
+                    </td>
+                </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-secondary disabled" href="/ScrapApprovedRequests?sortOrder=partNum&amp;pageNumber=1&amp;deptCodeFilter=0&amp;lineCodeFilter=0">
+        First
+    </a>
+    <a class="btn btn-secondary disabled" href="/ScrapApprovedRequests?sortOrder=partNum&amp;pageNumber=0&amp;deptCodeFilter=0&amp;lineCodeFilter=0">
+        Previous
+    </a>
+    <a class="btn btn-secondary " href="/ScrapApprovedRequests?sortOrder=partNum&amp;pageNumber=2&amp;deptCodeFilter=0&amp;lineCodeFilter=0">
+        Next
+    </a>
+    <a class="btn btn-secondary " href="/ScrapApprovedRequests?sortOrder=partNum&amp;pageNumber=3&amp;deptCodeFilter=0&amp;lineCodeFilter=0">
+        Last
+    </a>
+    <span class="pageInfo">Page 1 of 3</span>
+
+
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2021 - <span class="to-year"></span> AISIN North Carolina Corporation
+            &nbsp;|&nbsp;
+            <a href="/docs/user_guide.pdf" target="_blank">User Guide</a>
+        </div>
+    </footer>
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/site.js?v=h7TcgtFdbFxEOA9EQo-J7bZ4JjAX0f2tDmyAHZg1qqY"></script>
+    <script src="/lib/bootstrap-select/js/bootstrap-select.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            addBetaifBetaSite();
+
+            let toYear = new Date().getFullYear();
+            $('.to-year').html(toYear);
+        });
+    </script>
+
+    
+    <script type="text/javascript" src="/js/indexFilterFunctions.js"></script>
+    <script type="text/javascript" src="/js/scrapRequestPromises.js"></script>
+
+    <script type="text/javascript">
+        var deptList;
+        var lineList;
+
+        $().ready(() => {
+            $('[data-toggle="tooltip"]').tooltip();
+
+            deptList = [{"disabled":false,"group":null,"selected":false,"text":"A230","value":"166"},{"disabled":false,"group":null,"selected":false,"text":"E111","value":"2"},{"disabled":false,"group":null,"selected":false,"text":"E112","value":"3"},{"disabled":false,"group":null,"selected":false,"text":"E113","value":"4"},{"disabled":false,"group":null,"selected":false,"text":"E121","value":"7"},{"disabled":false,"group":null,"selected":false,"text":"E122","value":"8"},{"disabled":false,"group":null,"selected":false,"text":"E123","value":"11"},{"disabled":false,"group":null,"selected":false,"text":"E131","value":"12"},{"disabled":false,"group":null,"selected":false,"text":"E132","value":"13"},{"disabled":false,"group":null,"selected":false,"text":"E133","value":"14"},{"disabled":false,"group":null,"selected":false,"text":"E141","value":"15"},{"disabled":false,"group":null,"selected":false,"text":"E142","value":"16"},{"disabled":false,"group":null,"selected":false,"text":"E143","value":"17"},{"disabled":false,"group":null,"selected":false,"text":"E151","value":"18"},{"disabled":false,"group":null,"selected":false,"text":"E152","value":"19"},{"disabled":false,"group":null,"selected":false,"text":"E153","value":"20"},{"disabled":false,"group":null,"selected":false,"text":"E200","value":"21"},{"disabled":false,"group":null,"selected":false,"text":"E300","value":"22"},{"disabled":false,"group":null,"selected":false,"text":"E400","value":"23"},{"disabled":false,"group":null,"selected":false,"text":"E600","value":"24"},{"disabled":false,"group":null,"selected":false,"text":"E800","value":"25"},{"disabled":false,"group":null,"selected":false,"text":"F110","value":"26"},{"disabled":false,"group":null,"selected":false,"text":"F120","value":"27"},{"disabled":false,"group":null,"selected":false,"text":"F130","value":"28"},{"disabled":false,"group":null,"selected":false,"text":"F140","value":"29"},{"disabled":false,"group":null,"selected":false,"text":"F150","value":"30"},{"disabled":false,"group":null,"selected":false,"text":"F160","value":"31"},{"disabled":false,"group":null,"selected":false,"text":"F170","value":"32"},{"disabled":false,"group":null,"selected":false,"text":"F220","value":"248"},{"disabled":false,"group":null,"selected":false,"text":"F221","value":"33"},{"disabled":false,"group":null,"selected":false,"text":"F222","value":"34"},{"disabled":false,"group":null,"selected":false,"text":"F223","value":"35"},{"disabled":false,"group":null,"selected":false,"text":"F311","value":"36"},{"disabled":false,"group":null,"selected":false,"text":"F312","value":"37"},{"disabled":false,"group":null,"selected":false,"text":"F611","value":"38"},{"disabled":false,"group":null,"selected":false,"text":"F612","value":"39"},{"disabled":false,"group":null,"selected":false,"text":"F613","value":"40"},{"disabled":false,"group":null,"selected":false,"text":"G211","value":"41"},{"disabled":false,"group":null,"selected":false,"text":"G212","value":"42"},{"disabled":false,"group":null,"selected":false,"text":"G213","value":"43"},{"disabled":false,"group":null,"selected":false,"text":"G221","value":"44"},{"disabled":false,"group":null,"selected":false,"text":"G222","value":"45"},{"disabled":false,"group":null,"selected":false,"text":"G223","value":"46"},{"disabled":false,"group":null,"selected":false,"text":"G231","value":"47"},{"disabled":false,"group":null,"selected":false,"text":"G232","value":"48"},{"disabled":false,"group":null,"selected":false,"text":"G233","value":"49"},{"disabled":false,"group":null,"selected":false,"text":"G311","value":"5"},{"disabled":false,"group":null,"selected":false,"text":"G312","value":"6"},{"disabled":false,"group":null,"selected":false,"text":"G431","value":"50"},{"disabled":false,"group":null,"selected":false,"text":"G432","value":"51"},{"disabled":false,"group":null,"selected":false,"text":"G433","value":"52"},{"disabled":false,"group":null,"selected":false,"text":"G611","value":"53"},{"disabled":false,"group":null,"selected":false,"text":"G641","value":"54"},{"disabled":false,"group":null,"selected":false,"text":"G642","value":"55"},{"disabled":false,"group":null,"selected":false,"text":"G651","value":"56"},{"disabled":false,"group":null,"selected":false,"text":"G652","value":"57"},{"disabled":false,"group":null,"selected":false,"text":"G811","value":"58"},{"disabled":false,"group":null,"selected":false,"text":"G821","value":"59"},{"disabled":false,"group":null,"selected":false,"text":"H311","value":"60"},{"disabled":false,"group":null,"selected":false,"text":"H312","value":"61"},{"disabled":false,"group":null,"selected":false,"text":"H411","value":"62"},{"disabled":false,"group":null,"selected":false,"text":"H412","value":"63"},{"disabled":false,"group":null,"selected":false,"text":"H511","value":"64"},{"disabled":false,"group":null,"selected":false,"text":"H512","value":"65"},{"disabled":false,"group":null,"selected":false,"text":"H611","value":"66"},{"disabled":false,"group":null,"selected":false,"text":"H612","value":"67"},{"disabled":false,"group":null,"selected":false,"text":"H711","value":"68"},{"disabled":false,"group":null,"selected":false,"text":"H712","value":"69"},{"disabled":false,"group":null,"selected":false,"text":"H800","value":"70"},{"disabled":false,"group":null,"selected":false,"text":"I111","value":"71"},{"disabled":false,"group":null,"selected":false,"text":"I112","value":"72"},{"disabled":false,"group":null,"selected":false,"text":"I311","value":"73"},{"disabled":false,"group":null,"selected":false,"text":"I312","value":"76"},{"disabled":false,"group":null,"selected":false,"text":"I321","value":"77"},{"disabled":false,"group":null,"selected":false,"text":"I322","value":"78"},{"disabled":false,"group":null,"selected":false,"text":"I511","value":"79"},{"disabled":false,"group":null,"selected":false,"text":"I512","value":"86"},{"disabled":false,"group":null,"selected":false,"text":"I611","value":"87"},{"disabled":false,"group":null,"selected":false,"text":"I612","value":"88"},{"disabled":false,"group":null,"selected":false,"text":"I621","value":"89"},{"disabled":false,"group":null,"selected":false,"text":"I622","value":"90"},{"disabled":false,"group":null,"selected":false,"text":"I631","value":"91"},{"disabled":false,"group":null,"selected":false,"text":"I632","value":"92"},{"disabled":false,"group":null,"selected":false,"text":"I721","value":"93"},{"disabled":false,"group":null,"selected":false,"text":"I722","value":"94"},{"disabled":false,"group":null,"selected":false,"text":"J311","value":"95"},{"disabled":false,"group":null,"selected":false,"text":"J312","value":"96"},{"disabled":false,"group":null,"selected":false,"text":"J321","value":"74"},{"disabled":false,"group":null,"selected":false,"text":"J322","value":"75"},{"disabled":false,"group":null,"selected":false,"text":"J411","value":"99"},{"disabled":false,"group":null,"selected":false,"text":"J412","value":"100"},{"disabled":false,"group":null,"selected":false,"text":"J413","value":"101"},{"disabled":false,"group":null,"selected":false,"text":"J611","value":"102"},{"disabled":false,"group":null,"selected":false,"text":"J612","value":"103"},{"disabled":false,"group":null,"selected":false,"text":"J621","value":"104"},{"disabled":false,"group":null,"selected":false,"text":"J622","value":"105"},{"disabled":false,"group":null,"selected":false,"text":"J631","value":"106"},{"disabled":false,"group":null,"selected":false,"text":"J632","value":"107"},{"disabled":false,"group":null,"selected":false,"text":"J721","value":"193"},{"disabled":false,"group":null,"selected":false,"text":"J722","value":"194"},{"disabled":false,"group":null,"selected":false,"text":"J811","value":"108"},{"disabled":false,"group":null,"selected":false,"text":"J812","value":"80"},{"disabled":false,"group":null,"selected":false,"text":"J821","value":"81"},{"disabled":false,"group":null,"selected":false,"text":"J822","value":"82"},{"disabled":false,"group":null,"selected":false,"text":"K111","value":"83"},{"disabled":false,"group":null,"selected":false,"text":"K112","value":"84"},{"disabled":false,"group":null,"selected":false,"text":"K211","value":"85"},{"disabled":false,"group":null,"selected":false,"text":"K212","value":"109"},{"disabled":false,"group":null,"selected":false,"text":"K221","value":"110"},{"disabled":false,"group":null,"selected":false,"text":"K222","value":"111"},{"disabled":false,"group":null,"selected":false,"text":"K311","value":"112"},{"disabled":false,"group":null,"selected":false,"text":"K312","value":"113"},{"disabled":false,"group":null,"selected":false,"text":"K321","value":"114"},{"disabled":false,"group":null,"selected":false,"text":"K322","value":"115"},{"disabled":false,"group":null,"selected":false,"text":"K331","value":"116"},{"disabled":false,"group":null,"selected":false,"text":"K332","value":"117"},{"disabled":false,"group":null,"selected":false,"text":"K411","value":"118"},{"disabled":false,"group":null,"selected":false,"text":"K412","value":"119"},{"disabled":false,"group":null,"selected":false,"text":"K421","value":"120"},{"disabled":false,"group":null,"selected":false,"text":"K422","value":"121"},{"disabled":false,"group":null,"selected":false,"text":"K511","value":"122"},{"disabled":false,"group":null,"selected":false,"text":"K512","value":"123"},{"disabled":false,"group":null,"selected":false,"text":"K521","value":"124"},{"disabled":false,"group":null,"selected":false,"text":"K522","value":"125"},{"disabled":false,"group":null,"selected":false,"text":"K911","value":"126"},{"disabled":false,"group":null,"selected":false,"text":"K912","value":"127"},{"disabled":false,"group":null,"selected":false,"text":"K931","value":"9"},{"disabled":false,"group":null,"selected":false,"text":"K932","value":"10"},{"disabled":false,"group":null,"selected":false,"text":"L111","value":"128"},{"disabled":false,"group":null,"selected":false,"text":"L112","value":"129"},{"disabled":false,"group":null,"selected":false,"text":"L400","value":"130"},{"disabled":false,"group":null,"selected":false,"text":"M111","value":"131"},{"disabled":false,"group":null,"selected":false,"text":"M112","value":"132"},{"disabled":false,"group":null,"selected":false,"text":"M113","value":"133"},{"disabled":false,"group":null,"selected":false,"text":"M121","value":"134"},{"disabled":false,"group":null,"selected":false,"text":"M122","value":"135"},{"disabled":false,"group":null,"selected":false,"text":"M123","value":"136"},{"disabled":false,"group":null,"selected":false,"text":"N111","value":"137"},{"disabled":false,"group":null,"selected":false,"text":"N112","value":"138"},{"disabled":false,"group":null,"selected":false,"text":"N311","value":"139"},{"disabled":false,"group":null,"selected":false,"text":"N321","value":"140"},{"disabled":false,"group":null,"selected":false,"text":"N511","value":"141"},{"disabled":false,"group":null,"selected":false,"text":"N512","value":"142"},{"disabled":false,"group":null,"selected":false,"text":"N611","value":"143"},{"disabled":false,"group":null,"selected":false,"text":"N612","value":"144"},{"disabled":false,"group":null,"selected":false,"text":"N621","value":"145"},{"disabled":false,"group":null,"selected":false,"text":"N622","value":"146"},{"disabled":false,"group":null,"selected":false,"text":"N631","value":"147"},{"disabled":false,"group":null,"selected":false,"text":"N632","value":"148"},{"disabled":false,"group":null,"selected":false,"text":"P411","value":"149"},{"disabled":false,"group":null,"selected":false,"text":"P412","value":"150"},{"disabled":false,"group":null,"selected":false,"text":"R111","value":"151"},{"disabled":false,"group":null,"selected":false,"text":"R121","value":"152"},{"disabled":false,"group":null,"selected":false,"text":"R211","value":"153"},{"disabled":false,"group":null,"selected":false,"text":"R221","value":"154"},{"disabled":false,"group":null,"selected":false,"text":"R411","value":"156"},{"disabled":false,"group":null,"selected":false,"text":"R421","value":"157"},{"disabled":false,"group":null,"selected":false,"text":"R931","value":"155"},{"disabled":false,"group":null,"selected":false,"text":"S111","value":"158"},{"disabled":false,"group":null,"selected":false,"text":"S112","value":"159"},{"disabled":false,"group":null,"selected":false,"text":"S211","value":"160"},{"disabled":false,"group":null,"selected":false,"text":"S212","value":"161"},{"disabled":false,"group":null,"selected":false,"text":"S221","value":"162"},{"disabled":false,"group":null,"selected":false,"text":"S222","value":"163"},{"disabled":false,"group":null,"selected":false,"text":"S411","value":"164"},{"disabled":false,"group":null,"selected":false,"text":"S412","value":"165"},{"disabled":false,"group":null,"selected":false,"text":"S421","value":"167"},{"disabled":false,"group":null,"selected":false,"text":"S422","value":"168"},{"disabled":false,"group":null,"selected":false,"text":"S931","value":"169"},{"disabled":false,"group":null,"selected":false,"text":"S932","value":"170"},{"disabled":false,"group":null,"selected":false,"text":"U111","value":"171"},{"disabled":false,"group":null,"selected":false,"text":"U112","value":"172"},{"disabled":false,"group":null,"selected":false,"text":"U211","value":"173"},{"disabled":false,"group":null,"selected":false,"text":"U212","value":"174"},{"disabled":false,"group":null,"selected":false,"text":"U311","value":"175"},{"disabled":false,"group":null,"selected":false,"text":"U312","value":"176"},{"disabled":false,"group":null,"selected":false,"text":"U321","value":"177"},{"disabled":false,"group":null,"selected":false,"text":"U322","value":"178"},{"disabled":false,"group":null,"selected":false,"text":"U331","value":"179"},{"disabled":false,"group":null,"selected":false,"text":"U332","value":"180"},{"disabled":false,"group":null,"selected":false,"text":"U341","value":"181"},{"disabled":false,"group":null,"selected":false,"text":"U342","value":"182"},{"disabled":false,"group":null,"selected":false,"text":"U511","value":"183"},{"disabled":false,"group":null,"selected":false,"text":"U512","value":"184"},{"disabled":false,"group":null,"selected":false,"text":"U611","value":"185"},{"disabled":false,"group":null,"selected":false,"text":"U612","value":"186"},{"disabled":false,"group":null,"selected":false,"text":"U621","value":"187"},{"disabled":false,"group":null,"selected":false,"text":"U622","value":"188"},{"disabled":false,"group":null,"selected":false,"text":"U641","value":"189"},{"disabled":false,"group":null,"selected":false,"text":"U642","value":"190"},{"disabled":false,"group":null,"selected":false,"text":"U661","value":"191"},{"disabled":false,"group":null,"selected":false,"text":"U662","value":"192"},{"disabled":false,"group":null,"selected":false,"text":"U811","value":"195"},{"disabled":false,"group":null,"selected":false,"text":"U812","value":"196"},{"disabled":false,"group":null,"selected":false,"text":"U911","value":"197"},{"disabled":false,"group":null,"selected":false,"text":"U912","value":"198"},{"disabled":false,"group":null,"selected":false,"text":"W111","value":"199"},{"disabled":false,"group":null,"selected":false,"text":"W112","value":"200"},{"disabled":false,"group":null,"selected":false,"text":"W121","value":"201"},{"disabled":false,"group":null,"selected":false,"text":"W122","value":"202"},{"disabled":false,"group":null,"selected":false,"text":"W211","value":"203"},{"disabled":false,"group":null,"selected":false,"text":"W212","value":"204"},{"disabled":false,"group":null,"selected":false,"text":"W221","value":"205"},{"disabled":false,"group":null,"selected":false,"text":"W222","value":"206"},{"disabled":false,"group":null,"selected":false,"text":"W411","value":"207"},{"disabled":false,"group":null,"selected":false,"text":"W412","value":"208"},{"disabled":false,"group":null,"selected":false,"text":"W421","value":"209"},{"disabled":false,"group":null,"selected":false,"text":"W422","value":"210"},{"disabled":false,"group":null,"selected":false,"text":"W931","value":"211"},{"disabled":false,"group":null,"selected":false,"text":"W932","value":"212"}];
+            lineList = [{"disabled":false,"group":null,"selected":false,"text":"","value":null},{"disabled":false,"group":null,"selected":false,"text":"0103-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"0178-2","value":null},{"disabled":false,"group":null,"selected":false,"text":"0178-3","value":null},{"disabled":false,"group":null,"selected":false,"text":"0178-4","value":null},{"disabled":false,"group":null,"selected":false,"text":"0200-3","value":null},{"disabled":false,"group":null,"selected":false,"text":"0404-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"0621-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"0621-3","value":null},{"disabled":false,"group":null,"selected":false,"text":"0621-4","value":null},{"disabled":false,"group":null,"selected":false,"text":"0621-5","value":null},{"disabled":false,"group":null,"selected":false,"text":"0904-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"0929-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"0985-2","value":null},{"disabled":false,"group":null,"selected":false,"text":"1078-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"1308-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"1403-2","value":null},{"disabled":false,"group":null,"selected":false,"text":"1403-3","value":null},{"disabled":false,"group":null,"selected":false,"text":"1403-5","value":null},{"disabled":false,"group":null,"selected":false,"text":"1453-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"1453-3","value":null},{"disabled":false,"group":null,"selected":false,"text":"1455-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"1660-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"1700-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"1837-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"1874-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"2002-3","value":null},{"disabled":false,"group":null,"selected":false,"text":"2002-4","value":null},{"disabled":false,"group":null,"selected":false,"text":"2002-5","value":null},{"disabled":false,"group":null,"selected":false,"text":"2002-6","value":null},{"disabled":false,"group":null,"selected":false,"text":"2002-7","value":null},{"disabled":false,"group":null,"selected":false,"text":"2019-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"2064-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"2065-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"2225-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"2544-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"2544-2","value":null},{"disabled":false,"group":null,"selected":false,"text":"2545-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"2869-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"3135-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"3136-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"3148-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"3461006010","value":null},{"disabled":false,"group":null,"selected":false,"text":"356100R010","value":null},{"disabled":false,"group":null,"selected":false,"text":"3584-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"3677-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"3699-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"3704-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"3705-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"3733-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"3914-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"3922-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"3954-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"3955-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"4111-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"4157-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"4201-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"4205-2","value":null},{"disabled":false,"group":null,"selected":false,"text":"4207-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"4769-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"4782-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"5029-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"5047-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"5048-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"5060-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"5068-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"9994-1","value":null},{"disabled":false,"group":null,"selected":false,"text":"AS112","value":null},{"disabled":false,"group":null,"selected":false,"text":"AS222","value":null},{"disabled":false,"group":null,"selected":false,"text":"AS232","value":null},{"disabled":false,"group":null,"selected":false,"text":"BONDE","value":null},{"disabled":false,"group":null,"selected":false,"text":"MA112","value":null},{"disabled":false,"group":null,"selected":false,"text":"MA122","value":null},{"disabled":false,"group":null,"selected":false,"text":"MA132","value":null},{"disabled":false,"group":null,"selected":false,"text":"MA142","value":null},{"disabled":false,"group":null,"selected":false,"text":"MA150","value":null},{"disabled":false,"group":null,"selected":false,"text":"MA152","value":null},{"disabled":false,"group":null,"selected":false,"text":"MA162","value":null},{"disabled":false,"group":null,"selected":false,"text":"MA212","value":null},{"disabled":false,"group":null,"selected":false,"text":"phantom","value":null},{"disabled":false,"group":null,"selected":false,"text":"PR110","value":null},{"disabled":false,"group":null,"selected":false,"text":"PR115","value":null},{"disabled":false,"group":null,"selected":false,"text":"PR140","value":null},{"disabled":false,"group":null,"selected":false,"text":"PR160","value":null},{"disabled":false,"group":null,"selected":false,"text":"PR190","value":null}];
+
+            var lineFilter = ``;
+            var deptCodeFilter = 0;
+            var lineCodeFilter = 0;
+            var dateFilter = ``;
+            var partNumberFilter = ``;
+            setUpFilter(dateFilter, lineFilter, deptCodeFilter, lineCodeFilter, partNumberFilter);
+        });
+
+    </script>
+
+</body>
+</html>
